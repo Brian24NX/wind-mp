@@ -1,0 +1,63 @@
+#-------------------------------------------------------
+# PREVIEW环境配置区域
+#-------------------------------------------------------
+# 重要说明
+# 此配置区域仅在PREVIEW环境中生效，只能定义测试环境中默认且长期
+# 不变的配置项，例如预览环境中的通用超时时间等，外部资源如数据库
+# 连接等请务必通过Apollo配置中心进行配置，切勿在此文件中定义
+#-------------------------------------------------------
+server:
+  port: 80
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://10.0.224.3:3306/wind?characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false
+      username: root
+      password: UJhHxnAwxdhTkQ4t
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initialSize: 15
+      minIdle: 10
+      maxActive: 200
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      validationQuery: SELECT 1
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      keepAlive: true
+      maxPoolPreparedStatementPerConnectionSize: 50
+      filters: stat,wall,log4j2
+  # redis配置
+  redis:
+    port: 6379
+    #    host: cheftalk-redis-stg.54xvis.0001.cnn1.cache.amazonaws.com.cn
+    # 目前官网无法联通aws redis,联通后需替换
+    host: 127.0.0.1
+    database: 4
+    pool:
+      max-idle: 8               ## 连接池中的最大空闲连接
+      min-idle: 1               ## 连接池中的最小空闲连接
+      max-active: 8             ## 连接池最大连接数（使用负值表示没有限制）
+      max-wait: -1              ## 连接池最大阻塞等待时间（使用负值表示没有限制）
+
+wx:
+  mp:
+    useRedis: false
+    redisConfig:
+      host: 127.0.0.1
+      port: 6379
+      timeout: 2000
+    configs:
+      - appId: wx1d86b81c685e43c2
+        secret: fe0c12e90d26c11ab847afbbde80337d # 公众号的appsecret
+        token: EUT7jkypujp7fAL8d3z7Ev0gprMAZ581 # 接口配置里的Token值
+        aesKey: Ks1hvHMP3jqncWRncMLfsqonYjZTBEi6pILoPLK7JPk # 接口配置里的EncodingAESKey值
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework: INFO
