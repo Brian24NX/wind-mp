@@ -16,12 +16,7 @@
     </dependency>
     <dependency>
       <groupId>com.github.binarywang</groupId>
-      <artifactId>weixin-java-mp</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.github.binarywang</groupId>
-      <artifactId>weixin-java-mp</artifactId>
+      <artifactId>wx-java-mp-spring-boot-starter</artifactId>
     </dependency>
 
     <dependency>

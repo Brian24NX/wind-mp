@@ -1,16 +1,13 @@
-package com.iss.wind.controller;
+package com.iss.wind.controller.wx;
 
-import java.io.File;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.bean.material.WxMediaImgUploadResult;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
-import me.chanjar.weixin.mp.bean.result.WxMpUserList;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,8 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RestController
 public class WxPortalController {
-    private final WxMpService wxService;
-    private final WxMpMessageRouter messageRouter;
+    @Autowired
+    private WxMpService wxService;
+    @Autowired
+    private WxMpMessageRouter messageRouter;
 
     @GetMapping(value = "/wx/portal/{appid}", produces = "text/plain;charset=utf-8")
     public String auth(@PathVariable String appid,
@@ -109,19 +108,4 @@ public class WxPortalController {
 
         return null;
     }
-
-
-    @PostMapping("/wx/media-asset/add-img")
-    public String addNew() throws WxErrorException {
-        File file = new File("F://wx-img.jpg");
-        WxMediaImgUploadResult wxMediaImgUploadResult = wxService.getMaterialService().mediaImgUpload(file);
-        return wxMediaImgUploadResult.getUrl();
-    }
-
-    @GetMapping("/wx/user/")
-    public WxMpUserList getUser() throws WxErrorException {
-        WxMpUserList wxMpUserList = wxService.getUserService().userList(null);
-        return wxMpUserList;
-    }
-
 }
