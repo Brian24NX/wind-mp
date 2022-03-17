@@ -1,4 +1,4 @@
-package com.iss.wind.configuration;
+package com.iss.wind.common.configuration;
 
 import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
 import com.google.common.base.Predicates;

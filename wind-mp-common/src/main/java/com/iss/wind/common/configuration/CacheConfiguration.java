@@ -1,4 +1,4 @@
-package com.iss.wind.configuration;
+package com.iss.wind.common.configuration;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

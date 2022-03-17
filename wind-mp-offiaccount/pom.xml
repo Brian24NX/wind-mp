@@ -7,24 +7,16 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>wind-mp-common</artifactId>
+  <artifactId>wind-mp-offiaccount</artifactId>
 
   <dependencies>
     <dependency>
-      <groupId>com.hanson</groupId>
-      <artifactId>rest-common</artifactId>
+      <groupId>com.iss.wind</groupId>
+      <artifactId>wind-mp-service</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.baomidou</groupId>
-      <artifactId>mybatis-plus-annotation</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>cn.hutool</groupId>
-      <artifactId>hutool-all</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>fastjson</artifactId>
+      <groupId>com.github.binarywang</groupId>
+      <artifactId>wx-java-mp-spring-boot-starter</artifactId>
     </dependency>
     <!-- swagger -->
     <dependency>
@@ -35,10 +27,27 @@
       <groupId>com.github.xiaoymin</groupId>
       <artifactId>swagger-bootstrap-ui</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>3.3.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.jedis-lock</groupId>
+      <artifactId>jedis-lock</artifactId>
+      <version>1.0.0</version>
+    </dependency>
   </dependencies>
 
   <build>
+    <finalName>${artifactId}</finalName>
     <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>

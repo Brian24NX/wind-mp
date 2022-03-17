@@ -1,9 +1,8 @@
-package com.iss.wind.configuration;
+package com.iss.wind.common.configuration;
 
 
 import static com.hanson.rest.enmus.ErrorCodeEnum.BAD_REQUEST;
 import static com.hanson.rest.enmus.ErrorCodeEnum.FAIL;
-import static com.hanson.rest.enmus.ErrorCodeEnum.INVALID_PARAMETER;
 import static com.hanson.rest.enmus.ErrorCodeEnum.METHOD_NOT_ALLOWED;
 import static com.hanson.rest.enmus.ErrorCodeEnum.NOT_FOUND;
 

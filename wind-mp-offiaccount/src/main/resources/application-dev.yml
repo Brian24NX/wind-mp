@@ -9,14 +9,14 @@
 
 # ----- 日志级别配置 测试环境 -----
 server:
-  port: 18080
+  port: 28080
 
 
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://sh-cynosdbmysql-grp-ciyxsjcu.sql.tencentcdb.com:26039/wind?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai&useSSL=false&tinyInt1isBit=false&autoReconnectForPools=true
+      url: jdbc:mysql://sh-cynosdbmysql-grp-ciyxsjcu.sql.tencentcdb.com:26039/wind?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai&useSSL=false&tinyInt1isBit=false
       username: root
       password: UJhHxnAwxdhTkQ4t
       driver-class-name: com.mysql.cj.jdbc.Driver

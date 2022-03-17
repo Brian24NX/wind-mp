@@ -181,6 +181,16 @@
 				<artifactId>wx-java-mp-spring-boot-starter</artifactId>
 				<version>${weixin-java-mp.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.github.binarywang</groupId>
+				<artifactId>wx-java-miniapp-spring-boot-starter</artifactId>
+				<version>${weixin-java-mp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.binarywang</groupId>
+				<artifactId>wx-java-mp-spring-boot-starter</artifactId>
+				<version>${weixin-java-mp.version}</version>
+			</dependency>
 			<!--db-->
 			<dependency>
 				<groupId>com.baomidou</groupId>
@@ -275,5 +285,7 @@
     <module>wind-mp-dao</module>
     <module>wind-mp-service</module>
     <module>wind-mp-start</module>
+    <module>wind-mp-offiaccount</module>
+    <module>wind-mp-miniapp</module>
   </modules>
 </project>
