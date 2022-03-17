@@ -20,6 +20,7 @@ import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.error.WxRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -31,12 +32,19 @@ import org.springframework.context.annotation.Configuration;
 public class WxMaConfiguration {
     private final WxMaProperties properties;
 
+
     private static final Map<String, WxMaMessageRouter> routers = Maps.newHashMap();
     private static Map<String, WxMaService> maServices;
 
     @Autowired
     public WxMaConfiguration(WxMaProperties properties) {
         this.properties = properties;
+    }
+
+    @Bean
+    public WxMaService wxMaService(){
+        WxMaService wxService = maServices.get(properties.getConfigs().get(0).getAppid());
+        return wxService;
     }
 
     public static WxMaService getMaService(String appid) {

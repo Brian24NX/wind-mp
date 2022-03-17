@@ -1,10 +1,8 @@
 package com.iss.wind.wx.miniapp.configuration;
 
 import java.util.List;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author <a href="https://github.com/binarywang">Binary Wang</a>
