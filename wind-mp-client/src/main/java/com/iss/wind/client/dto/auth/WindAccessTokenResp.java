@@ -11,7 +11,11 @@ import lombok.Data;
  */
 @Data
 public class WindAccessTokenResp {
-	private String access_token;
-	private String token_type;
-	private String expires_in;
+	@JsonProperty("access_token")
+	private String accessToken;
+	@JsonProperty("token_type")
+	private String tokenType;
+	@JsonProperty("expires_in")
+	private String expiresIn;
+	private long genMillisecond;
 }

@@ -1,7 +1,7 @@
 package com.iss.wind.client.configuration;
 
 import com.iss.wind.client.WindAuthClient;
-import com.iss.wind.client.util.SslUtils;
+import com.iss.wind.client.util.HttpUtils;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
-import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.InterceptingClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,7 +28,7 @@ import org.springframework.web.client.RestTemplate;
 @DependsOn("httpClientConfig")
 public class OAuthRestTemplateConfig {
 	@Autowired
-	private ClientHttpRequestFactory httpRequestFactory;
+	private HttpComponentsClientHttpRequestFactory httpRequestFactory;
 
 	@Bean
 	public WindAuthClient windAuthClient(){
@@ -45,15 +45,16 @@ public class OAuthRestTemplateConfig {
 			windAuthClient.addToken(request);
 			URI uri = request.getURI();
 			if(uri.getPath().startsWith("https")){
-				SslUtils.ignoreSsl();
+				HttpUtils.ignoreSsl();
 			}
+			log.info("authRestTemplate call uri: {}",request.getURI());
 			ClientHttpResponse response = execution.execute(request, body);
 			if (response.getStatusCode().is4xxClientError()) {
 				HttpStatus errorCode = response.getStatusCode();
-				log.info("remote request [{}] error, errorCode : {}", request.getURI(), errorCode.value());
+				log.warn("remote request [{}] error, errorCode : {}", request.getURI(), errorCode.value());
 				// 需要申请token
 				if (HttpStatus.UNAUTHORIZED.value() == errorCode.value()) {
-					log.info("remote request [{}] token expire, try reExecute", request.getURI());
+					log.warn("remote request [{}] token expire, try reExecute", request.getURI());
 					windAuthClient.addToken(request);
 					response = execution.execute(request, body);
 					return response;

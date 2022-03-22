@@ -1,10 +1,16 @@
 package com.iss.wind.client;
 
+import com.iss.wind.client.dto.auth.WindAccessTokenResp;
 import com.iss.wind.client.dto.sechedule.RoutingFinderResp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -17,8 +23,10 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class RoutingFinderClient {
 
-    @Resource(name = "authRestTemplate")
+    @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private WindAuthClient windAuthClient;
 
     @Value("${com.iss.wind.digital-api-url}")
     private String digitalApiUrl;
@@ -71,14 +79,21 @@ public class RoutingFinderClient {
      * 带有统计信息的路由(参数useRoutingStatistics)
      * 如果您选择的装货地点和/或卸货地点没有链接的路由解决方案，将提出与该地点链接的首选路由海上解决方案
      * 默认情况下，此设置是激活的。
-     *
      * @return
      */
-    public RoutingFinderResp routings(String placeOfLoading,String placeOfDischarge){
+    public List<RoutingFinderResp> routings(String placeOfLoading,String placeOfDischarge){
+        String url = digitalApiUrl + "/vesseloperation/route/v2/routings?placeOfLoading={placeOfLoading}&placeOfDischarge={placeOfDischarge}";
+        WindAccessTokenResp accessToken = windAuthClient.getAccessToken("rf:be");
         Map<String,Object> paramMap=new HashMap<>();
         paramMap.put("placeOfLoading",placeOfLoading);
         paramMap.put("placeOfDischarge", placeOfDischarge);
-        ResponseEntity<RoutingFinderResp> response = restTemplate.getForEntity(digitalApiUrl + "/vesseloperation/route/v2/routings", RoutingFinderResp.class, paramMap);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken.getTokenType() + " " + accessToken.getAccessToken());
+        headers.add("scope", "rf:be");
+        HttpEntity request = new HttpEntity(headers);
+        ParameterizedTypeReference<List<RoutingFinderResp>> responseType = new ParameterizedTypeReference<List<RoutingFinderResp>>() {};
+        ResponseEntity<List<RoutingFinderResp>> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,paramMap);
         return response.getBody();
     }
 }

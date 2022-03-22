@@ -1,8 +1,8 @@
 package com.iss.wind.client;
 
 import com.iss.wind.client.dto.auth.WindAccessTokenResp;
-import com.iss.wind.client.util.SslUtils;
-import java.util.HashMap;
+import com.iss.wind.client.util.HttpUtils;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,14 +28,22 @@ public class WindAuthClient {
     @Value("${com.iss.wind.client.secret:BfrPuRj81lKyVL2hCIewCAHMUkGbEqnyTAsVoszX8zVm5U8ejDEZ33Gt3VDFkWf2}")
     private String clientSecret;
 
-    private HashMap<String,WindAccessTokenResp> accessTokenMap = new HashMap<>();
+    private ConcurrentHashMap<String,WindAccessTokenResp> accessTokenMap = new ConcurrentHashMap<>();
 
     @Autowired
     private RestTemplate restTemplate;
 
     public WindAccessTokenResp getAccessToken(String scope){
         if(accessTokenMap.containsKey(scope)){
-            return accessTokenMap.get(scope);
+            WindAccessTokenResp accessTokenResp = accessTokenMap.get(scope);
+            long expires = System.currentTimeMillis() - accessTokenResp.getGenMillisecond();
+            log.warn("scope:{} genMillisecond:{} expiresIn:{} expires:{}",scope,accessTokenResp.getGenMillisecond(),accessTokenResp.getExpiresIn(),expires);
+            //未过期，返回
+            if(expires < Long.parseLong(accessTokenResp.getExpiresIn()) * 1000){
+                return accessTokenMap.get(scope);
+            }
+            //已过期移除,重新获取
+            log.warn("scope:{} expire",scope);
         }
         MultiValueMap<String, Object> postParameters = new LinkedMultiValueMap<>();
         postParameters.add("grant_type", "client_credentials");
@@ -46,9 +54,10 @@ public class WindAuthClient {
         headers.add("Content-Type", "application/x-www-form-urlencoded");
         HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(postParameters, headers);
         if(clientUrl.startsWith("https")){
-            SslUtils.ignoreSsl();
+            HttpUtils.ignoreSsl();
         }
         WindAccessTokenResp accessTokenResp = restTemplate.postForObject(clientUrl, entity, WindAccessTokenResp.class);
+        accessTokenResp.setGenMillisecond(System.currentTimeMillis());
         accessTokenMap.put(scope,accessTokenResp);
         return accessTokenResp;
     }
@@ -58,9 +67,8 @@ public class WindAuthClient {
         String scope = request.getHeaders().getFirst("scope");
         WindAccessTokenResp accessToken = getAccessToken(scope);
         HttpHeaders headers = request.getHeaders();
-        String access_token = accessToken.getAccess_token();
-        String token_type = accessToken.getToken_type();
-        headers.add("Authorization",access_token +" "+token_type);
+        headers.add("Authorization", accessToken.getTokenType() + " " + accessToken.getAccessToken());
+        headers.add("Host", HttpUtils.getIpAddress());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.iss.wind.client.util;
 
+import java.net.InetAddress;
 import java.security.cert.X509Certificate;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -14,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2022/3/22  2:06
  */
 @Slf4j
-public class SslUtils {
+public class HttpUtils {
 
     private static void trustAllHttpsCertificates() throws Exception {
         TrustManager[] trustAllCerts = new TrustManager[1];
@@ -67,5 +68,14 @@ public class SslUtils {
         } catch (Exception e) {
             log.info("ignoreSSL failed",e);
         }
+    }
+    
+    public static String getIpAddress(){
+        try {
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (Exception e) {
+           log.warn("getIpAddress failed",e);
+        }
+        return "127.0.0.1";
     }
 }

@@ -20,7 +20,7 @@
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
-    <springProfile name="stage,prd">
+    <springProfile name="test,prod">
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>${LOG_PATH}/app.log</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
