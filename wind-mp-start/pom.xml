@@ -14,6 +14,10 @@
       <groupId>com.iss.wind</groupId>
       <artifactId>wind-mp-service</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.iss.wind</groupId>
+      <artifactId>wind-mp-client</artifactId>
+    </dependency>
     <!-- swagger -->
     <dependency>
       <groupId>io.springfox</groupId>

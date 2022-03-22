@@ -7,16 +7,16 @@
 # 连接等请务必通过Apollo配置中心进行配置，切勿在此文件中定义
 #-------------------------------------------------------
 server:
-  port: 80
+  port: 18090
 
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://10.0.224.3:3306/wind?characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false
-      username: root
+      url: jdbc:sqlserver://10.7.11.96:1433;database=wind
+      username: sa
       password: UJhHxnAwxdhTkQ4t
-      driver-class-name: com.mysql.cj.jdbc.Driver
+      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
       initialSize: 15
       minIdle: 10
       maxActive: 200
@@ -61,3 +61,12 @@ logging:
     root: INFO
     org:
       springframework: INFO
+
+com:
+  iss:
+    wind:
+      client:
+        id: beapp-wind
+        url: https://auth-int.cma-cgm.com:9031/as/token.oauth2
+        secret: BfrPuRj81lKyVL2hCIewCAHMUkGbEqnyTAsVoszX8zVm5U8ejDEZ33Gt3VDFkWf2
+      digital-api-url: https://digital-apis-uat.cma-cgm.com/vesseloperation/route/v2/routings

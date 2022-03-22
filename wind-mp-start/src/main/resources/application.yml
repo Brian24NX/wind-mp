@@ -11,7 +11,7 @@ spring:
   application:
     name: wind
   profiles:
-    active: dev
+    active: test
   jackson:
     #非null才序列化
     default-property-inclusion: non_null

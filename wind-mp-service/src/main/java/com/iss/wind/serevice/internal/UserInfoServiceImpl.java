@@ -51,7 +51,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			userInfoPo.setMobileMd5(SecureUtil.md5(mobile));
 			userInfoPo.setMobile(EncryptColumn.encrypt(mobile));
 		}
-		userInfoMapper.saveOrUpdate(userInfoPo);
+		userInfoMapper.insert(userInfoPo);
 		userInfoBo.setId(userInfoPo.getId());
 		return userInfoBo;
 	}
@@ -139,8 +139,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 		LambdaQueryWrapper<UserInfoPo> query = Wrappers.<UserInfoPo>lambdaQuery()
 			.eq(UserInfoPo::getId,id)
-			.eq(UserInfoPo::getDeleted, DeletedEnum.NORMAL)
-			.last(" LIMIT 1");
+			.eq(UserInfoPo::getDeleted, DeletedEnum.NORMAL);
 
 		UserInfoPo userInfoPo = userInfoMapper.selectOne(query);
 

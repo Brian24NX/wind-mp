@@ -3,15 +3,16 @@ package com.iss.wind.controller;
 import static com.hanson.rest.enmus.ErrorCodeEnum.INVALID_PARAMETER;
 
 import com.hanson.rest.SimpleResult;
+import com.iss.wind.client.RoutingFinderClient;
+import com.iss.wind.client.dto.sechedule.RoutingFinderResp;
 import com.iss.wind.common.constant.Constant;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.http.HttpRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -21,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "示例控制器")
 @RestController
 public class WelcomeController {
+	@Autowired
+	private RoutingFinderClient routingFinderClient;
+
 	@GetMapping("/api/v1/hello")
 	@ApiOperation("hello world")
 	public SimpleResult<String> hello() {
@@ -35,5 +39,12 @@ public class WelcomeController {
 			return SimpleResult.fail(INVALID_PARAMETER);
 		}
 		return SimpleResult.success(String.format("header :%s",request.getHeader(Constant.TOKEN)));
+	}
+
+
+	@GetMapping("/api/v1/routing-finder")
+	public SimpleResult<RoutingFinderResp> routings(String placeOfLoading,String placeOfDischarge) {
+		RoutingFinderResp routing = routingFinderClient.routings(placeOfLoading, placeOfDischarge);
+		return SimpleResult.success(routing);
 	}
 }

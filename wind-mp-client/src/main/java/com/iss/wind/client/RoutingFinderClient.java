@@ -1,15 +1,27 @@
 package com.iss.wind.client;
 
 import com.iss.wind.client.dto.sechedule.RoutingFinderResp;
-import org.springframework.web.bind.annotation.RequestParam;
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * @author Hanson
  * @date 2022/3/3  16:04
  * Schedule API
  */
-public class ScheduleClient {
+@Component
+public class RoutingFinderClient {
 
+    @Resource(name = "authRestTemplate")
+    private RestTemplate restTemplate;
+
+    @Value("${com.iss.wind.digital-api-url}")
+    private String digitalApiUrl;
     /**
      * API 获取航线信息
      * https://api-cockpit.cma-cgm.com/explore/catalog/vesseloperation/api/vesseloperation.route.v2/swagger
@@ -62,5 +74,11 @@ public class ScheduleClient {
      *
      * @return
      */
-    public RoutingFinderResp routings(){ return null;}
+    public RoutingFinderResp routings(String placeOfLoading,String placeOfDischarge){
+        Map<String,Object> paramMap=new HashMap<>();
+        paramMap.put("placeOfLoading",placeOfLoading);
+        paramMap.put("placeOfDischarge", placeOfDischarge);
+        ResponseEntity<RoutingFinderResp> response = restTemplate.getForEntity(digitalApiUrl + "/vesseloperation/route/v2/routings", RoutingFinderResp.class, paramMap);
+        return response.getBody();
+    }
 }

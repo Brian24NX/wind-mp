@@ -64,3 +64,12 @@ logging:
     root: INFO
     org:
       springframework: INFO
+
+com:
+  iss:
+    wind:
+      client:
+        id: beapp-wind
+        url: https://auth-int.cma-cgm.com:9031/as/token.oauth2
+        secret: BfrPuRj81lKyVL2hCIewCAHMUkGbEqnyTAsVoszX8zVm5U8ejDEZ33Gt3VDFkWf2
+      digital-api-url: https://digital-apis-uat.cma-cgm.com/vesseloperation/route/v2/routings
