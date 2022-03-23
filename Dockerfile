@@ -26,10 +26,10 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositorie
 WORKDIR /app
 
 # 将构建产物jar包拷贝到运行时目录中
-COPY --from=build /app/target/wind-mp-offiaccount.jar .
+COPY --from=build /app/wind-mp-offiaccount/target/wind-mp-offiaccount.jar .
 
 # 暴露端口
 EXPOSE 80
 
 # 执行启动命令
-CMD ["java", "-jar", "/app/wind-mp.jar" , "--spring.profiles.active=test"]
+CMD ["java", "-jar", "/app/wind-mp-offiaccount.jar" , "--spring.profiles.active=dev"]
