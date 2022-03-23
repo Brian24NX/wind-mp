@@ -15,6 +15,10 @@
       <artifactId>wind-mp-service</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.iss.wind</groupId>
+      <artifactId>wind-mp-client</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.github.binarywang</groupId>
       <artifactId>wx-java-miniapp-spring-boot-starter</artifactId>
     </dependency>

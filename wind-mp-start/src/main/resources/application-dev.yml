@@ -54,8 +54,8 @@ wx:
       port: 6379
       timeout: 2000
     configs:
-      - appId: wx1d86b81c685e43c2
-        secret: fe0c12e90d26c11ab847afbbde80337d # 公众号的appsecret
+      - appId: wxb720d8bf738cfeb1
+        secret: fb8149e7d5158e6b9511f00a97545370 # 公众号的appsecret
         token: EUT7jkypujp7fAL8d3z7Ev0gprMAZ581 # 接口配置里的Token值
         aesKey: Ks1hvHMP3jqncWRncMLfsqonYjZTBEi6pILoPLK7JPk # 接口配置里的EncodingAESKey值
 

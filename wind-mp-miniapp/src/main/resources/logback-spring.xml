@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <springProperty scope="context" name="APP_NAME" source="spring.application.name" />
-    <springProperty scope="context" name="LOG_TEMP" source="log.home" defaultValue="/data/logs/${APP_NAME}" />
+    <springProperty scope="context" name="LOG_TEMP" source="log.home" defaultValue="C:\data\logs\${APP_NAME}" />
     <property name="LOG_PATH" value="${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}"/>
     <property name="FILE_LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%X{tid}] [%thread] [%-5level] [%-40.36logger{40}:%-4.4line] - %msg%n"/>
     <property name="CONSOLE_LOG_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [${PID:- }] [%X{tid}] [%thread]  [%-5level] [%-40.36logger{40}:%-4.4line] - %msg%n"/>
