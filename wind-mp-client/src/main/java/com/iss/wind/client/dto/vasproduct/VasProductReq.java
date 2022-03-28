@@ -26,14 +26,14 @@ public class VasProductReq {
     private String locale;
     private String channel;
     private String typeOfBL;
-    private List<BookingPartie> bookingParties;
+    private List<BookingParty> bookingParties;
     private String currency;
     private List<Cargoe> cargoes;
     private String[] subscribedCharges;
 
     @Data
     @Builder
-    public static class BookingPartie{
+    public static class BookingParty{
         private String partnerCode;
         private boolean bookingParty;
         private String role;
