@@ -13,10 +13,10 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://10.0.224.3:3306/wind?characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false
-      username: root
+      url: jdbc:sqlserver://10.7.11.96:1433;database=wind
+      username: sa
       password: UJhHxnAwxdhTkQ4t
-      driver-class-name: com.mysql.cj.jdbc.Driver
+      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
       initialSize: 15
       minIdle: 10
       maxActive: 200
@@ -51,8 +51,8 @@ wx:
       port: 6379
       timeout: 2000
     configs:
-      - appId: wx1d86b81c685e43c2
-        secret: fe0c12e90d26c11ab847afbbde80337d # 公众号的appsecret
+      - appId: wxb720d8bf738cfeb1
+        secret: d4df9f81f5d6d92ea87c4adf00270d96 # 公众号的appsecret
         token: EUT7jkypujp7fAL8d3z7Ev0gprMAZ581 # 接口配置里的Token值
         aesKey: Ks1hvHMP3jqncWRncMLfsqonYjZTBEi6pILoPLK7JPk # 接口配置里的EncodingAESKey值
 

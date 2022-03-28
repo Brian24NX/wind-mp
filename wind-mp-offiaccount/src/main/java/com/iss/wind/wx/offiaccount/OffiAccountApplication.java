@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @date 2021/11/18  17:49
  */
 @SpringBootApplication
-@MapperScan(basePackages = "com.iss.wind.dao.mappers.")
+@MapperScan(basePackages = "com.iss.wind.*")
 @ComponentScan(basePackages = "com.iss.wind.*")
 public class OffiAccountApplication {
     public static void main(String[] args) {

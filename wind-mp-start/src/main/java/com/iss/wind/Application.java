@@ -10,7 +10,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @date 2021/11/18  17:49
  */
 @SpringBootApplication
-@MapperScan(basePackages = "com.iss.wind.dao.mappers.")
+@MapperScan(basePackages = "com.iss.wind.*")
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
