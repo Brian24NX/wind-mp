@@ -24,7 +24,7 @@ spring:
 
 server:
   servlet:
-    context-path: /offiaccount
+    context-path: /api/offiaccount
 
 mybatis-plus:
   type-enums-package: com.hanson.mybatis.enums.**;com.iss.hanson.common.enums.**;
