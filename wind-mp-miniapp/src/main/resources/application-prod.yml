@@ -6,6 +6,9 @@
 # 的配置项，例如生产环境中的通用超时时间等，外部资源如数据库连接
 # 等请务必通过Apollo配置中心进行配置，切勿在此文件中定义
 #-------------------------------------------------------
+server:
+  port: 38000
+
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
