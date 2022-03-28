@@ -22,6 +22,10 @@ spring:
       #如果expireAfterWrite和expireAfterAccess同时存在，以expireAfterWrite为准。
       spec: initialCapacity=50,maximumSize=500,expireAfterWrite=2h,refreshAfterWrite=3h
 
+server:
+  servlet:
+    context-path: /offiaccount
+
 mybatis-plus:
   type-enums-package: com.hanson.mybatis.enums.**;com.iss.hanson.common.enums.**;
   type-handlers-package: com.hanson.mybatis.handler.**
