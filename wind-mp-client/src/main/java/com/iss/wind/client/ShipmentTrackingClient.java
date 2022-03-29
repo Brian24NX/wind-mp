@@ -1,6 +1,7 @@
 package com.iss.wind.client;
 
 import com.iss.wind.client.dto.auth.WindAccessTokenResp;
+import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingReq;
 import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,18 +39,21 @@ public class ShipmentTrackingClient {
      * Shipment Tracking
      * @return
      */
-    public ShipmentTrackingResp shipmentTracking(String shipmentRef){
+    public ShipmentTrackingResp shipmentTracking(ShipmentTrackingReq shipmentTrackingReq){
         String scope = "commercialmoves:be";
+        String shipmentRef = shipmentTrackingReq.getShipmentRef();
+        System.out.println("param:"+shipmentRef);
         String url = digitalApiUrl + "/logistic/tracking/v1/shipments/"+shipmentRef+"/equipments/moves/commercialCycle";
+        System.out.println("turl:"+url);
         WindAccessTokenResp accessToken = windAuthClient.getAccessToken(scope);
-        Map<String,Object> paramMap=new HashMap<>();
-        paramMap.put("shipmentRef",shipmentRef);
+//        Map<String,Object> paramMap=new HashMap<>();
+//        paramMap.put("shipmentRef",shipmentRef);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken.getTokenType() + " " + accessToken.getAccessToken());
         headers.add("scope", scope);
         HttpEntity request = new HttpEntity(headers);
         ParameterizedTypeReference<ShipmentTrackingResp> responseType = new ParameterizedTypeReference<ShipmentTrackingResp>() {};
-        ResponseEntity<ShipmentTrackingResp> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,paramMap);
+        ResponseEntity<ShipmentTrackingResp> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,shipmentTrackingReq);
         return response.getBody();
     }
 }

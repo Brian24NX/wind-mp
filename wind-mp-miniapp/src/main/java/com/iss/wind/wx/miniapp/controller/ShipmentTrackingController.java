@@ -2,6 +2,7 @@ package com.iss.wind.wx.miniapp.controller;
 
 import com.hanson.rest.SimpleResult;
 import com.iss.wind.client.ShipmentTrackingClient;
+import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingReq;
 import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingResp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
@@ -24,8 +25,9 @@ public class ShipmentTrackingController {
     private ShipmentTrackingClient shipmentTrackingClient;
 
     @GetMapping("/shipment-tracking")
-    public SimpleResult<ShipmentTrackingResp> shipmentTracking(@ApiParam(name = "shipmentRef" ,value = "运输号码" ,required = true)String shipmentRef) {
-        ShipmentTrackingResp result = shipmentTrackingClient.shipmentTracking(shipmentRef);
+    public SimpleResult<ShipmentTrackingResp> shipmentTracking(ShipmentTrackingReq shipmentTrackingReq) {
+        System.out.println("contrl-param:"+shipmentTrackingReq.getShipmentRef()+":"+shipmentTrackingReq.getEqpid());
+        ShipmentTrackingResp result = shipmentTrackingClient.shipmentTracking(shipmentTrackingReq);
         return SimpleResult.success(result);
     }
 }
