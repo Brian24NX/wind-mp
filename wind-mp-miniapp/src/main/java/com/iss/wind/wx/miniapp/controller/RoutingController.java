@@ -4,6 +4,7 @@ import com.hanson.rest.SimpleResult;
 import com.iss.wind.client.RoutingFinderClient;
 import com.iss.wind.client.dto.sechedule.RoutingFinderResp;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,8 @@ public class RoutingController {
     private RoutingFinderClient routingFinderClient;
 
     @GetMapping("/routing-finder")
-    public SimpleResult<List<RoutingFinderResp>> routings(String placeOfLoading,String placeOfDischarge) {
+    public SimpleResult<List<RoutingFinderResp>> routings(@ApiParam(name = "placeOfLoading" ,value = "启航港" ,required = true) String placeOfLoading,
+                                                          @ApiParam(name = "placeOfDischarge" ,value = "目的港" ,required = true) String placeOfDischarge) {
         List<RoutingFinderResp> routing = routingFinderClient.routings(placeOfLoading, placeOfDischarge);
         return SimpleResult.success(routing);
     }
