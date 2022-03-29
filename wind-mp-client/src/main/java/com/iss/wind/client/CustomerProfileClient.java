@@ -1,7 +1,8 @@
 package com.iss.wind.client;
 
 import com.iss.wind.client.dto.auth.WindAccessTokenResp;
-import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingResp;
+import com.iss.wind.client.dto.customerprofile.CustomerProfileReq;
+import com.iss.wind.client.dto.customerprofile.CustomerProfileResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -12,17 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-/**
- * @author Yves
- * @date 2022/3/25  11:26
- * Schedule API
- */
 @Component
-public class ShipmentTrackingClient {
+public class CustomerProfileClient {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -33,23 +25,21 @@ public class ShipmentTrackingClient {
     private String digitalApiUrl;
 
     /**
-     * API 获取货物追踪
-     * https://gitlab.cma-cgm.com/SOA/Cartography/-/blob/master/Swagger/Implementation/logistic.tracking.v1.srv.yaml
-     * Shipment Tracking
+     * API 用户简介
+     * https://gitlab.cma-cgm.com/SOA/Cartography/-/blob/master/Swagger/Virtualization/commercial.customer.profile.v2.yaml
+     * CustomerProfile
      * @return
      */
-    public List<ShipmentTrackingResp> shipmentTracking(String shipmentRef){
-        String scope = "commercialmoves:be";
-        String url = digitalApiUrl + "/logistic/tracking/v1/shipments/"+shipmentRef+"/equipments/moves/commercialCycle";
+    public CustomerProfileResp getCustomerProfile(CustomerProfileReq customerProfileReq){
+        String scope = "customerprofile:read:fe";
+        String url = digitalApiUrl + "/commercial/customer/profile/v2/profiles/"+customerProfileReq.getCcgId();
         WindAccessTokenResp accessToken = windAuthClient.getAccessToken(scope);
-        Map<String,Object> paramMap=new HashMap<>();
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken.getTokenType() + " " + accessToken.getAccessToken());
         headers.add("scope", scope);
         HttpEntity request = new HttpEntity(headers);
-        ParameterizedTypeReference<List<ShipmentTrackingResp>> responseType = new ParameterizedTypeReference<List<ShipmentTrackingResp>>() {};
-        ResponseEntity<List<ShipmentTrackingResp>> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,paramMap);
+        ParameterizedTypeReference<CustomerProfileResp> responseType = new ParameterizedTypeReference<CustomerProfileResp>(){};
+        ResponseEntity<CustomerProfileResp> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,customerProfileReq);
         return response.getBody();
     }
 }

@@ -1,4 +1,4 @@
-package com.iss.wind.client.dto.customerinvoice;
+package com.iss.wind.client.dto.customerallinvoice;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class GetInvoiceResp {
+public class GetAllInvoiceResp {
     private List<Invoice> invoices;
     private List<InvoiceStatistic> invoiceStatistics;
 

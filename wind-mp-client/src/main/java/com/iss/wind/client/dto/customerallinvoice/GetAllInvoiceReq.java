@@ -1,4 +1,4 @@
-package com.iss.wind.client.dto.customerinvoice;
+package com.iss.wind.client.dto.customerallinvoice;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +8,8 @@ import java.util.List;
 
 @Data
 @Builder
-public class GetInvoiceReqBody {
+public class GetAllInvoiceReq {
+    private List<Parameter> parameters;//文档中是数组，待确认完善
     private List<String> references;
     private SearchDate searchDate;
     private Date lastUserConnectionDate;
@@ -25,6 +26,13 @@ public class GetInvoiceReqBody {
     private List<String> paymentStatus;
     private PaymentLocation paymentLocation;
     private Boolean includeInvoiceStatistic;
+
+    @Data
+    @Builder
+    public static class Parameter{
+        private String ccgId;
+        private String shippingCompany;
+    }
 
     @Data
     @Builder

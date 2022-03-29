@@ -1,9 +1,7 @@
 package com.iss.wind.wx.miniapp.controller;
 
 import com.hanson.rest.SimpleResult;
-import com.iss.wind.client.RoutingFinderClient;
 import com.iss.wind.client.ShipmentTrackingClient;
-import com.iss.wind.client.dto.sechedule.RoutingFinderResp;
 import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingResp;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +24,7 @@ public class ShipmentTrackingController {
 
     @GetMapping("/shipment-tracking")
     public SimpleResult<List<ShipmentTrackingResp>> shipmentTracking(String shipmentRef) {
-        List<ShipmentTrackingResp> routing = shipmentTrackingClient.shipmentTracking(shipmentRef);
-        return SimpleResult.success(routing);
+        List<ShipmentTrackingResp> result = shipmentTrackingClient.shipmentTracking(shipmentRef);
+        return SimpleResult.success(result);
     }
 }

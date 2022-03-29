@@ -1,7 +1,8 @@
 package com.iss.wind.client;
 
 import com.iss.wind.client.dto.auth.WindAccessTokenResp;
-import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingResp;
+import com.iss.wind.client.dto.chargefindertariff.ChargeFinderTariffReq;
+import com.iss.wind.client.dto.chargefindertariff.ChargeFinderTariffResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -12,17 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-/**
- * @author Yves
- * @date 2022/3/25  11:26
- * Schedule API
- */
 @Component
-public class ShipmentTrackingClient {
+public class ChargeFinderTariffClient {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -33,23 +27,21 @@ public class ShipmentTrackingClient {
     private String digitalApiUrl;
 
     /**
-     * API 获取货物追踪
-     * https://gitlab.cma-cgm.com/SOA/Cartography/-/blob/master/Swagger/Implementation/logistic.tracking.v1.srv.yaml
-     * Shipment Tracking
+     * API 关税查询
+     * https://gitlab.cma-cgm.com/SOA/Cartography/-/blob/master/Swagger/Implementation/commercial/Service_SWAGGER_Commercial_Tariff.yaml
+     * ChargeFinderTariff
      * @return
      */
-    public List<ShipmentTrackingResp> shipmentTracking(String shipmentRef){
-        String scope = "commercialmoves:be";
-        String url = digitalApiUrl + "/logistic/tracking/v1/shipments/"+shipmentRef+"/equipments/moves/commercialCycle";
+    public List<ChargeFinderTariffResp> chargeFinderTariff(ChargeFinderTariffReq chargeFinderTariffReq){
+        String scope = "commercialmaritimetarrif:read:be";
+        String url = digitalApiUrl + "/pricing/tariff/maritime/v1/maritimetariffs";
         WindAccessTokenResp accessToken = windAuthClient.getAccessToken(scope);
-        Map<String,Object> paramMap=new HashMap<>();
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken.getTokenType() + " " + accessToken.getAccessToken());
         headers.add("scope", scope);
         HttpEntity request = new HttpEntity(headers);
-        ParameterizedTypeReference<List<ShipmentTrackingResp>> responseType = new ParameterizedTypeReference<List<ShipmentTrackingResp>>() {};
-        ResponseEntity<List<ShipmentTrackingResp>> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,paramMap);
+        ParameterizedTypeReference<List<ChargeFinderTariffResp>> responseType = new ParameterizedTypeReference<List<ChargeFinderTariffResp>>() {};
+        ResponseEntity<List<ChargeFinderTariffResp>> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,chargeFinderTariffReq);
         return response.getBody();
     }
 }

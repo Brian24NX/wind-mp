@@ -1,4 +1,4 @@
-package com.iss.wind.client.dto.customerbooking;
+package com.iss.wind.client.dto.customerallbooking;
 
 
 import lombok.Builder;
@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @Builder
-public class CustomerBookingResp {
+public class GetAllBookingResp {
     private String bookingReference;
     private PortOfLoading portOfLoading;
     private PortOfDischarge portOfDischarge;

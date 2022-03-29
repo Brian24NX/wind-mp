@@ -1,7 +1,8 @@
 package com.iss.wind.client;
 
 import com.iss.wind.client.dto.auth.WindAccessTokenResp;
-import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingResp;
+import com.iss.wind.client.dto.searchquotations.SearchQuotationsReq;
+import com.iss.wind.client.dto.searchquotations.SearchQuotationsResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -12,17 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-/**
- * @author Yves
- * @date 2022/3/25  11:26
- * Schedule API
- */
 @Component
-public class ShipmentTrackingClient {
+public class SearchQuotationClient {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -33,23 +25,21 @@ public class ShipmentTrackingClient {
     private String digitalApiUrl;
 
     /**
-     * API 获取货物追踪
-     * https://gitlab.cma-cgm.com/SOA/Cartography/-/blob/master/Swagger/Implementation/logistic.tracking.v1.srv.yaml
-     * Shipment Tracking
+     * API 价目查询
+     * https://gitlab.cma-cgm.com/SOA/Cartography/-/blob/master/Swagger/Implementation/commercial/Service_SWAGGER_Commercial_Pricing_v2.yaml
+     * searchQuotation
      * @return
      */
-    public List<ShipmentTrackingResp> shipmentTracking(String shipmentRef){
-        String scope = "commercialmoves:be";
-        String url = digitalApiUrl + "/logistic/tracking/v1/shipments/"+shipmentRef+"/equipments/moves/commercialCycle";
+    public SearchQuotationsResp searchQuotation(SearchQuotationsReq searchQuotationsReq){
+        String scope = "pricing:read:be";
+        String url = digitalApiUrl + "/commercial/pricing/v2/quoteLines/search";
         WindAccessTokenResp accessToken = windAuthClient.getAccessToken(scope);
-        Map<String,Object> paramMap=new HashMap<>();
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken.getTokenType() + " " + accessToken.getAccessToken());
         headers.add("scope", scope);
         HttpEntity request = new HttpEntity(headers);
-        ParameterizedTypeReference<List<ShipmentTrackingResp>> responseType = new ParameterizedTypeReference<List<ShipmentTrackingResp>>() {};
-        ResponseEntity<List<ShipmentTrackingResp>> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,paramMap);
+        ParameterizedTypeReference<SearchQuotationsResp> responseType = new ParameterizedTypeReference<SearchQuotationsResp>(){};
+        ResponseEntity<SearchQuotationsResp> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,searchQuotationsReq);
         return response.getBody();
     }
 }

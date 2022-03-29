@@ -1,7 +1,8 @@
 package com.iss.wind.client;
 
 import com.iss.wind.client.dto.auth.WindAccessTokenResp;
-import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingResp;
+import com.iss.wind.client.dto.customerallinvoice.GetAllInvoiceReq;
+import com.iss.wind.client.dto.customerallinvoice.GetAllInvoiceResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -12,17 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-/**
- * @author Yves
- * @date 2022/3/25  11:26
- * Schedule API
- */
 @Component
-public class ShipmentTrackingClient {
+public class GetAllInvoicesClient {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -33,23 +25,21 @@ public class ShipmentTrackingClient {
     private String digitalApiUrl;
 
     /**
-     * API 获取货物追踪
-     * https://gitlab.cma-cgm.com/SOA/Cartography/-/blob/master/Swagger/Implementation/logistic.tracking.v1.srv.yaml
-     * Shipment Tracking
+     * API 全部发票信息
+     * https://gitlab.cma-cgm.com/SOA/Cartography/-/blob/master/Swagger/Implementation/commercial/Service_SWAGGER_Commercial_invoice.yaml
+     * AllInvoices
      * @return
      */
-    public List<ShipmentTrackingResp> shipmentTracking(String shipmentRef){
-        String scope = "commercialmoves:be";
-        String url = digitalApiUrl + "/logistic/tracking/v1/shipments/"+shipmentRef+"/equipments/moves/commercialCycle";
+    public GetAllInvoiceResp getAllInvoices(GetAllInvoiceReq getAllInvoiceReq){
+        String scope = "customershippinginvoice:read:be";
+        String url = digitalApiUrl + "commercial/shipment/invoice/v1/customers/"+getAllInvoiceReq.getParameters().get(0).getCcgId()+"/invoices";
         WindAccessTokenResp accessToken = windAuthClient.getAccessToken(scope);
-        Map<String,Object> paramMap=new HashMap<>();
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken.getTokenType() + " " + accessToken.getAccessToken());
         headers.add("scope", scope);
         HttpEntity request = new HttpEntity(headers);
-        ParameterizedTypeReference<List<ShipmentTrackingResp>> responseType = new ParameterizedTypeReference<List<ShipmentTrackingResp>>() {};
-        ResponseEntity<List<ShipmentTrackingResp>> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,paramMap);
+        ParameterizedTypeReference<GetAllInvoiceResp> responseType = new ParameterizedTypeReference<GetAllInvoiceResp>() {};
+        ResponseEntity<GetAllInvoiceResp> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,getAllInvoiceReq);
         return response.getBody();
     }
 }

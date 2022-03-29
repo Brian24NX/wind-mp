@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class DemurrageDetentionReq {
 
-    private Parameters parameters;
+    private Parameter parameters;
     private String portOfLoading;
     private String portOfDischarge;
     private String[] directions;
@@ -29,7 +29,7 @@ public class DemurrageDetentionReq {
 
     @Data
     @Builder
-    public static class Parameters{
+    public static class Parameter{
         private String range;
         private String ccgid;
     }
