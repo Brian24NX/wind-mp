@@ -4,6 +4,7 @@ import com.hanson.rest.SimpleResult;
 import com.iss.wind.client.ShipmentTrackingClient;
 import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingResp;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,7 @@ public class ShipmentTrackingController {
     private ShipmentTrackingClient shipmentTrackingClient;
 
     @GetMapping("/shipment-tracking")
-    public SimpleResult<List<ShipmentTrackingResp>> shipmentTracking(String shipmentRef) {
+    public SimpleResult<List<ShipmentTrackingResp>> shipmentTracking(@ApiParam(name = "shipmentRef" ,value = "运输号码" ,required = true)String shipmentRef) {
         List<ShipmentTrackingResp> result = shipmentTrackingClient.shipmentTracking(shipmentRef);
         return SimpleResult.success(result);
     }
