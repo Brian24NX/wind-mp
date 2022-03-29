@@ -63,6 +63,6 @@ com:
     wind:
       client:
         id: beapp-wind
-        url: https://auth-int.cma-cgm.com:9031/as/token.oauth2
-        secret: BfrPuRj81lKyVL2hCIewCAHMUkGbEqnyTAsVoszX8zVm5U8ejDEZ33Gt3VDFkWf2
-      digital-api-url: https://digital-apis-int.cma-cgm.com/
+        url: https://auth-pre.cma-cgm.com/as/token.oauth2
+        secret: 3cW2qfWgqx50GIepNAHWuyYTa5FSZbs1OLZzLK3wUxjUW0qQIpNKfpV7mBrRSt2l
+      digital-api-url: https://digital-apis-uat.cma-cgm.com/
