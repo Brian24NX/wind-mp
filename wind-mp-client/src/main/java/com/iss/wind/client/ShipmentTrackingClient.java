@@ -38,7 +38,7 @@ public class ShipmentTrackingClient {
      * Shipment Tracking
      * @return
      */
-    public List<ShipmentTrackingResp> shipmentTracking(String shipmentRef){
+    public ShipmentTrackingResp shipmentTracking(String shipmentRef){
         String scope = "commercialmoves:be";
         String url = digitalApiUrl + "/logistic/tracking/v1/shipments/"+shipmentRef+"/equipments/moves/commercialCycle";
         WindAccessTokenResp accessToken = windAuthClient.getAccessToken(scope);
@@ -48,8 +48,8 @@ public class ShipmentTrackingClient {
         headers.add("Authorization", accessToken.getTokenType() + " " + accessToken.getAccessToken());
         headers.add("scope", scope);
         HttpEntity request = new HttpEntity(headers);
-        ParameterizedTypeReference<List<ShipmentTrackingResp>> responseType = new ParameterizedTypeReference<List<ShipmentTrackingResp>>() {};
-        ResponseEntity<List<ShipmentTrackingResp>> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,paramMap);
+        ParameterizedTypeReference<ShipmentTrackingResp> responseType = new ParameterizedTypeReference<ShipmentTrackingResp>() {};
+        ResponseEntity<ShipmentTrackingResp> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,paramMap);
         return response.getBody();
     }
 }

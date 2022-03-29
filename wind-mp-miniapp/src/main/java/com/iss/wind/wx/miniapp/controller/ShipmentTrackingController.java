@@ -24,8 +24,8 @@ public class ShipmentTrackingController {
     private ShipmentTrackingClient shipmentTrackingClient;
 
     @GetMapping("/shipment-tracking")
-    public SimpleResult<List<ShipmentTrackingResp>> shipmentTracking(@ApiParam(name = "shipmentRef" ,value = "运输号码" ,required = true)String shipmentRef) {
-        List<ShipmentTrackingResp> result = shipmentTrackingClient.shipmentTracking(shipmentRef);
+    public SimpleResult<ShipmentTrackingResp> shipmentTracking(@ApiParam(name = "shipmentRef" ,value = "运输号码" ,required = true)String shipmentRef) {
+        ShipmentTrackingResp result = shipmentTrackingClient.shipmentTracking(shipmentRef);
         return SimpleResult.success(result);
     }
 }

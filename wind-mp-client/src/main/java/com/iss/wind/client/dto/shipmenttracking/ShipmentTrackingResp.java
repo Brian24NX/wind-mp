@@ -2,7 +2,6 @@ package com.iss.wind.client.dto.shipmenttracking;
 
 import lombok.Builder;
 import lombok.Data;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -21,6 +20,7 @@ public class ShipmentTrackingResp {
     private static class PortOfLoading {
         private String code;
         private String name;
+        private String unLocode;
     }
 
     @Data
@@ -28,6 +28,7 @@ public class ShipmentTrackingResp {
     private static class PortOfDischarge {
         private String code;
         private String name;
+        private String unLocode;
     }
 
     @Data
@@ -49,10 +50,10 @@ public class ShipmentTrackingResp {
         private FacilityFrom facilityFrom;
         private String poolLocationToCode;
         private FacilityTo facilityTo;
-        private Date collectionDate;
+        private String collectionDate;
         private String voyageReference;
         private String dischargeVoyageReference;
-        private Date deliveryDate;
+        private String deliveryDate;
         private String shipCompCode;
     }
 
@@ -121,8 +122,8 @@ public class ShipmentTrackingResp {
     private static class Movement {
         private String statusOrder;
         private Status status;
-        private Date date;
-        private Date reportedOn;
+        private String date;
+        private String reportedOn;
         private String poolLocation;
         private Facility facility;
         private PointLocation pointLocation;
