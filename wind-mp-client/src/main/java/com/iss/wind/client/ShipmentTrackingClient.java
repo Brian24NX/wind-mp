@@ -46,8 +46,6 @@ public class ShipmentTrackingClient {
         String url = digitalApiUrl + "/logistic/tracking/v1/shipments/"+shipmentRef+"/equipments/moves/commercialCycle";
         System.out.println("turl:"+url);
         WindAccessTokenResp accessToken = windAuthClient.getAccessToken(scope);
-//        Map<String,Object> paramMap=new HashMap<>();
-//        paramMap.put("shipmentRef",shipmentRef);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken.getTokenType() + " " + accessToken.getAccessToken());
         headers.add("scope", scope);

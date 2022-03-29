@@ -5,6 +5,8 @@ import com.iss.wind.client.ShipmentTrackingClient;
 import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingReq;
 import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingResp;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiOperationSupport;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class ShipmentTrackingController {
     private ShipmentTrackingClient shipmentTrackingClient;
 
     @GetMapping("/shipment-tracking")
+    @ApiOperation(value = "货物追踪查询",notes = "货物追踪查询")
+    @ApiOperationSupport
     public SimpleResult<ShipmentTrackingResp> shipmentTracking(ShipmentTrackingReq shipmentTrackingReq) {
         System.out.println("contrl-param:"+shipmentTrackingReq.getShipmentRef()+":"+shipmentTrackingReq.getEqpid());
         ShipmentTrackingResp result = shipmentTrackingClient.shipmentTracking(shipmentTrackingReq);

@@ -1,14 +1,20 @@
 package com.iss.wind.client.dto.shipmenttracking;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 import java.util.List;
 
 @Data
 @Builder
+@ApiModel("货物追踪响应类")
 public class ShipmentTrackingResp {
+
+    @ApiModelProperty(value = "起运港")
     private PortOfLoading portOfLoading;
     private String portOfLoadingCountryCode;
+    @ApiModelProperty(value = "卸货港")
     private PortOfDischarge portOfDischarge;
     private String portOfDischargeCountryCode;
     private String voyageReference;
