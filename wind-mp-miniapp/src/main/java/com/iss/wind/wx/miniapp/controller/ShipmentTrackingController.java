@@ -31,7 +31,7 @@ public class ShipmentTrackingController {
     @Autowired
     private ShipmentTrackingClient shipmentTrackingClient;
 
-    @Qualifier(value = "restrTemplate")
+    //@Qualifier(value = "restrTemplate")
     @Autowired
     private RestTemplate restTemplate;
 

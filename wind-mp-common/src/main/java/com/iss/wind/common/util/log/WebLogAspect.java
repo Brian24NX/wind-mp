@@ -1,7 +1,6 @@
 package com.iss.wind.common.util.log;
 
 import com.google.gson.Gson;
-import com.iss.wind.common.util.rest.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -88,7 +87,7 @@ public class WebLogAspect {
         try {
             result = proceedingJoinPoint.proceed();
         } catch (Exception e) {
-            log.info("exception      :{}", e.getMessage());
+            log.error("exception      :{}", e.getMessage());
             throw new BusinessException("请求异常或超时!");
         } finally {
             // 打印出参

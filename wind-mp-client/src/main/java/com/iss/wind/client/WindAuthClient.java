@@ -31,7 +31,7 @@ public class WindAuthClient {
 
     private ConcurrentHashMap<String,WindAccessTokenResp> accessTokenMap = new ConcurrentHashMap<>();
 
-    @Qualifier(value = "restrTemplate")
+    //@Qualifier(value = "restrTemplate")
     @Autowired
     private RestTemplate restTemplate;
 

@@ -26,7 +26,7 @@ import java.util.Map;
 @Component
 public class ShipmentTrackingClient {
 
-    @Qualifier(value = "restrTemplate")
+    //@Qualifier(value = "restrTemplate")
     @Autowired
     private RestTemplate restTemplate;
     @Autowired

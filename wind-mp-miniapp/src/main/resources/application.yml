@@ -49,3 +49,9 @@ swagger:
     enable: true
     username: admin
     password: admin
+
+rest:
+  template:
+    conn:
+      connect-timeout: 10000
+      read-timeout: 10000

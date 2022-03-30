@@ -1,15 +1,13 @@
-package com.iss.wind.common.configuration;
+package com.iss.wind.client.configuration;
 
-import com.iss.wind.common.util.rest.RestTemplateLogInterceptor;
-import com.iss.wind.common.util.rest.ThrowErrorHandler;
+import com.iss.wind.client.util.rest.ThrowErrorHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
-
+import com.iss.wind.client.util.rest.RestTemplateLogInterceptor;
 import java.time.Duration;
-import java.time.temporal.TemporalUnit;
 
 
 // restTemplate配置类

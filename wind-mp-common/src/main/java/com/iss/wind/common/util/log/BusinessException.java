@@ -1,4 +1,4 @@
-package com.iss.wind.common.util.rest;
+package com.iss.wind.common.util.log;
 
 import lombok.Data;
 
