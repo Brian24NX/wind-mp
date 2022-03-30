@@ -1,4 +1,4 @@
-package com.iss.wind.common.util.logutil;
+package com.iss.wind.common.util.log;
 
 import java.lang.annotation.*;
 

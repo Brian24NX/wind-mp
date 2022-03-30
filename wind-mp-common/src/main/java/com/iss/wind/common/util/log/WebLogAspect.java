@@ -1,6 +1,7 @@
-package com.iss.wind.common.util.logutil;
+package com.iss.wind.common.util.log;
 
 import com.google.gson.Gson;
+import com.iss.wind.common.util.rest.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -8,12 +9,10 @@ import org.aspectj.lang.annotation.*;
 import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
-import java.util.UUID;
 
 @Component
 @Aspect
@@ -29,7 +28,7 @@ public class WebLogAspect {
     /**
      * 以自定义 @WebLog 注解为切点
      */
-    @Pointcut("@annotation(com.iss.wind.common.util.logutil.WebLog)")
+    @Pointcut("@annotation(com.iss.wind.common.util.log.WebLog)")
     public void WebLogAspect() {
     }
 
@@ -90,7 +89,7 @@ public class WebLogAspect {
             result = proceedingJoinPoint.proceed();
         } catch (Exception e) {
             log.info("exception      :{}", e.getMessage());
-            throw e;
+            throw new BusinessException("请求异常或超时!");
         } finally {
             // 打印出参
             log.info("Response Args  : {}", new Gson().toJson(result));

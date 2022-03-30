@@ -4,6 +4,7 @@ import com.iss.wind.client.dto.auth.WindAccessTokenResp;
 import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingReq;
 import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingResp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -25,6 +26,7 @@ import java.util.Map;
 @Component
 public class ShipmentTrackingClient {
 
+    @Qualifier(value = "restrTemplate")
     @Autowired
     private RestTemplate restTemplate;
     @Autowired

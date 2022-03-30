@@ -32,7 +32,7 @@ public class GetAllInvoicesClient {
      */
     public GetAllInvoiceResp getAllInvoices(GetAllInvoiceReq getAllInvoiceReq){
         String scope = "customershippinginvoice:read:be";
-        String url = digitalApiUrl + "commercial/shipment/invoice/v1/customers/"+getAllInvoiceReq.getParameters().get(0).getCcgId()+"/invoices";
+        String url = digitalApiUrl + "commercial/shipment/invoice/v1/customers/"+getAllInvoiceReq.getParameters().getCcgId()+"/invoices";
         WindAccessTokenResp accessToken = windAuthClient.getAccessToken(scope);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken.getTokenType() + " " + accessToken.getAccessToken());

@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @Builder
 public class GetAllInvoiceReq {
-    private List<Parameter> parameters;//文档中是数组，待确认完善
+    private Parameter parameters;//文档中是数组，待确认完善
     private List<String> references;
     private SearchDate searchDate;
     private Date lastUserConnectionDate;
@@ -32,6 +32,7 @@ public class GetAllInvoiceReq {
     public static class Parameter{
         private String ccgId;
         private String shippingCompany;
+        private Integer range;
     }
 
     @Data
