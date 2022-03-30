@@ -5,6 +5,8 @@ import com.iss.wind.client.dto.sechedule.RoutingFinderResp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.iss.wind.client.util.rest.RestTemplateLogInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -87,13 +89,14 @@ public class RoutingFinderClient {
         Map<String,Object> paramMap=new HashMap<>();
         paramMap.put("placeOfLoading",placeOfLoading);
         paramMap.put("placeOfDischarge", placeOfDischarge);
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken.getTokenType() + " " + accessToken.getAccessToken());
         headers.add("scope", "rf:be");
         HttpEntity request = new HttpEntity(headers);
         ParameterizedTypeReference<List<RoutingFinderResp>> responseType = new ParameterizedTypeReference<List<RoutingFinderResp>>() {};
+        restTemplate.getInterceptors().add(new RestTemplateLogInterceptor());
         ResponseEntity<List<RoutingFinderResp>> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,paramMap);
+        restTemplate.getInterceptors().clear();
         return response.getBody();
     }
 }

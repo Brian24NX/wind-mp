@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Data
 @Builder
@@ -14,6 +15,7 @@ import javax.validation.constraints.NotNull;
 public class ShipmentTrackingReq {
 
     @NotNull(message="运输号码不可为空！")
+    @Pattern(regexp = "/^(?![^A-Za-z]+$)(?![^0-9]+$)[\\x21-x7e]{8,12}$/" , message = "运输号码有误")
     @ApiModelProperty(value = "运输号码",required = true)
     private String shipmentRef;
 

@@ -3,6 +3,7 @@ package com.iss.wind.client;
 import com.iss.wind.client.dto.auth.WindAccessTokenResp;
 import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingReq;
 import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingResp;
+import com.iss.wind.client.util.rest.RestTemplateLogInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,7 +52,9 @@ public class ShipmentTrackingClient {
         headers.add("scope", scope);
         HttpEntity request = new HttpEntity(headers);
         ParameterizedTypeReference<ShipmentTrackingResp> responseType = new ParameterizedTypeReference<ShipmentTrackingResp>() {};
+        restTemplate.getInterceptors().add(new RestTemplateLogInterceptor());
         ResponseEntity<ShipmentTrackingResp> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,shipmentTrackingReq);
+        restTemplate.getInterceptors().clear();
         return response.getBody();
     }
 }

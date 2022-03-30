@@ -3,6 +3,8 @@ package com.iss.wind.client;
 import com.iss.wind.client.dto.auth.WindAccessTokenResp;
 import com.iss.wind.client.util.HttpUtils;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.iss.wind.client.util.rest.RestTemplateLogInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,7 +33,6 @@ public class WindAuthClient {
 
     private ConcurrentHashMap<String,WindAccessTokenResp> accessTokenMap = new ConcurrentHashMap<>();
 
-    //@Qualifier(value = "restrTemplate")
     @Autowired
     private RestTemplate restTemplate;
 
@@ -58,6 +59,7 @@ public class WindAuthClient {
         if(clientUrl.startsWith("https")){
             HttpUtils.ignoreSsl();
         }
+        restTemplate.getInterceptors().add(new RestTemplateLogInterceptor());
         WindAccessTokenResp accessTokenResp = restTemplate.postForObject(clientUrl, entity, WindAccessTokenResp.class);
         accessTokenResp.setGenMillisecond(System.currentTimeMillis());
         accessTokenMap.put(scope,accessTokenResp);
