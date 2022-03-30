@@ -42,9 +42,7 @@ public class ShipmentTrackingClient {
     public ShipmentTrackingResp shipmentTracking(ShipmentTrackingReq shipmentTrackingReq){
         String scope = "commercialmoves:be";
         String shipmentRef = shipmentTrackingReq.getShipmentRef();
-        System.out.println("param:"+shipmentRef);
         String url = digitalApiUrl + "/logistic/tracking/v1/shipments/"+shipmentRef+"/equipments/moves/commercialCycle";
-        System.out.println("turl:"+url);
         WindAccessTokenResp accessToken = windAuthClient.getAccessToken(scope);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken.getTokenType() + " " + accessToken.getAccessToken());
