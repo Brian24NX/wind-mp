@@ -33,7 +33,7 @@ public class FreemarkerService {
         dataMap.put("dong","swimming");
         DocumentHandler mdoc = new DocumentHandler();
         String filePath = windFileSavePath;
-        String fileName = rename("ttt.doc");
+        String fileName = rename("ttt.docx");
         String wordName = mdoc.createDoc(dataMap, filePath,fileName);
         String pdfName = wordTurnPdf(windFileSavePath,fileName);
         if(null == wordName || null == pdfName){

@@ -49,3 +49,7 @@ swagger:
     enable: true
     username: admin
     password: admin
+
+wind:
+  fileQueryPath: file:/data/export/
+  fileSavePath: /data/export/
