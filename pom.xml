@@ -307,7 +307,7 @@
     <module>wind-mp-api</module>
     <module>wind-mp-dao</module>
     <module>wind-mp-service</module>
-    <module>wind-mp-start</module>
+    <module>wind-mp-admin</module>
     <module>wind-mp-offiaccount</module>
     <module>wind-mp-miniapp</module>
   </modules>

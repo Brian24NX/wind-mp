@@ -11,7 +11,7 @@ COPY ./* /app/
 # 执行代码编译命令
 # 自定义settings.xml, 选用国内镜像源以提高下载速度
 RUN mvn -s /app/settings.xml -f /app/pom.xml install
-#RUN mvn -s settings.xml -f pom.xml package -X -Dmaven.test.skip=true -pl com.iss.wind:wind-mp-start -am -amd
+#RUN mvn -s settings.xml -f pom.xml package -X -Dmaven.test.skip=true -pl com.iss.wind:wind-mp-admin -am -amd
 
 # 选择运行时基础镜像
 FROM alpine:3.13
