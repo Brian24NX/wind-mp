@@ -55,3 +55,7 @@ rest:
     conn:
       connect-timeout: 10000
       read-timeout: 10000
+
+wind:
+  fileQueryPath: file:/data/export/
+  fileSavePath: /data/export/
