@@ -1,20 +1,14 @@
 package com.iss.wind.serevice.util;
 
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.util.Map;
-
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.*;
+import java.util.Map;
+
+@Slf4j
 public class DocumentHandler {
 
     private Configuration configuration = null;
@@ -46,16 +40,14 @@ public class DocumentHandler {
             out = new BufferedWriter(oWriter);
             return fileName;
         } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
+            log.error("转成word异常：",e1);
         }finally {
             try {
                 t.process(dataMap, out);
                 out.close();
                 fos.close();
-            } catch (TemplateException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                log.error("转word的流关闭异常：",e);
             }
         }
         return null;
