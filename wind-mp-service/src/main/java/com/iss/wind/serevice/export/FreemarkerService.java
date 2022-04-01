@@ -4,10 +4,9 @@ import cn.hutool.core.date.DateUtil;
 import com.documents4j.api.DocumentType;
 import com.documents4j.api.IConverter;
 import com.documents4j.job.LocalConverter;
-import com.hanson.rest.SimpleResult;
-import com.iss.wind.serevice.util.ContextPatUtil;
 import com.iss.wind.serevice.util.DocumentHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,7 @@ public class FreemarkerService {
     /**
      * 处理数据根据模板导出word
      */
-    public String expWord() throws UnsupportedEncodingException {
+    public String expWord(HttpServletResponse response) throws Exception {
         List<String> list = new ArrayList<>();
         Map<String, Object> dataMap = new HashMap<String, Object>();
         dataMap.put("name","dwqqd");
@@ -34,10 +33,15 @@ public class FreemarkerService {
         dataMap.put("dong","swimming");
         DocumentHandler mdoc = new DocumentHandler();
         String filePath = windFileSavePath;
-        String fileName = rename("ttt.docx");
+        String fileName = rename("ttt.pdf");
         String wordName = mdoc.createDoc(dataMap, filePath,fileName);
-        String pdfName = wordTurnPdf(windFileSavePath,fileName);
-        return pdfName;
+//        String pdfName = wordTurnPdf(windFileSavePath,fileName);
+//        String pdfName = PdfUtil.exportByLocalPath(response,fileName,windFileSavePath+fileName,null);
+
+//        String pdfName ="";
+//        log.info("pdf：：：："+pdfName);
+        return wordName;
+
 //        if(null == wordName ){
 //            return SimpleResult.fail("500","文件生成失败");
 //        }else {
@@ -74,8 +78,9 @@ public class FreemarkerService {
         return DateUtil.format(new Date(),"yyyyMMddHHmmsss")+"_"+fileName;
     }
 
-    public void exportFile(HttpServletResponse response) throws IOException {
-        String wordName = expWord();
+    public void exportFile(HttpServletResponse response) throws Exception {
+        String wordName = expWord(response);
+        InputStream in = new FileInputStream( windFileSavePath + wordName);
         String path = windFileSavePath + wordName;
         FileInputStream fileInputStream = new FileInputStream(new File(path));
         response.setHeader("Content-Length", fileInputStream.available()+"");

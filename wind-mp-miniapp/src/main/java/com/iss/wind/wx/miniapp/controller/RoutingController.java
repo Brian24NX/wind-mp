@@ -30,7 +30,12 @@ public class RoutingController {
     @ApiResponses(value = {@ApiResponse(code = 500, message = "failedOrTimeOut")})
     @WebLog(description = "routing-finder")
     public SimpleResult<List<RoutingFinderResp>> routings(@ApiParam(name = "placeOfLoading" ,value = "启航港" ,required = true) @RequestParam String placeOfLoading,
-                                                          @ApiParam(name = "placeOfDischarge" ,value = "目的港" ,required = true) @RequestParam String placeOfDischarge) {
+                                                          @ApiParam(name = "placeOfDischarge" ,value = "目的港" ,required = true) @RequestParam String placeOfDischarge,
+                                                          @ApiParam(name = "shippingCompany" ,value = "轮船公司" ) @RequestParam String shippingCompany,
+                                                          @ApiParam(name = "departureDate" ,value = "离港日期" ) @RequestParam String departureDate,
+                                                          @ApiParam(name = "arrivalDate" ,value = "预计到达日期" ) @RequestParam String arrivalDate,
+                                                          @ApiParam(name = "searchRange" ,value = "启航港" ) @RequestParam String searchRange
+                                                          ) {
         List<RoutingFinderResp> routing = routingFinderClient.routings(placeOfLoading, placeOfDischarge);
         return SimpleResult.success(routing);
     }

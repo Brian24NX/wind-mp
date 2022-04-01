@@ -23,7 +23,7 @@ public class ShipmentTrackingResp {
 
     @Data
     @Builder
-    private static class PortOfLoading {
+    public static class PortOfLoading {
         private String code;
         private String name;
         private String unLocode;
@@ -31,7 +31,7 @@ public class ShipmentTrackingResp {
 
     @Data
     @Builder
-    private static class PortOfDischarge {
+    public static class PortOfDischarge {
         private String code;
         private String name;
         private String unLocode;
@@ -39,14 +39,14 @@ public class ShipmentTrackingResp {
 
     @Data
     @Builder
-    private static class Route {
+    public static class Route {
         private List<JourneyLeg> journeyLegs;
         private List<Container> containers;
     }
 
     @Data
     @Builder
-    private static class JourneyLeg {
+    public static class JourneyLeg {
         private Integer sequenceNumber;
         private PointFrom pointFrom;
         private VesselFrom vesselFrom;
@@ -65,7 +65,7 @@ public class ShipmentTrackingResp {
 
     @Data
     @Builder
-    private static class Container {
+    public static class Container {
         private String id;
         private Integer size;
         private String emptyReturnDepot;
@@ -75,7 +75,7 @@ public class ShipmentTrackingResp {
 
     @Data
     @Builder
-    private static class PointFrom {
+    public static class PointFrom {
         private String code;
         private String name;
         private String unLocode;
@@ -83,7 +83,7 @@ public class ShipmentTrackingResp {
 
     @Data
     @Builder
-    private static class VesselFrom {
+    public static class VesselFrom {
         private String code;
         private String name;
         private String imo;
@@ -91,7 +91,7 @@ public class ShipmentTrackingResp {
 
     @Data
     @Builder
-    private static class VesselTo {
+    public static class VesselTo {
         private String code;
         private String name;
         private String imo;
@@ -99,7 +99,7 @@ public class ShipmentTrackingResp {
 
     @Data
     @Builder
-    private static class PointTo {
+    public static class PointTo {
         private String code;
         private String name;
         private String unLocode;
@@ -107,7 +107,7 @@ public class ShipmentTrackingResp {
 
     @Data
     @Builder
-    private static class FacilityFrom {
+    public static class FacilityFrom {
         private String facilityType;
         private String internalCode;
         private List<FacilityCodification> facilityCodifications;
@@ -116,7 +116,7 @@ public class ShipmentTrackingResp {
 
     @Data
     @Builder
-    private static class FacilityTo {
+    public static class FacilityTo {
         private String facilityType;
         private String internalCode;
         private List<FacilityCodification> facilityCodifications;
@@ -125,7 +125,7 @@ public class ShipmentTrackingResp {
 
     @Data
     @Builder
-    private static class Movement {
+    public static class Movement {
         private String statusOrder;
         private Status status;
         private String date;
@@ -147,21 +147,21 @@ public class ShipmentTrackingResp {
 
     @Data
     @Builder
-    private static class FacilityCodification {
+    public static class FacilityCodification {
         private String codificationType;
         private String codification;
     }
 
     @Data
     @Builder
-    private static class Status {
+    public static class Status {
         private String code;
         private String name;
     }
 
     @Data
     @Builder
-    private static class Facility {
+    public static class Facility {
         private String facilityType;
         private String internalCode;
         private List<FacilityCodification> facilityCodifications;
@@ -170,7 +170,7 @@ public class ShipmentTrackingResp {
 
     @Data
     @Builder
-    private static class PointLocation {
+    public static class PointLocation {
         private String code;
         private String name;
         private String unLocode;
@@ -178,7 +178,7 @@ public class ShipmentTrackingResp {
 
     @Data
     @Builder
-    private static class Vessel {
+    public static class Vessel {
         private String code;
         private String name;
         private String imo;

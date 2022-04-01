@@ -16,11 +16,25 @@
     </dependency>
 
     <!--freemarker-->
-    <dependency>
+   <!-- <dependency>
       <groupId>freemarker</groupId>
       <artifactId>freemarker</artifactId>
       <version>2.3.8</version>
+    </dependency>-->
+
+    <!-- 读取HTML模板文件 -->
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.30</version>
     </dependency>
+    <!-- 将HTML文件转化为PDF文件 -->
+    <dependency>
+      <groupId>org.xhtmlrenderer</groupId>
+      <artifactId>flying-saucer-pdf</artifactId>
+      <version>9.1.20</version>
+    </dependency>
+
     <!--doc to fdf-->
     <dependency>
       <groupId>com.documents4j</groupId>
@@ -32,6 +46,7 @@
       <artifactId>documents4j-transformer-msoffice-word</artifactId>
       <version>1.0.3</version>
     </dependency>
+
 
   </dependencies>
 
