@@ -12,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.UnsupportedEncodingException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.List;
 
 @Api(value = "模板导出")
@@ -22,12 +23,19 @@ public class ExportController {
     @Autowired
     private FreemarkerService freemarkerService;
 
-    @GetMapping("/export-freemarker")
-    @ApiOperation(value = "模板导出",notes = "模板导出")
-    @ApiResponses(value = {@ApiResponse(code = 500, message = "failedOrTimeOut")})
-    @WebLog(description = "export-freemarker")
-    public SimpleResult<List<String>> word() throws UnsupportedEncodingException {
-        return freemarkerService.expWord();
+//    @GetMapping("/export-freemarker")
+//    @ApiOperation(value = "模板导出",notes = "模板导出")
+//    @ApiResponses(value = {@ApiResponse(code = 500, message = "failedOrTimeOut")})
+//    @WebLog(description = "export-freemarker")
+//    public SimpleResult<List<String>> word() throws UnsupportedEncodingException {
+//        return freemarkerService.expWord();
+//    }
+
+    @GetMapping("/export")
+    @ApiOperation(value = "pdf下载", notes = "pdf下载")
+    public void errExcel(HttpServletResponse response) throws Exception {
+         freemarkerService.exportFile(response);
+
     }
 
 }

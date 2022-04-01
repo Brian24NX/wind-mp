@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.*;
 
@@ -24,7 +25,7 @@ public class FreemarkerService {
     /**
      * 处理数据根据模板导出word
      */
-    public SimpleResult<List<String>> expWord() throws UnsupportedEncodingException {
+    public String expWord() throws UnsupportedEncodingException {
         List<String> list = new ArrayList<>();
         Map<String, Object> dataMap = new HashMap<String, Object>();
         dataMap.put("name","dwqqd");
@@ -36,15 +37,16 @@ public class FreemarkerService {
         String fileName = rename("ttt.docx");
         String wordName = mdoc.createDoc(dataMap, filePath,fileName);
         String pdfName = wordTurnPdf(windFileSavePath,fileName);
-        if(null == wordName || null == pdfName){
-            return SimpleResult.fail("500","文件生成失败");
-        }else {
-            String queryWordPath = ContextPatUtil.getContextPat(ContextPatUtil.getRequest()) +"/file/" + wordName;
-            String queryPdfPath = ContextPatUtil.getContextPat(ContextPatUtil.getRequest()) +"/file/" + pdfName;
-            list.add(queryWordPath);
-            list.add(queryPdfPath);
-            return SimpleResult.success(list);
-        }
+        return pdfName;
+//        if(null == wordName ){
+//            return SimpleResult.fail("500","文件生成失败");
+//        }else {
+//            String queryWordPath = ContextPatUtil.getContextPat(ContextPatUtil.getRequest()) +"/file/" + wordName;
+//            String queryPdfPath = ContextPatUtil.getContextPat(ContextPatUtil.getRequest()) +"/file/" + pdfName;
+//            list.add(queryWordPath);
+//            list.add(queryPdfPath);
+//            return SimpleResult.success(list);
+//        }
     }
 
     public String wordTurnPdf(String windFileSavePath , String fileName){
@@ -71,4 +73,44 @@ public class FreemarkerService {
     public static String rename(String fileName){
         return DateUtil.format(new Date(),"yyyyMMddHHmmsss")+"_"+fileName;
     }
+
+    public void exportFile(HttpServletResponse response) throws IOException {
+        String wordName = expWord();
+        String path = windFileSavePath + wordName;
+        FileInputStream fileInputStream = new FileInputStream(new File(path));
+        response.setHeader("Content-Length", fileInputStream.available()+"");
+        response.setHeader("content-Type", "application/vnd.ms-excel");
+        String fileName = wordName;
+        fileName = new String(fileName.getBytes(), "ISO-8859-1");
+        // 下载文件的默认名称
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+        //编码
+        response.setCharacterEncoding("UTF-8");
+        BufferedInputStream bis = null;
+        OutputStream os = null;
+        try {
+            os = response.getOutputStream();
+            bis = new BufferedInputStream(fileInputStream);
+            byte[] buff = new byte[1024];
+            int i = bis.read(buff);
+
+            while (i != -1) {
+                os.write(buff, 0, buff.length);
+                os.flush();
+                i = bis.read(buff);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 }
