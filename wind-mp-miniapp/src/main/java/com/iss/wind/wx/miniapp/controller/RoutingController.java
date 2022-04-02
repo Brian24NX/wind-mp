@@ -31,12 +31,13 @@ public class RoutingController {
     @WebLog(description = "routing-finder")
     public SimpleResult<List<RoutingFinderResp>> routings(@ApiParam(name = "placeOfLoading" ,value = "启航港" ,required = true) @RequestParam String placeOfLoading,
                                                           @ApiParam(name = "placeOfDischarge" ,value = "目的港" ,required = true) @RequestParam String placeOfDischarge,
+                                                          @ApiParam(name = "specificRoutings" ,value = "公司方案" ) @RequestParam String[] specificRoutings,
                                                           @ApiParam(name = "shippingCompany" ,value = "轮船公司" ) @RequestParam String shippingCompany,
                                                           @ApiParam(name = "departureDate" ,value = "离港日期" ) @RequestParam String departureDate,
                                                           @ApiParam(name = "arrivalDate" ,value = "预计到达日期" ) @RequestParam String arrivalDate,
-                                                          @ApiParam(name = "searchRange" ,value = "启航港" ) @RequestParam String searchRange
+                                                          @ApiParam(name = "searchRange" ,value = "搜寻天数" ) @RequestParam String searchRange
                                                           ) {
-        List<RoutingFinderResp> routing = routingFinderClient.routings(placeOfLoading, placeOfDischarge);
+        List<RoutingFinderResp> routing = routingFinderClient.routings(placeOfLoading, placeOfDischarge,specificRoutings,shippingCompany,departureDate,arrivalDate,searchRange);
         return SimpleResult.success(routing);
     }
 }

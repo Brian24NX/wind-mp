@@ -83,12 +83,17 @@ public class RoutingFinderClient {
      * 默认情况下，此设置是激活的。
      * @return
      */
-    public List<RoutingFinderResp> routings(String placeOfLoading,String placeOfDischarge){
+    public List<RoutingFinderResp> routings(String placeOfLoading,String placeOfDischarge,String[] specificRoutings,String shippingCompany,String departureDate,String arrivalDate,String searchRange){
         String url = digitalApiUrl + "/vesseloperation/route/v2/routings?placeOfLoading={placeOfLoading}&placeOfDischarge={placeOfDischarge}";
         WindAccessTokenResp accessToken = windAuthClient.getAccessToken("rf:be");
         Map<String,Object> paramMap=new HashMap<>();
         paramMap.put("placeOfLoading",placeOfLoading);
         paramMap.put("placeOfDischarge", placeOfDischarge);
+        paramMap.put("specificRoutings", specificRoutings);
+        paramMap.put("shippingCompany", shippingCompany);
+        paramMap.put("departureDate", departureDate);
+        paramMap.put("arrivalDate", arrivalDate);
+        paramMap.put("searchRange", searchRange);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken.getTokenType() + " " + accessToken.getAccessToken());
         headers.add("scope", "rf:be");
