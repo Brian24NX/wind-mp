@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Map;
+
 /**
  * @author Yves
  * @date 2022/3/25  9:26
@@ -31,7 +33,6 @@ public class ShipmentTrackingController {
     @Autowired
     private ShipmentTrackingClient shipmentTrackingClient;
 
-    //@Qualifier(value = "restrTemplate")
     @Autowired
     private RestTemplate restTemplate;
 
@@ -39,9 +40,9 @@ public class ShipmentTrackingController {
     @ApiOperation(value = "货物追踪查询",notes = "货物追踪查询")
     @ApiResponses(value = {@ApiResponse(code = 500, message = "failedOrTimeOut")})
     @WebLog(description = "shipment-tracking")
-    public SimpleResult<ShipmentTrackingResp> shipmentTracking(ShipmentTrackingReq shipmentTrackingReq) {
-        ShipmentTrackingResp result = shipmentTrackingClient.shipmentTracking(shipmentTrackingReq);
-        return SimpleResult.success(result);
+    public SimpleResult<Map> shipmentTracking(ShipmentTrackingReq shipmentTrackingReq) {
+        Map ret = shipmentTrackingClient.shipmentTracking(shipmentTrackingReq);
+        return null == ret?SimpleResult.fail("404","未查询到数据"):SimpleResult.success(ret);
     }
 
 //    @GetMapping("/test")
