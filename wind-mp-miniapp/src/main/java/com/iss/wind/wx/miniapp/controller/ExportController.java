@@ -31,11 +31,11 @@ public class ExportController {
 //        return freemarkerService.expWord();
 //    }
 
-    @GetMapping("/export")
-    @ApiOperation(value = "pdf下载", notes = "pdf下载")
-    public void errExcel(HttpServletResponse response) throws Exception {
-         freemarkerService.exportFile(response);
-
-    }
+//    @GetMapping("/export")
+//    @ApiOperation(value = "pdf下载", notes = "pdf下载")
+//    public void errExcel(HttpServletResponse response) throws Exception {
+//         freemarkerService.exportFile(response);
+//
+//    }
 
 }

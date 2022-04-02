@@ -3,6 +3,7 @@ package com.iss.wind.client;
 import com.iss.wind.client.dto.auth.WindAccessTokenResp;
 import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingReq;
 import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingResp;
+import com.iss.wind.client.util.StrUtils;
 import com.iss.wind.client.util.rest.RestTemplateLogInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,26 +51,26 @@ public class ShipmentTrackingClient {
         if(len == 1){ //场景一，shipmentRef:[货柜号]   一个卡片信息返回
             String shipment = shipArr[0];
             shipmentTrackingResp = getShipment(shipment,shipmentTrackingReq);
-            ret.put(shipment+"",shipmentTrackingResp);
+            ret.put(shipment+"", null == shipmentTrackingResp ? new Object():shipmentTrackingResp);
             return ret;
         }else if(len == 2){//场景二，shipmentRef:[货柜号,运输号]   两个卡片信息返回
             String shipment = shipArr[0];
             shipmentTrackingResp = getShipment(shipment,shipmentTrackingReq);
-            ret.put(shipment+"",shipmentTrackingResp);
+            ret.put(shipment+"",null == shipmentTrackingResp ? new Object():shipmentTrackingResp);
             String shipment1 = shipArr[1];
             shipmentTrackingResp = getShipment(shipment1,shipmentTrackingReq);
-            ret.put(shipment1+"",shipmentTrackingResp);
+            ret.put(shipment1+"",null == shipmentTrackingResp ? new Object():shipmentTrackingResp);
             return ret;
         }else if(len == 3){//场景三、四、五，shipmentRef:[货柜号,货柜号,运输号]  每个卡片信息，存在的返回输出货柜号信息，查询不到返回不存在
             String shipment = shipArr[0];
             shipmentTrackingResp = getShipment(shipment,shipmentTrackingReq);
-            ret.put(shipment+"",shipmentTrackingResp);
+            ret.put(shipment+"",null == shipmentTrackingResp ? new Object():shipmentTrackingResp);
             String shipment1 = shipArr[1];
             shipmentTrackingResp = getShipment(shipment1,shipmentTrackingReq);
-            ret.put(shipment1+"",shipmentTrackingResp);
+            ret.put(shipment1+"",null == shipmentTrackingResp ? new Object():shipmentTrackingResp);
             String shipment2 = shipArr[2];
             shipmentTrackingResp = getShipment(shipment2,shipmentTrackingReq);
-            ret.put(shipment2+"",shipmentTrackingResp);
+            ret.put(shipment2+"",null == shipmentTrackingResp ? new Object():shipmentTrackingResp);
             return ret;
         }
         return null;
@@ -83,9 +84,15 @@ public class ShipmentTrackingClient {
         HttpEntity request = new HttpEntity(headers);
         ParameterizedTypeReference<ShipmentTrackingResp> responseType = new ParameterizedTypeReference<ShipmentTrackingResp>() {};
         log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~handleSipments-url={"+url+"}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        restTemplate.getInterceptors().add(new RestTemplateLogInterceptor());
-        ResponseEntity<ShipmentTrackingResp> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,paramMap);
-        restTemplate.getInterceptors().clear();
+        ResponseEntity<ShipmentTrackingResp> response = null;
+        try {
+            restTemplate.getInterceptors().add(new RestTemplateLogInterceptor());
+            response = restTemplate.exchange(url, HttpMethod.GET, request, responseType, paramMap);
+            log.error("handleSipments-response:",response);
+            restTemplate.getInterceptors().clear();
+        }catch (Exception e){
+            log.error("handleSipments-exception:",e);
+        }
         return response;
     }
 
@@ -102,14 +109,14 @@ public class ShipmentTrackingClient {
         paramMap.put("eqpId",shipment);
         ResponseEntity<ShipmentTrackingResp> response = handleSipments(url,scope,paramMap);
         ShipmentTrackingResp shipmentTrackingResp;
-        if (response.getStatusCodeValue() == 200){
+        if (null != response && response.getStatusCodeValue() == 200){
             shipmentTrackingResp = response.getBody();
         }else {
             url = baseUrlMent + shipment + endPointMent;
             paramMap = new HashMap<>();
             paramMap.put("shipmentRef",shipment);
             response = handleSipments(url,scope,paramMap);
-            if(response.getStatusCodeValue() == 200){
+            if(null != response && response.getStatusCodeValue() == 200){
                 shipmentTrackingResp = response.getBody();
             }else {
                 shipmentTrackingResp = null;

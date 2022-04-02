@@ -11,4 +11,13 @@ public class StrUtils {
         return  (null == s || "".equals(s))? true : false;
     }
 
+    /**
+     *  空对象判断
+     * @param o
+     * @return
+     */
+    public static Object handleNulRet(Object o){
+        return  null == o ? new Object() : o;
+    }
+
 }

@@ -50,7 +50,7 @@ public class WelcomeController {
 
 	@GetMapping("/routing-finder")
 	public SimpleResult<List<RoutingFinderResp>> routings(String placeOfLoading,String placeOfDischarge) {
-		List<RoutingFinderResp> routing = routingFinderClient.routings(placeOfLoading, placeOfDischarge);
+		List<RoutingFinderResp> routing = routingFinderClient.routings(placeOfLoading, placeOfDischarge,null,null,null,null,null);
 		return SimpleResult.success(routing);
 	}
 }
