@@ -51,26 +51,26 @@ public class ShipmentTrackingClient {
         if(len == 1){ //场景一，shipmentRef:[货柜号]   一个卡片信息返回
             String shipment = shipArr[0];
             shipmentTrackingResp = getShipment(shipment,shipmentTrackingReq);
-            ret.put(shipment+"", null == shipmentTrackingResp ? new Object():shipmentTrackingResp);
+            ret.put(shipment+"",null == shipmentTrackingResp ? "":shipmentTrackingResp);
             return ret;
         }else if(len == 2){//场景二，shipmentRef:[货柜号,运输号]   两个卡片信息返回
             String shipment = shipArr[0];
             shipmentTrackingResp = getShipment(shipment,shipmentTrackingReq);
-            ret.put(shipment+"",null == shipmentTrackingResp ? new Object():shipmentTrackingResp);
+            ret.put(shipment+"",null == shipmentTrackingResp ? "":shipmentTrackingResp);
             String shipment1 = shipArr[1];
             shipmentTrackingResp = getShipment(shipment1,shipmentTrackingReq);
-            ret.put(shipment1+"",null == shipmentTrackingResp ? new Object():shipmentTrackingResp);
+            ret.put(shipment1+"",null == shipmentTrackingResp ? "":shipmentTrackingResp);
             return ret;
         }else if(len == 3){//场景三、四、五，shipmentRef:[货柜号,货柜号,运输号]  每个卡片信息，存在的返回输出货柜号信息，查询不到返回不存在
             String shipment = shipArr[0];
             shipmentTrackingResp = getShipment(shipment,shipmentTrackingReq);
-            ret.put(shipment+"",null == shipmentTrackingResp ? new Object():shipmentTrackingResp);
+            ret.put(shipment+"",null == shipmentTrackingResp ? "":shipmentTrackingResp);
             String shipment1 = shipArr[1];
             shipmentTrackingResp = getShipment(shipment1,shipmentTrackingReq);
-            ret.put(shipment1+"",null == shipmentTrackingResp ? new Object():shipmentTrackingResp);
+            ret.put(shipment1+"",null == shipmentTrackingResp ? "":shipmentTrackingResp);
             String shipment2 = shipArr[2];
             shipmentTrackingResp = getShipment(shipment2,shipmentTrackingReq);
-            ret.put(shipment2+"",null == shipmentTrackingResp ? new Object():shipmentTrackingResp);
+            ret.put(shipment2+"",null == shipmentTrackingResp ? "":shipmentTrackingResp);
             return ret;
         }
         return null;
