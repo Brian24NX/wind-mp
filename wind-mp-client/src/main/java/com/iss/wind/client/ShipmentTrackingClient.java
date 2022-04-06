@@ -46,7 +46,6 @@ public class ShipmentTrackingClient {
      */
     public List<Map> shipmentTracking(ShipmentTrackingReq shipmentTrackingReq){
         List<Map> ret = new ArrayList<>();
-        Map map =  new HashMap();
         ShipmentTrackingResp shipmentTrackingResp;
         String shipArrStr = shipmentTrackingReq.getShipmentRef();
         String[] shipArr = shipArrStr.split(",");
@@ -54,38 +53,47 @@ public class ShipmentTrackingClient {
         if(len == 1){ //场景一，shipmentRef:[货柜号]   一个卡片信息返回
             String shipment = shipArr[0];
             shipmentTrackingResp = getShipment(shipment,shipmentTrackingReq);
+            Map map =  new HashMap();
             map.put("shipmentRef",shipment);
-            map.put("data",shipmentTrackingResp);
+            map.put("data",null == shipmentTrackingResp ? "":shipmentTrackingResp);
             ret.add(map);
             return ret;
         }else if(len == 2){//场景二，shipmentRef:[货柜号,运输号]   两个卡片信息返回
             String shipment = shipArr[0];
             shipmentTrackingResp = getShipment(shipment,shipmentTrackingReq);
+            Map map =  new HashMap();
             map.put("shipmentRef",shipment);
-            map.put("data",shipmentTrackingResp);
+            map.put("data",null == shipmentTrackingResp ? "":shipmentTrackingResp);
             ret.add(map);
+
             String shipment1 = shipArr[1];
             shipmentTrackingResp = getShipment(shipment1,shipmentTrackingReq);
-            map.put("shipmentRef",shipment1);
-            map.put("data",shipmentTrackingResp);
-            ret.add(map);
+            Map map1 =  new HashMap();
+            map1.put("shipmentRef",shipment1);
+            map1.put("data",null == shipmentTrackingResp ? "":shipmentTrackingResp);
+            ret.add(map1);
             return ret;
         }else if(len == 3){//场景三、四、五，shipmentRef:[货柜号,货柜号,运输号]  每个卡片信息，存在的返回输出货柜号信息，查询不到返回不存在
             String shipment = shipArr[0];
             shipmentTrackingResp = getShipment(shipment,shipmentTrackingReq);
+            Map map =  new HashMap();
             map.put("shipmentRef",shipment);
-            map.put("data",shipmentTrackingResp);
+            map.put("data",null == shipmentTrackingResp ? "":shipmentTrackingResp);
             ret.add(map);
+
             String shipment1 = shipArr[1];
             shipmentTrackingResp = getShipment(shipment1,shipmentTrackingReq);
-            map.put("shipmentRef",shipment1);
-            map.put("data",shipmentTrackingResp);
-            ret.add(map);
+            Map map1 =  new HashMap();
+            map1.put("shipmentRef",shipment1);
+            map1.put("data",null == shipmentTrackingResp ? "":shipmentTrackingResp);
+            ret.add(map1);
+
             String shipment2 = shipArr[2];
             shipmentTrackingResp = getShipment(shipment2,shipmentTrackingReq);
-            map.put("shipmentRef",shipment2);
-            map.put("data",shipmentTrackingResp);
-            ret.add(map);
+            Map map2 =  new HashMap();
+            map2.put("shipmentRef",shipment2);
+            map2.put("data",null == shipmentTrackingResp ? "":shipmentTrackingResp);
+            ret.add(map2);
             return ret;
         }
         return null;
