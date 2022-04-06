@@ -13,10 +13,10 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://xxx.xxx.xxx.xxx:3306/XXXX?characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false
-      username: XXX
-      password: YYYY
-      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:sqlserver://10.7.11.94:1433;database=wind
+      username: sa
+      password: 7xRsAaSNN0lCkI2Zzu7z
+      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
       initialSize: 15
       minIdle: 10
       maxActive: 200
