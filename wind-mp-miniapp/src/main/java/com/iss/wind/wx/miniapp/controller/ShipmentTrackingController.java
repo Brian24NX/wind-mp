@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,8 +41,8 @@ public class ShipmentTrackingController {
     @ApiOperation(value = "货物追踪查询",notes = "货物追踪查询")
     @ApiResponses(value = {@ApiResponse(code = 500, message = "failedOrTimeOut")})
     @WebLog(description = "shipment-tracking")
-    public SimpleResult<Map> shipmentTracking(ShipmentTrackingReq shipmentTrackingReq) {
-        Map ret = shipmentTrackingClient.shipmentTracking(shipmentTrackingReq);
+    public SimpleResult<List<Map>> shipmentTracking(ShipmentTrackingReq shipmentTrackingReq) {
+        List<Map> ret = shipmentTrackingClient.shipmentTracking(shipmentTrackingReq);
         return null == ret?SimpleResult.fail("404","未查询到数据"):SimpleResult.success(ret);
     }
 

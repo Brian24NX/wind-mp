@@ -24,7 +24,7 @@ public class FuzzySearchController {
     @ApiOperation(value = "模糊查询",notes = "模糊查询")
     @ApiResponses(value = {@ApiResponse(code = 500, message = "failedOrTimeOut")})
     @WebLog(description = "fuzzySearch")
-    public SimpleResult<List<FuzzySearchResp>> fuzzySearch(@ApiParam(name = "codeStarts" ,value = "启航港" ,required = true) @RequestParam String codeStarts
+    public SimpleResult<List<FuzzySearchResp>> fuzzySearch(@ApiParam(name = "codeStarts" ,value = "港口编码" ,required = true) @RequestParam String codeStarts
 //                                                        @ApiParam(name = "placeOfDischarge" ,value = "目的港" ,required = true) @RequestParam String placeOfDischarge,
 //                                                        @ApiParam(name = "specificRoutings" ,value = "公司方案" ) @RequestParam String[] specificRoutings,
 //                                                        @ApiParam(name = "shippingCompany" ,value = "轮船公司" ) @RequestParam String shippingCompany
