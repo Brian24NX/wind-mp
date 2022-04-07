@@ -3,6 +3,7 @@ package com.iss.wind.wx.miniapp.controller;
 import com.hanson.rest.SimpleResult;
 import com.iss.wind.client.FuzzySearchClient;
 import com.iss.wind.client.dto.fuzzysearch.FuzzySearchResp;
+import com.iss.wind.common.util.ValUtils;
 import com.iss.wind.common.util.log.WebLog;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +25,12 @@ public class FuzzySearchController {
     @ApiOperation(value = "模糊查询",notes = "模糊查询")
     @ApiResponses(value = {@ApiResponse(code = 500, message = "failedOrTimeOut")})
     @WebLog(description = "fuzzySearch")
-    public SimpleResult<List<FuzzySearchResp>> fuzzySearch(@ApiParam(name = "codeStarts" ,value = "港口编码" ,required = true) @RequestParam String codeStarts
-//                                                        @ApiParam(name = "placeOfDischarge" ,value = "目的港" ,required = true) @RequestParam String placeOfDischarge,
-//                                                        @ApiParam(name = "specificRoutings" ,value = "公司方案" ) @RequestParam String[] specificRoutings,
-//                                                        @ApiParam(name = "shippingCompany" ,value = "轮船公司" ) @RequestParam String shippingCompany
+    public SimpleResult<List<FuzzySearchResp>> fuzzySearch(@ApiParam(name = "searchStr" ,value = "搜索字符" ,required = true) @RequestParam String searchStr
                                                           ) {
-        List<FuzzySearchResp> routing = fuzzySearchClient.fuzzySearch(codeStarts);
-        return SimpleResult.success(routing);
+//        if(ValUtils.vallength(searchStr)){
+//            return SimpleResult.fail("搜索字符","搜索字符长度");
+//        }
+        List<FuzzySearchResp> ret = fuzzySearchClient.fuzzySearch(searchStr);
+        return SimpleResult.success(ret);
     }
 }

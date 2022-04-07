@@ -17,6 +17,7 @@ public class ShipmentTrackingResp {
     @ApiModelProperty(value = "卸货港")
     private PortOfDischarge portOfDischarge;
     private String portOfDischargeCountryCode;
+    @ApiModelProperty(value = "航次")
     private String voyageReference;
     private Integer nbUnits;
     private List<Route> routes;
@@ -41,6 +42,7 @@ public class ShipmentTrackingResp {
     @Builder
     public static class Route {
         private List<JourneyLeg> journeyLegs;
+        @ApiModelProperty(value = "集装箱")
         private List<Container> containers;
     }
 
@@ -66,10 +68,14 @@ public class ShipmentTrackingResp {
     @Data
     @Builder
     public static class Container {
+        @ApiModelProperty(value = "集装箱号")
         private String id;
+        @ApiModelProperty(value = "集装箱大小")
         private Integer size;
         private String emptyReturnDepot;
+        @ApiModelProperty(value = "集装箱类型")
         private String type;
+        @ApiModelProperty(value = "运输")
         private List<Movement> movements;
     }
 
@@ -126,21 +132,31 @@ public class ShipmentTrackingResp {
     @Data
     @Builder
     public static class Movement {
+        @ApiModelProperty(value = "集装箱状态序号")
         private String statusOrder;
+        @ApiModelProperty(value = "集装箱状态")
         private Status status;
+        @ApiModelProperty(value = "运输日期")
         private String date;
         private String reportedOn;
         private String poolLocation;
         private Facility facility;
+        @ApiModelProperty(value = "运输目的地")
         private PointLocation pointLocation;
+        @ApiModelProperty(value = "航次")
         private String voyageReference;
+        @ApiModelProperty(value = "航船")
         private Vessel vessel;
+        @ApiModelProperty(value = "卸货港")
         private String pointOfDischarge;
+        @ApiModelProperty(value = "原始地")
         private String portOfOrigin;
+        @ApiModelProperty(value = "起运港")
         private String portOfLoading;
         private String finalPod;
         private String finalDest;
         private String countryCode;
+        @ApiModelProperty(value = "公司编码")
         private String shipCompCode;
         private String voyageShipCompCode;
     }
