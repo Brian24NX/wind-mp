@@ -354,7 +354,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="265" y="98" width="183" height="17" uuid="e804d949-7a28-4f20-a1e7-af7e263884f1"/>
+				<reportElement x="205" y="98" width="156" height="17" uuid="e804d949-7a28-4f20-a1e7-af7e263884f1"/>
 				<box>
 					<pen lineWidth="2.0" lineStyle="Solid" lineColor="#AAAAAA"/>
 					<topPen lineWidth="2.0" lineStyle="Solid" lineColor="#AAAAAA"/>
@@ -368,7 +368,7 @@
 				<text><![CDATA[ Moves]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="56" y="98" width="209" height="17" uuid="ad7f5b00-0164-4c21-ae8f-73f93b96a046"/>
+				<reportElement x="56" y="98" width="149" height="17" uuid="ad7f5b00-0164-4c21-ae8f-73f93b96a046"/>
 				<box>
 					<pen lineWidth="2.0" lineStyle="Solid" lineColor="#AAAAAA"/>
 					<topPen lineWidth="2.0" lineStyle="Solid" lineColor="#AAAAAA"/>
@@ -382,7 +382,7 @@
 				<text><![CDATA[ Date]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="448" y="98" width="120" height="17" uuid="a66100c2-0b21-4272-ac4c-0fe92112fc40"/>
+				<reportElement x="361" y="98" width="163" height="17" uuid="a66100c2-0b21-4272-ac4c-0fe92112fc40"/>
 				<box>
 					<pen lineWidth="2.0" lineStyle="Solid" lineColor="#AAAAAA"/>
 					<topPen lineWidth="2.0" lineStyle="Solid" lineColor="#AAAAAA"/>
@@ -396,7 +396,7 @@
 				<text><![CDATA[ Location]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="665" y="98" width="82" height="17" uuid="b57bd261-af8c-4f74-97a7-d19e88bbad40"/>
+				<reportElement x="697" y="98" width="50" height="17" uuid="b57bd261-af8c-4f74-97a7-d19e88bbad40"/>
 				<box>
 					<pen lineWidth="2.0" lineStyle="Solid" lineColor="#AAAAAA"/>
 					<topPen lineWidth="2.0" lineStyle="Solid" lineColor="#AAAAAA"/>
@@ -410,7 +410,7 @@
 				<text><![CDATA[ Voyage]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="568" y="98" width="97" height="17" uuid="71a56bba-b3bc-4a16-8b29-e6510f89ee34"/>
+				<reportElement x="524" y="98" width="173" height="17" uuid="71a56bba-b3bc-4a16-8b29-e6510f89ee34"/>
 				<box>
 					<pen lineWidth="2.0" lineStyle="Solid" lineColor="#AAAAAA"/>
 					<topPen lineWidth="2.0" lineStyle="Solid" lineColor="#AAAAAA"/>
@@ -435,7 +435,7 @@
 	<detail>
 		<band height="17" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement style="Style1" mode="Opaque" x="265" y="0" width="183" height="17" uuid="68540aca-ff41-406f-b0e7-c5be044bc8b0">
+				<reportElement style="Style1" mode="Opaque" x="205" y="0" width="156" height="17" uuid="68540aca-ff41-406f-b0e7-c5be044bc8b0">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a18c15cf-4cca-489d-bb4d-c77853f5428d"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
@@ -453,7 +453,7 @@
 				<textFieldExpression><![CDATA[$F{movementStatusName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="" style="Style1" mode="Opaque" x="448" y="0" width="120" height="17" uuid="4195daf8-740d-4936-9cbc-d536a03a3596">
+				<reportElement key="" style="Style1" mode="Opaque" x="361" y="0" width="163" height="17" uuid="4195daf8-740d-4936-9cbc-d536a03a3596">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="88273f0f-d2be-4f25-b028-52939022eed3"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
@@ -471,7 +471,7 @@
 				<textFieldExpression><![CDATA[$F{pointLocationName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="Style1" x="568" y="0" width="97" height="17" uuid="87e5850a-03fd-475e-91d7-0bb0ffbad014">
+				<reportElement style="Style1" x="524" y="0" width="173" height="17" uuid="87e5850a-03fd-475e-91d7-0bb0ffbad014">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ff95f181-6fe2-483b-9423-ffc6399b9faf"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
@@ -489,7 +489,7 @@
 				<textFieldExpression><![CDATA[$F{movementVesselName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="Style1" x="665" y="0" width="82" height="17" uuid="a7e50cb4-9999-488d-b60c-fae7c128c432">
+				<reportElement style="Style1" x="697" y="0" width="50" height="17" uuid="a7e50cb4-9999-488d-b60c-fae7c128c432">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c7bffd23-ae9b-48c7-9610-e6e8a088bcdc"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
@@ -507,7 +507,7 @@
 				<textFieldExpression><![CDATA[$F{movementVoyageReference}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="Style1" mode="Opaque" x="56" y="0" width="209" height="17" uuid="9ac53d57-8de9-4240-a271-436e51db1cd9">
+				<reportElement style="Style1" mode="Opaque" x="56" y="0" width="149" height="17" uuid="9ac53d57-8de9-4240-a271-436e51db1cd9">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0a532be5-3d62-4633-b2de-d11471feeafc"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
