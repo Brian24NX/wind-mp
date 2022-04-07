@@ -12,12 +12,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -41,40 +39,36 @@ public class FuzzySearchClient {
         ResponseEntity<List<FuzzySearchResp>> response;
         Map<String,String> paramMap=new HashMap<>();
         //优先 codeStarts 查询
-        paramMap.put("codeStarts",searchStr);
-        response = getSearch(paramMap);
-        if (null != response && response.getStatusCodeValue() == 200){
+        String url = digitalApiUrl + "/referential/location/v3/points/light?codeStarts="+searchStr;
+        response = getSearch(paramMap,url);
+        if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206) && !CollectionUtils.isEmpty(response.getBody())){
             return response.getBody();
         }
         //再先 nameStarts 查询
-        paramMap = new HashMap<>();
-        paramMap.put("nameStarts",searchStr);
-        response = getSearch(paramMap);
-        if (null != response && response.getStatusCodeValue() == 200){
+        url = digitalApiUrl + "/referential/location/v3/points/light?nameStarts="+searchStr;
+        response = getSearch(paramMap,url);
+        if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206) && !CollectionUtils.isEmpty(response.getBody())){
             return response.getBody();
         }
         //再 nameContains 查询
-        paramMap = new HashMap<>();
-        paramMap.put("nameContains",searchStr);
-        response = getSearch(paramMap);
-        if (null != response && response.getStatusCodeValue() == 200){
+        url = digitalApiUrl + "/referential/location/v3/points/light?nameContains="+searchStr;
+        response = getSearch(paramMap,url);
+        if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206) && !CollectionUtils.isEmpty(response.getBody())){
             return response.getBody();
         }
         //再 codeOrNameContains 查询
-        paramMap = new HashMap<>();
-        paramMap.put("codeOrNameContains",searchStr);
-        response = getSearch(paramMap);
-        if (null != response && response.getStatusCodeValue() == 200){
+        url = digitalApiUrl + "/referential/location/v3/points/light?codeOrNameContains="+searchStr;
+        response = getSearch(paramMap,url);
+        if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206) && !CollectionUtils.isEmpty(response.getBody())){
             return response.getBody();
         }
         return new ArrayList<>();
     }
 
 
-    public ResponseEntity<List<FuzzySearchResp>> getSearch(Map<String,String> paramMap){
+    public ResponseEntity<List<FuzzySearchResp>> getSearch(Map<String,String> paramMap,String url){
         log.info("getSearch-paramMap:"+paramMap);
         String scope = "location:be";
-        String url = digitalApiUrl + "/referential/location/v3/points/light";
         WindAccessTokenResp accessToken = windAuthClient.getAccessToken(scope);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken.getTokenType() + " " + accessToken.getAccessToken());

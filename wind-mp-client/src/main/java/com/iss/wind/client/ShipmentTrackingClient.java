@@ -132,7 +132,7 @@ public class ShipmentTrackingClient {
         paramMap.put("eqpId",shipment);
         ResponseEntity<ShipmentTrackingResp> response = handleSipments(url,scope,paramMap);
         ShipmentTrackingResp shipmentTrackingResp;
-        if (null != response && response.getStatusCodeValue() == 200){
+        if (null != response && response.getStatusCodeValue() == 200 && null != response.getBody()){
             shipmentTrackingResp = response.getBody();
         }else {
             url = baseUrlMent + shipment + endPointMent;
