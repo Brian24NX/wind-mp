@@ -25,8 +25,8 @@ public class FuzzySearchController {
     @ApiOperation(value = "模糊查询",notes = "模糊查询")
     @ApiResponses(value = {@ApiResponse(code = 500, message = "failedOrTimeOut")})
     @WebLog(description = "fuzzySearch")
-    public SimpleResult<List<FuzzySearchResp>> fuzzySearch(@ApiParam(name = "searchStr" ,value = "搜索字符" ,required = true) @RequestParam String searchStr
-                                                          ) {
+    public SimpleResult<List<FuzzySearchResp>> fuzzySearch(@ApiParam(name = "searchStr" ,value = "搜索字符" ,required = true) @RequestParam String searchStr) {
+
 //        if(ValUtils.vallength(searchStr)){
 //            return SimpleResult.fail("搜索字符","搜索字符长度");
 //        }
