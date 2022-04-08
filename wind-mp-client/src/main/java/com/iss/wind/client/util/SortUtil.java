@@ -1,7 +1,5 @@
-package com.iss.wind.wx.miniapp.util;
+package com.iss.wind.client.util;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.iss.wind.client.dto.sechedule.RoutingFinderResp;
 import lombok.extern.slf4j.Slf4j;
 
@@ -476,17 +474,17 @@ public class SortUtil {
 
 
     public static void srot() throws ParseException {
-        JSONArray objArr = JSONObject.parseArray(rfs);
-        List<RoutingFinderResp> list = JSONObject.parseArray(objArr.toJSONString(), RoutingFinderResp.class);
+//        JSONArray objArr = JSONObject.parseArray(rfs);
+//        List<RoutingFinderResp> list = JSONObject.parseArray(objArr.toJSONString(), RoutingFinderResp.class);
 //        listSortDeparture(list);
 //        for (RoutingFinderResp r:list) {
 //            log.info(r.getRoutingDetails().get(0).getPointFrom().getDepartureDateLocal()+"");
 //        }
-
-        listSortTrans(list);
-        for (RoutingFinderResp r:list) {
-            log.info(r.getTransitTime()+"");
-        }
+//
+//        listSortTrans(list);
+//        for (RoutingFinderResp r:list) {
+//            log.info(r.getTransitTime()+"");
+//        }
     }
 
     //离港日期排序-departureDateLocal

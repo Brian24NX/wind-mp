@@ -4,11 +4,10 @@ import com.iss.wind.client.dto.auth.WindAccessTokenResp;
 import com.iss.wind.client.dto.sechedule.RoutingFinderPostReq;
 import com.iss.wind.client.dto.sechedule.RoutingFinderResp;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import com.iss.wind.client.util.SortUtil;
 import com.iss.wind.client.util.rest.RestTemplateLogInterceptor;
 import org.springframework.beans.factory.Aware;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,10 +116,13 @@ public class RoutingFinderClient {
             return ret;
         }
         //遍历获取方案种类及是否直达
-        List<Integer> solutionNos = new ArrayList<>();
+        List<Map> solutionNos = new ArrayList<>();
         for (RoutingFinderResp r : list){
-            if(!solutionNos.contains(r.getSolutionNo())){
-                solutionNos.add(r.getSolutionNo());
+            Set keys = getKeys(solutionNos);
+            if(!keys.contains(r.getSolutionNo())){
+                Map m = new HashMap();
+                m.put(r.getSolutionNo(),r.getRoutingDetails().get(0).getTransportation().getVoyage().getService().getCode());
+                solutionNos.add(m);
             }
             r.setDirectFlag(1 == r.getRoutingDetails().size()? true:false);
         }
@@ -136,8 +138,22 @@ public class RoutingFinderClient {
         List<RoutingFinderResp> needSolutionList = CollectionUtils.isEmpty(routingFinderPostReq.getSortSolutionNos())? routingFinderPostReq.getRoutings():getNeedSolutionList(routingFinderPostReq);
         //再获取直达过滤后的list
         List<RoutingFinderResp> needDirectList = routingFinderPostReq.isNeedDirectFlag()? getNeedDirectList(needSolutionList): needSolutionList;
-
-        return null;
+        //再进行排序（升序）
+        if(1 ==  routingFinderPostReq.getSortDateType()){
+            //排序离港日期
+            SortUtil.listSortDeparture(needDirectList);
+        }else if(2 ==  routingFinderPostReq.getSortDateType()){
+            //排序到港日期
+            SortUtil.listSortArrival(needDirectList);
+        }else {
+            //排序运输时间
+            SortUtil.listSortTrans(needDirectList);
+        }
+        //找出最早标识之前要跟据排好的顺序设置一下
+        setRoutingOrder(needDirectList);
+        //再是否找出最早标识
+        List<RoutingFinderResp> retList = routingFinderPostReq.isNeedEarlyFlag()? getNeedEarlyList(needDirectList,routingFinderPostReq.getSortDateType()): needDirectList;
+        return retList;
     }
 
     //获取需要排序的方案list
@@ -164,5 +180,34 @@ public class RoutingFinderClient {
         return needDirectList;
     }
 
+    //顺序设置
+    public List<RoutingFinderResp> setRoutingOrder(List<RoutingFinderResp> needDirectList){
+        for (int i = 0; i < needDirectList.size() ;i++) {
+            needDirectList.get(i).setOrder(i+1);
+        }
+        return needDirectList;
+    }
 
+    //为list找出最早标识
+    public List<RoutingFinderResp> getNeedEarlyList(List<RoutingFinderResp> needDirectList,int sortDateType){
+        //若是已经经历 到港日期排序，则第一个就是最早到港
+        if (2 == sortDateType){
+            needDirectList.get(0).setEarlyFlag(true);
+            return needDirectList;
+        }
+        //其他的类型，再次进行到港日期排序后设置
+        List<RoutingFinderResp> sortArriList = needDirectList;
+        SortUtil.listSortArrival(sortArriList);
+        //设置最早标识
+        needDirectList.get(sortArriList.get(0).getOrder()).setEarlyFlag(true);
+        return needDirectList;
+    }
+
+    public Set getKeys(List<Map> solutionNos){
+        Set<Integer> keys = new HashSet<>();
+        for (Map map :solutionNos) {
+            keys.addAll(map.keySet());
+        }
+        return keys;
+    }
 }

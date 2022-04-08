@@ -46,40 +46,4 @@ public class ShipmentTrackingController {
         return null == ret?SimpleResult.fail("404","未查询到数据"):SimpleResult.success(ret);
     }
 
-//    @GetMapping("/test")
-//    @ApiOperation(value = "测试",notes = "测试")
-//    @ApiResponses(value = {
-//            @ApiResponse(code = 504, message = "请求异常或超时"),
-//            @ApiResponse(code = 505, message = "操作失败")})
-//    @WebLog(description = "测试")
-//    public SimpleResult<String> shipmentTracking1() {
-////        log.info("contrl-param:"+shipmentTrackingReq.getShipmentRef()+":"+shipmentTrackingReq.getEqpid());
-//        String url ="https://community-stg.unileverfoodsolutions.com.cn/api/v21/adam/11111doc.html";
-////        String url ="https://www.baidu.com/";
-//        MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-//        params.add("username", "admin");
-//        params.add("password", "adam123");
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Authorization", "");
-//        headers.add("scope", "");
-//        HttpEntity request = new HttpEntity(headers);
-//        ParameterizedTypeReference<String> responseType = new ParameterizedTypeReference<String>() {};
-////        ResponseEntity<String> resp = restTemplate.postForEntity(url,params,String.class);
-//        ResponseEntity<String> resp = restTemplate.exchange(url, HttpMethod.GET, request, responseType,params);;
-//        return SimpleResult.success("success");
-//
-////        try {
-////            ResponseEntity<String> resp = restTemplate.postForEntity(url,params,String.class);
-////            log.info("rep::::"+resp.getStatusCode()+":"+resp.getStatusCodeValue());//rep::::200 OK:200
-////            if(200 == resp.getStatusCodeValue()) {
-////                return SimpleResult.success("success");
-////            }else {
-////                return SimpleResult.fail("505","操作失败");
-////            }
-////        }catch (Exception e){
-////            log.error("异常：",e);
-////            return SimpleResult.fail("504","请求异常或超时");
-////        }
-//    }
-
 }

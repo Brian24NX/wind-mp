@@ -3,6 +3,7 @@ package com.iss.wind.client.dto.sechedule;
 import java.util.Date;
 import java.util.List;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,10 +23,13 @@ public class RoutingFinderResp {
     private Integer transitTime;
     private String specificRoutings;
     private List<RoutingDetail> routingDetails;
-    //是否直达
+
+    @ApiModelProperty(value = "是否直达")
     private boolean directFlag;
-    //是否最早到达
-    private boolean earlyFlag;
+    @ApiModelProperty(value = "是否最早到达")
+    private boolean earlyFlag = false;
+    @ApiModelProperty(value = "排序编号")
+    private Integer order;
 
     @Data
     @Builder

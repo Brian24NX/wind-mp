@@ -26,7 +26,7 @@ public class RoutingController {
     private RoutingFinderClient routingFinderClient;
 
     @GetMapping("/routing-finder")
-    @ApiOperation(value = "航线信息查询",notes = "航线信息查询")
+    @ApiOperation(value = "航线查询",notes = "航线查询")
     @ApiResponses(value = {@ApiResponse(code = 500, message = "failedOrTimeOut")})
     @WebLog(description = "routing-finder")
     public SimpleResult<Map> routings(@ApiParam(name = "placeOfLoading" ,value = "启航港" ,required = true) @RequestParam String placeOfLoading,
