@@ -1,12 +1,16 @@
 package com.iss.wind.client;
 
 import com.iss.wind.client.dto.auth.WindAccessTokenResp;
+import com.iss.wind.client.dto.sechedule.RoutingFinderPostReq;
 import com.iss.wind.client.dto.sechedule.RoutingFinderResp;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.iss.wind.client.util.rest.RestTemplateLogInterceptor;
+import org.springframework.beans.factory.Aware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -104,4 +109,60 @@ public class RoutingFinderClient {
         restTemplate.getInterceptors().clear();
         return response.getBody();
     }
+
+    //方案list和是否直达
+    public Map listRoutings(List<RoutingFinderResp> list){
+        Map ret = new HashMap();
+        if(CollectionUtils.isEmpty(list)){
+            return ret;
+        }
+        //遍历获取方案种类及是否直达
+        List<Integer> solutionNos = new ArrayList<>();
+        for (RoutingFinderResp r : list){
+            if(!solutionNos.contains(r.getSolutionNo())){
+                solutionNos.add(r.getSolutionNo());
+            }
+            r.setDirectFlag(1 == r.getRoutingDetails().size()? true:false);
+        }
+        ret.put("solutionNos",solutionNos);
+        ret.put("routings",list);
+        return ret;
+    }
+
+
+    //根据：方案->直达->排序->最早到达 的顺序
+    public List<RoutingFinderResp> routingSort(RoutingFinderPostReq routingFinderPostReq){
+        //先根据方案筛选出list
+        List<RoutingFinderResp> needSolutionList = CollectionUtils.isEmpty(routingFinderPostReq.getSortSolutionNos())? routingFinderPostReq.getRoutings():getNeedSolutionList(routingFinderPostReq);
+        //再获取直达过滤后的list
+        List<RoutingFinderResp> needDirectList = routingFinderPostReq.isNeedDirectFlag()? getNeedDirectList(needSolutionList): needSolutionList;
+
+        return null;
+    }
+
+    //获取需要排序的方案list
+    public List<RoutingFinderResp> getNeedSolutionList(RoutingFinderPostReq routingFinderPostReq){
+        List<RoutingFinderResp> needSolutionList = new ArrayList<>();
+        List<Integer> sortSolutionNos = routingFinderPostReq.getSortSolutionNos();
+        List<RoutingFinderResp> routings = routingFinderPostReq.getRoutings();
+        for (RoutingFinderResp r :routings) {
+            if(sortSolutionNos.contains(r.getSolutionNo())){
+                needSolutionList.add(r);
+            }
+        }
+        return needSolutionList;
+    }
+
+    //获取需要排序的直达list
+    public List<RoutingFinderResp> getNeedDirectList(List<RoutingFinderResp> needSolutionList){
+        List<RoutingFinderResp> needDirectList = new ArrayList<>();
+        for (RoutingFinderResp r :needSolutionList) {
+            if(r.isDirectFlag()){
+                needDirectList.add(r);
+            }
+        }
+        return needDirectList;
+    }
+
+
 }

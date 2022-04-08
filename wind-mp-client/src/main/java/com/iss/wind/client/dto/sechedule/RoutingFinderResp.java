@@ -2,8 +2,11 @@ package com.iss.wind.client.dto.sechedule;
 
 import java.util.Date;
 import java.util.List;
+
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author Hanson
@@ -11,16 +14,23 @@ import lombok.Data;
  */
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class RoutingFinderResp {
     private String shippingCompany;
     private Integer solutionNo;
     private Integer transitTime;
     private String specificRoutings;
     private List<RoutingDetail> routingDetails;
-
+    //是否直达
+    private boolean directFlag;
+    //是否最早到达
+    private boolean earlyFlag;
 
     @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class RoutingDetail{
         private PointFrom pointFrom;
         private PointTo pointTo;
@@ -30,6 +40,8 @@ public class RoutingFinderResp {
 
     @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class CutOff{
         private PortCutoff portCutoff;
         private Vgm vgm;
@@ -38,8 +50,11 @@ public class RoutingFinderResp {
         // private ShippingInstructionAcceptance shippingInstructionAcceptance;
         private CustomsAcceptance customsAcceptance;
     }
+
     @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class PortCutoff{
         private Date local;
         private Date utc;
@@ -47,6 +62,8 @@ public class RoutingFinderResp {
 
     @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Vgm{
         private Date local;
         private Date utc;
@@ -55,6 +72,8 @@ public class RoutingFinderResp {
 
     @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public  static class CustomsAcceptance {
         private Date local;
         private Date utc;
@@ -62,6 +81,8 @@ public class RoutingFinderResp {
 
     @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class PointFrom{
         private Location location;
         private String callId;
@@ -78,6 +99,8 @@ public class RoutingFinderResp {
 
     @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class FacilityCodifications{
         private String codificationType;
         private String codification;
@@ -87,6 +110,8 @@ public class RoutingFinderResp {
 
     @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class LocationCodifications {
         private String codificationType;
         private String codification;
@@ -95,6 +120,8 @@ public class RoutingFinderResp {
 
     @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Facility{
         private String facilityType;
         private String internalCode;
@@ -104,6 +131,8 @@ public class RoutingFinderResp {
 
     @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Location{
         private String name;
         private String internalCode;
@@ -113,10 +142,12 @@ public class RoutingFinderResp {
 
     @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class PointTo{
         private Location location;
         private String callId;
-        private String arrivalDateLocal;
+        private Date arrivalDateLocal;
         private Date arrivalDateGmt;
 
 
@@ -125,6 +156,8 @@ public class RoutingFinderResp {
 
     @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Transportation{
         private String transportationPhase;
         private String meanOfTransport;
@@ -136,6 +169,8 @@ public class RoutingFinderResp {
 
     @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Voyage {
         private String voyageReference;
         private Service service;
@@ -143,6 +178,8 @@ public class RoutingFinderResp {
 
     @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class  Vehicule {
         private String vehiculeType;
         private String vehiculeName;
@@ -153,6 +190,8 @@ public class RoutingFinderResp {
 
     @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class  Service {
         private String code;
         private String internalCode;
