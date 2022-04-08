@@ -67,7 +67,7 @@
 				<textFieldExpression><![CDATA[$P{containerId}]]></textFieldExpression>
 			</textField>
 			<image onErrorType="Blank">
-				<reportElement x="37" y="-38" width="121" height="96" uuid="69b956ef-26cf-4699-ae78-73f3da2b4871"/>
+				<reportElement x="28" y="-38" width="121" height="96" uuid="69b956ef-26cf-4699-ae78-73f3da2b4871"/>
 				<imageExpression><![CDATA[$P{Logo}]]></imageExpression>
 			</image>
 			<staticText>
@@ -160,7 +160,6 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="8.4" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{portOfDischargeName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="335" y="66" width="65" height="16" uuid="b7e55c21-b5ba-4724-95da-e23fb77a9377"/>
@@ -221,7 +220,6 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="8.4" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{portOfLoadingName}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="400" y="50" width="92" height="16" uuid="bcaea92a-4d1d-418c-a288-d22b73cc3347"/>
@@ -507,7 +505,7 @@
 				<textFieldExpression><![CDATA[$F{movementVoyageReference}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="Style1" mode="Opaque" x="56" y="0" width="149" height="17" uuid="9ac53d57-8de9-4240-a271-436e51db1cd9">
+				<reportElement style="Style1" mode="Opaque" x="47" y="0" width="149" height="17" uuid="9ac53d57-8de9-4240-a271-436e51db1cd9">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0a532be5-3d62-4633-b2de-d11471feeafc"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
