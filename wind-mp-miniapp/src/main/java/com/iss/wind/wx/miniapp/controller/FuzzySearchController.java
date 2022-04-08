@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @Api(value = "模糊查询")
 @RestController
@@ -25,12 +26,9 @@ public class FuzzySearchController {
     @ApiOperation(value = "模糊查询",notes = "模糊查询")
     @ApiResponses(value = {@ApiResponse(code = 500, message = "failedOrTimeOut")})
     @WebLog(description = "fuzzySearch")
-    public SimpleResult<List<FuzzySearchResp>> fuzzySearch(@ApiParam(name = "searchStr" ,value = "搜索字符" ,required = true) @RequestParam String searchStr) {
-
-//        if(ValUtils.vallength(searchStr)){
-//            return SimpleResult.fail("搜索字符","搜索字符长度");
-//        }
+    public SimpleResult<List<Map>> fuzzySearch(@ApiParam(name = "searchStr" ,value = "搜索字符" ,required = true) @RequestParam String searchStr) {
         List<FuzzySearchResp> ret = fuzzySearchClient.fuzzySearch(searchStr);
-        return SimpleResult.success(ret);
+        //组装处理
+        return SimpleResult.success(fuzzySearchClient.handle(ret));
     }
 }
