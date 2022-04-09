@@ -66,3 +66,4 @@ com:
         url: https://auth.cma-cgm.com/as/token.oauth2
         secret: gpeKRDr4ar1HoPw41bAneLbTlAMYcTtXrfjb4sBSbiasUgIo3RJUInqEuLRZqLHT
       digital-api-url: https://digital-apis.cma-cgm.com/
+      digital-api-url-test: https://digital-apis-uat.cma-cgm.com/

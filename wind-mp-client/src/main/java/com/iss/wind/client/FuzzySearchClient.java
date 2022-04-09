@@ -28,7 +28,10 @@ public class FuzzySearchClient {
     @Autowired
     private WindAuthClient windAuthClient;
 
-    @Value("${com.iss.wind.digital-api-url}")
+//    @Value("${com.iss.wind.digital-api-url}")
+//    private String digitalApiUrl;
+
+    @Value("${com.iss.wind.digital-api-url-test}")
     private String digitalApiUrl;
 
     /**
@@ -81,7 +84,7 @@ public class FuzzySearchClient {
     public ResponseEntity<List<FuzzySearchResp>> getSearch(Map<String,String> paramMap,String url){
         log.info("getSearch-paramMap:"+paramMap);
         String scope = "location:be";
-        WindAccessTokenResp accessToken = windAuthClient.getAccessToken(scope);
+        WindAccessTokenResp accessToken = windAuthClient.getTestAccessToken(scope);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken.getTokenType() + " " + accessToken.getAccessToken());
         headers.add("scope", scope);
