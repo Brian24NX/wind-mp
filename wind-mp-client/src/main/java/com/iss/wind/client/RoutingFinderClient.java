@@ -111,12 +111,15 @@ public class RoutingFinderClient {
     }
 
     //方案list和是否直达
-    public Map listRoutings(List<RoutingFinderResp> list){
+    public Map listRoutings(List<RoutingFinderResp> list,String placeOfLoading,String placeOfDischarge,String departureDate,String arrivalDate,String searchRange){
         Map ret = new HashMap();
         if(CollectionUtils.isEmpty(list)){
             return ret;
         }
         //遍历获取方案种类及是否直达
+        int cncCount = 0;
+        int anlCount = 0;
+        int aplCount = 0;
         List<Map> solutionNos = new ArrayList<>();
         for (RoutingFinderResp r : list){
             List<RoutingFinderResp.RoutingDetail> routingDetails = r.getRoutingDetails();
@@ -125,6 +128,15 @@ public class RoutingFinderClient {
                 Map m = new HashMap();
                 m.put(r.getSolutionNo(),routingDetails.get(0).getTransportation().getVoyage().getService().getCode());
                 solutionNos.add(m);
+            }
+            if(r.getShippingCompany() == "0011" ){
+                cncCount ++;
+            }
+            if(r.getShippingCompany() == "0002" ){
+                anlCount ++;
+            }
+            if(r.getShippingCompany() == "0015" ){
+                aplCount ++;
             }
             r.setDirectFlag(1 == routingDetails.size()? true:false);
             //起运港
@@ -152,6 +164,16 @@ public class RoutingFinderClient {
         ret.put("againReq",getAgainReq(list));
         ret.put("solutionNos",solutionNos);
         ret.put("routings",list);
+        //给前端做缓存
+        ret.put("placeOfLoading",placeOfLoading);
+        ret.put("placeOfDischarge",placeOfDischarge);
+        ret.put("departureDate",departureDate);
+        ret.put("arrivalDate",arrivalDate);
+        ret.put("searchRange",searchRange);
+        ret.put("cnc",cncCount);//0011 - CNC
+        ret.put("anl",anlCount);//0002 - ANL
+        ret.put("apl",aplCount);//0015 - APL
+
         return ret;
     }
 

@@ -38,7 +38,7 @@ public class RoutingController {
                                             @ApiParam(name = "searchRange" ,value = "搜寻天数" ) @RequestParam String searchRange
                                                           ) {
         List<RoutingFinderResp> routing = routingFinderClient.routings(placeOfLoading, placeOfDischarge,specificRoutings,shippingCompany,departureDate,arrivalDate,searchRange);
-        return SimpleResult.success(routingFinderClient.listRoutings(routing));
+        return SimpleResult.success(routingFinderClient.listRoutings(routing,placeOfLoading,placeOfDischarge,departureDate,arrivalDate,searchRange));
     }
 
     @PostMapping("/routingSort")
