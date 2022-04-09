@@ -48,10 +48,9 @@ public class DateForPDFUtil {
     }
 
     public static String currentDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        String Date = sdf.format(date);
+        String Date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(date);
         String transDate = transDate(Date);
-        String formatTime = DateFormat.getTimeInstance().format(date);
+        String formatTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
         String time = formatTime.substring(0, 5);
         return transDate + " at " + time;
     }

@@ -422,7 +422,7 @@
 				<text><![CDATA[ Vessel]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="564" y="1" width="183" height="14" uuid="64339c3a-b791-423a-9168-8823b5c75dd1"/>
+				<reportElement x="564" y="1" width="245" height="14" uuid="64339c3a-b791-423a-9168-8823b5c75dd1"/>
 				<textElement>
 					<font fontName="DejaVu Sans" size="10.8"/>
 				</textElement>

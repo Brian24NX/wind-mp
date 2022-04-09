@@ -47,9 +47,9 @@ public class DownloadPdfController {
     //@WebLog(description = "downloadPdf")
     public String download(@RequestBody ShipmentTrackingResp trackingResp) {
         try {
-//            String Path1 = "D:\\Wind\\wind-mp\\wind-mp-miniapp\\src\\main\\resources\\pdfTemplate\\tracking.jrxml";
-//            String Path2 = "D:\\Wind\\wind-mp\\wind-mp-miniapp\\src\\main\\resources\\pdfTemplate\\tracking.jasper";
-//            JasperCompileManager.compileReportToFile(Path1, Path2);
+            //String Path1 = "D:\\Wind\\wind-mp\\wind-mp-miniapp\\src\\main\\resources\\pdfTemplate\\tracking.jrxml";
+            //String Path2 = "D:\\Wind\\wind-mp\\wind-mp-miniapp\\src\\main\\resources\\pdfTemplate\\tracking.jasper";
+            //JasperCompileManager.compileReportToFile(Path1, Path2);
             log.info("\n接收到来自前台的数据:{}", trackingResp);
             InputStream fis = this.getClass().getResourceAsStream("/pdfTemplate/tracking.jasper");
             String filePath = PDFPATH+File.separator+UUID.randomUUID().toString().replace("-","")+"-Tracking.pdf";
