@@ -75,4 +75,35 @@ public class WindAuthClient {
         headers.add("Host", HttpUtils.getIpAddress());
     }
 
+    //获取test环境的token
+    public WindAccessTokenResp getTestAccessToken(String scope){
+        String clientTestUrl = "https://auth-pre.cma-cgm.com/as/token.oauth2";
+        if(accessTokenMap.containsKey(scope)){
+            WindAccessTokenResp accessTokenResp = accessTokenMap.get(scope);
+            long expires = System.currentTimeMillis() - accessTokenResp.getGenMillisecond();
+            log.warn("scope:{} genMillisecond:{} expiresIn:{} expires:{}",scope,accessTokenResp.getGenMillisecond(),accessTokenResp.getExpiresIn(),expires);
+            //未过期，返回
+            if(expires < Long.parseLong(accessTokenResp.getExpiresIn()) * 1000){
+                return accessTokenMap.get(scope);
+            }
+            //已过期移除,重新获取
+            log.warn("scope:{} expire",scope);
+        }
+        MultiValueMap<String, Object> postParameters = new LinkedMultiValueMap<>();
+        postParameters.add("grant_type", "client_credentials");
+        postParameters.add("scope", scope);
+        postParameters.add("client_id", "beapp-wind");
+        postParameters.add("client_secret", "3cW2qfWgqx50GIepNAHWuyYTa5FSZbs1OLZzLK3wUxjUW0qQIpNKfpV7mBrRSt2l");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/x-www-form-urlencoded");
+        HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(postParameters, headers);
+        if(clientTestUrl.startsWith("https")){
+            HttpUtils.ignoreSsl();
+        }
+        restTemplate.getInterceptors().add(new RestTemplateLogInterceptor());
+        WindAccessTokenResp accessTokenResp = restTemplate.postForObject(clientTestUrl, entity, WindAccessTokenResp.class);
+        accessTokenResp.setGenMillisecond(System.currentTimeMillis());
+        accessTokenMap.put(scope,accessTokenResp);
+        return accessTokenResp;
+    }
 }
