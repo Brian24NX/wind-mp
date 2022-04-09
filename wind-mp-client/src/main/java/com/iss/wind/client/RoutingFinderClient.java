@@ -7,6 +7,7 @@ import com.iss.wind.client.dto.sechedule.RoutingFinderResp;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.iss.wind.client.util.ServiceNameMap;
 import com.iss.wind.client.util.SortUtil;
 import com.iss.wind.client.util.rest.RestTemplateLogInterceptor;
 import org.springframework.beans.factory.Aware;
@@ -118,14 +119,37 @@ public class RoutingFinderClient {
         //遍历获取方案种类及是否直达
         List<Map> solutionNos = new ArrayList<>();
         for (RoutingFinderResp r : list){
+            List<RoutingFinderResp.RoutingDetail> routingDetails = r.getRoutingDetails();
             Set keys = getKeys(solutionNos);
             if(!keys.contains(r.getSolutionNo())){
                 Map m = new HashMap();
-                m.put(r.getSolutionNo(),r.getRoutingDetails().get(0).getTransportation().getVoyage().getService().getCode());
+                m.put(r.getSolutionNo(),routingDetails.get(0).getTransportation().getVoyage().getService().getCode());
                 solutionNos.add(m);
             }
-            r.setDirectFlag(1 == r.getRoutingDetails().size()? true:false);
+            r.setDirectFlag(1 == routingDetails.size()? true:false);
+            //起运港
+            r.setPointfrom(routingDetails.get(0).getPointFrom().getLocation().getName());
+            //起运时间
+            r.setDeparturedate(routingDetails.get(0).getPointFrom().getDepartureDateLocal());
+            //目的港
+            r.setPointto(1 == routingDetails.size()? routingDetails.get(0).getPointTo().getLocation().getName():routingDetails.get(routingDetails.size()-1).getPointTo().getLocation().getName());
+            //到达时间
+            r.setArrivaldate(1 == routingDetails.size()? routingDetails.get(0).getPointTo().getArrivalDateLocal():routingDetails.get(routingDetails.size()-1).getPointTo().getArrivalDateLocal());
+            //转成次数
+            r.setTranshipment(routingDetails.size()-1);
+            //第一艘船名
+            r.setShipname(routingDetails.get(0).getTransportation().getVehicule().getVehiculeName());
+            //多个服务用
+            r.setService(getServices(routingDetails));
         }
+        //设置原顺序
+        setRoutingOrder(list);
+        //最早离港
+        getEarlyDepartureList(list);
+        //最早到港
+        getEarlyArrivalList(list);
+        //是否再调一次【//默认只有0001，不需要再调一次；若有0002或0011或0015 则需再调一次接口】
+        ret.put("againReq",getAgainReq(list));
         ret.put("solutionNos",solutionNos);
         ret.put("routings",list);
         return ret;
@@ -188,7 +212,7 @@ public class RoutingFinderClient {
         return needDirectList;
     }
 
-    //为list找出最早标识
+    //为list找出最早到港标识
     public List<RoutingFinderResp> getNeedEarlyList(List<RoutingFinderResp> needDirectList,int sortDateType){
         //若是已经经历 到港日期排序，则第一个就是最早到港
         if (2 == sortDateType){
@@ -209,5 +233,42 @@ public class RoutingFinderClient {
             keys.addAll(map.keySet());
         }
         return keys;
+    }
+
+    //根据routingDetai下面的tran 获取server Code
+    public String getServices(List<RoutingFinderResp.RoutingDetail> routingDetails){
+        String serv = "";
+        for (RoutingFinderResp.RoutingDetail rd : routingDetails) {
+            RoutingFinderResp.Voyage voyage = rd.getTransportation().getVoyage();
+            if(null != voyage) {
+                serv += ServiceNameMap.map.get(voyage.getService().getCode()) + "/";
+            }
+        }
+        return serv.substring(0,serv.length()-1);
+    }
+
+    //最早离港
+    public void getEarlyDepartureList(List<RoutingFinderResp> needList){
+        List<RoutingFinderResp> sortArriList = needList;
+        SortUtil.listSortDeparture(sortArriList);
+        //设置最早标识
+        needList.get(sortArriList.get(0).getOrder()).setDepartureDateFlag(true);
+    }
+
+    //最早到港
+    public void getEarlyArrivalList(List<RoutingFinderResp> needList){
+        List<RoutingFinderResp> sortArriList = needList;
+        SortUtil.listSortArrival(sortArriList);
+        //设置最早标识
+        needList.get(sortArriList.get(0).getOrder()).setArrivalDateFlag(true);
+    }
+
+    public boolean getAgainReq(List<RoutingFinderResp> list){
+        for (RoutingFinderResp r : list){
+            if(r.getShippingCompany() == "0002" || r.getShippingCompany() == "0011" || r.getShippingCompany() == "0015"){
+                return true;
+            }
+        }
+        return false;
     }
 }

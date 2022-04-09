@@ -25,11 +25,31 @@ public class RoutingFinderResp {
     private List<RoutingDetail> routingDetails;
 
     @ApiModelProperty(value = "是否直达")
-    private boolean directFlag;
+    private boolean directFlag = false;;
     @ApiModelProperty(value = "是否最早到达")
     private boolean earlyFlag = false;
     @ApiModelProperty(value = "排序编号")
     private Integer order;
+    //前端要的
+    @ApiModelProperty(value = "起运港")
+    private String pointfrom;
+    @ApiModelProperty(value = "起运时间")
+    private Date departuredate;
+    @ApiModelProperty(value = "目的港")
+    private String pointto;
+    @ApiModelProperty(value = "到达时间")
+    private Date arrivaldate;
+    @ApiModelProperty(value = "转成次数")
+    private int transhipment;
+    @ApiModelProperty(value = "第一艘船名")
+    private String shipname;
+    @ApiModelProperty(value = "多个服务用/隔开")
+    private String service;
+    //原数据就进行排序打标签
+    @ApiModelProperty(value = "最早离港")
+    private boolean departureDateFlag = false;
+    @ApiModelProperty(value = "最早到港")
+    private boolean arrivalDateFlag = false;
 
     @Data
     @Builder
