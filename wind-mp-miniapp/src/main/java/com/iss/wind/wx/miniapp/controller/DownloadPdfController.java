@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -45,11 +46,11 @@ public class DownloadPdfController {
     //@WebLog(description = "downloadPdf")
     public String download(@RequestBody ShipmentTrackingResp trackingResp) {
         try {
-            //String Path1 = "D:\\Wind\\wind-mp\\wind-mp-miniapp\\src\\main\\resources\\pdfTemplate\\tracking.jrxml";
+//            String Path1 = "D:\\Wind\\wind-mp\\wind-mp-miniapp\\src\\main\\resources\\pdfTemplate\\tracking.jrxml";
+//            String Path2 = "D:\\Wind\\wind-mp\\wind-mp-miniapp\\src\\main\\resources\\pdfTemplate\\tracking.jasper";
+//            JasperCompileManager.compileReportToFile(Path1, Path2);
             log.info("\n接收到来自前台的数据:{}", trackingResp);
-            ClassPathResource resource = new ClassPathResource("pdfTemplate/tracking.jasper");
-            //JasperCompileManager.compileReportToFile(Path1, resource.getFile().getPath());
-            FileInputStream fis = new FileInputStream(resource.getFile());
+            InputStream fis = this.getClass().getResourceAsStream("/pdfTemplate/tracking.jasper");
             String path = new ClassPathResource("static").getFile().getPath();
             String filePath = path+File.separator+UUID.randomUUID().toString().replace("-","")+"-Tracking.pdf";
             //调用方法以获取正确的数据格式;
