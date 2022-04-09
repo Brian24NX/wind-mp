@@ -20,8 +20,7 @@ public class TrackingExportService {
         ShipmentTrackingResp.Container container = trackingResp.getRoutes().get(0).getContainers().get(0);
         List<ShipmentTrackingResp.Movement> movements = container.getMovements();
         List<ShipmentTrackingResp.JourneyLeg> journeyLegs = trackingResp.getRoutes().get(0).getJourneyLegs();
-        ClassPathResource resource = new ClassPathResource("pdfTemplate/wind.png");
-        InputStream fis = new FileInputStream(resource.getFile());
+        InputStream fis = this.getClass().getResourceAsStream("/pdfTemplate/wind.png");
         map.put("Logo",fis);
         if (journeyLegs != null && journeyLegs.size() != 0) {
             map.put("etaLastPortDate", journeyLegs.get(0).getCollectionDate());

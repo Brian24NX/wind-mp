@@ -34,6 +34,7 @@ public class DownloadPdfController {
     @Autowired
     private TrackingExportService exportService;
 
+    private static final String PDFPATH = "C:\\deploy\\PDF_Repository";
 
     /**
      * 下载PDF
@@ -51,8 +52,7 @@ public class DownloadPdfController {
 //            JasperCompileManager.compileReportToFile(Path1, Path2);
             log.info("\n接收到来自前台的数据:{}", trackingResp);
             InputStream fis = this.getClass().getResourceAsStream("/pdfTemplate/tracking.jasper");
-            String path = new ClassPathResource("static").getFile().getPath();
-            String filePath = path+File.separator+UUID.randomUUID().toString().replace("-","")+"-Tracking.pdf";
+            String filePath = PDFPATH+File.separator+UUID.randomUUID().toString().replace("-","")+"-Tracking.pdf";
             //调用方法以获取正确的数据格式;
             HashMap<String, Object> map = exportService.getColumnHeader(trackingResp);
             ArrayList<Map<String, Object>> list = exportService.getDetails(trackingResp);
