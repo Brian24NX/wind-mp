@@ -505,7 +505,7 @@
 				<textFieldExpression><![CDATA[$F{movementVoyageReference}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="Style1" mode="Opaque" x="47" y="0" width="149" height="17" uuid="9ac53d57-8de9-4240-a271-436e51db1cd9">
+				<reportElement style="Style1" mode="Opaque" x="56" y="0" width="149" height="17" uuid="9ac53d57-8de9-4240-a271-436e51db1cd9">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0a532be5-3d62-4633-b2de-d11471feeafc"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
