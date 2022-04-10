@@ -1,5 +1,6 @@
 package com.iss.wind.wx.miniapp.controller;
 
+import com.hanson.rest.SimpleResult;
 import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingResp;
 import com.iss.wind.common.util.log.WebLog;
 import com.iss.wind.serevice.export.TrackingExportService;
@@ -45,7 +46,7 @@ public class DownloadPdfController {
     @ApiOperation(value = "pdf模板导出", notes = "pdf模板导出")
     @ApiResponses(value = {@ApiResponse(code = 500, message = "failedOrTimeOut")})
     //@WebLog(description = "downloadPdf")
-    public String download(@RequestBody ShipmentTrackingResp trackingResp) {
+    public SimpleResult<String> download(@RequestBody ShipmentTrackingResp trackingResp) {
         try {
             //String Path1 = "D:\\Wind\\wind-mp\\wind-mp-miniapp\\src\\main\\resources\\pdfTemplate\\tracking.jrxml";
             //String Path2 = "D:\\Wind\\wind-mp\\wind-mp-miniapp\\src\\main\\resources\\pdfTemplate\\tracking.jasper";
@@ -61,7 +62,7 @@ public class DownloadPdfController {
             JasperPrint jasperPrint = JasperFillManager.fillReport(fis, map, new JRBeanCollectionDataSource(list));
             JasperExportManager.exportReportToPdfFile(jasperPrint,filePath);
             log.info("\nPdf文件地址:{}",filePath);
-            return fileName;
+            return SimpleResult.success(fileName);
         } catch (Exception e) {
             log.error("异常:", e);
             throw new RuntimeException("下载PDF方法异常");
