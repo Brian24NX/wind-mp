@@ -5,6 +5,7 @@ import com.iss.wind.common.enums.StatusEnum;
 import com.iss.wind.serevice.util.DateForPDFUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 import java.io.InputStream;
 import java.util.*;
 
@@ -12,7 +13,6 @@ import java.util.*;
 @Service
 public class TrackingExportService {
 
-    private int currentDate;
 
     public HashMap<String, Object> getColumnHeader(ShipmentTrackingResp trackingResp) throws Exception {
         Date date = new Date();
@@ -21,8 +21,8 @@ public class TrackingExportService {
         List<ShipmentTrackingResp.Movement> movements = container.getMovements();
         List<ShipmentTrackingResp.JourneyLeg> journeyLegs = trackingResp.getRoutes().get(0).getJourneyLegs();
         InputStream fis = this.getClass().getResourceAsStream("/pdfTemplate/wind.png");
+        int currentDate = getCurrentDateStatus(movements);
         ShipmentTrackingResp.Status status = movements.get(movements.size() - currentDate).getStatus();
-        this.currentDate = 0;
         map.put("Logo", fis);
         if (journeyLegs != null && journeyLegs.size() != 0) {
             map.put("etaLastPortDate", journeyLegs.get(0).getCollectionDate());
@@ -45,7 +45,6 @@ public class TrackingExportService {
     public ArrayList<Map<String, Object>> getDetails(ShipmentTrackingResp trackingResp) {
         List<ShipmentTrackingResp.Movement> movements = trackingResp.getRoutes().get(0).getContainers().get(0).getMovements();
         ArrayList<Map<String, Object>> Lists = new ArrayList<>();
-
         for (int i = 0; i < movements.size(); i++) {
             Map<String, Object> map = new HashMap<>();
             ShipmentTrackingResp.Movement movement = movements.get(movements.size() - 1 - i);
@@ -56,9 +55,6 @@ public class TrackingExportService {
             if (movement.getVessel() != null) {
                 movementVesselName = movement.getVessel().getName();
             }
-            if (DateForPDFUtil.isPastDate(movement.getDate())) {
-                currentDate++;
-            }
             String statusUpname = StatusEnum.getUpNameByCode(status.getCode(), status.getName());
             String movementVoyageReference = movement.getVoyageReference();
             map.put("movementDate", movementDate);
@@ -68,19 +64,30 @@ public class TrackingExportService {
             map.put("movementVoyageReference", movementVoyageReference);
             Lists.add(map);
         }
-        int pastDate = currentDate;
+        int currentDate = getCurrentDateStatus(movements);
         for (Map<String, Object> map : Lists) {
-            if (pastDate > 1) {
+            if (currentDate > 1) {
                 map.put("FlagDate", "1");
-                pastDate--;
-            } else if (pastDate == 1) {
+                currentDate--;
+            } else if (currentDate == 1) {
                 map.put("FlagDate", "2");
 
-                pastDate--;
+                currentDate--;
             } else {
                 map.put("FlagDate", "3");
             }
         }
         return Lists;
+    }
+
+    public int getCurrentDateStatus(List<ShipmentTrackingResp.Movement> movements) {
+        int currentDate = 0;
+        for (int i = 0; i < movements.size(); i++) {
+            ShipmentTrackingResp.Movement movement = movements.get(movements.size() - 1 - i);
+            if (DateForPDFUtil.isPastDate(movement.getDate())) {
+                currentDate++;
+            }
+        }
+        return currentDate;
     }
 }
