@@ -240,7 +240,7 @@ public class RoutingFinderClient {
     //顺序设置
     public List<RoutingFinderResp> setRoutingOrder(List<RoutingFinderResp> needDirectList){
         for (int i = 0; i < needDirectList.size() ;i++) {
-            needDirectList.get(i).setOrder(i+1);
+            needDirectList.get(i).setOrder(i);
         }
         return needDirectList;
     }
