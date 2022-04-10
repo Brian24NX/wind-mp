@@ -9,7 +9,9 @@ import java.util.stream.Collectors;
 
 import com.iss.wind.client.util.ServiceNameMap;
 import com.iss.wind.client.util.SortUtil;
+import com.iss.wind.client.util.rest.BusinessException;
 import com.iss.wind.client.util.rest.RestTemplateLogInterceptor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.Aware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +29,7 @@ import org.springframework.web.client.RestTemplate;
  * @date 2022/3/3  16:04
  * Schedule API
  */
+@Slf4j
 @Component
 public class RoutingFinderClient {
 
@@ -107,78 +110,86 @@ public class RoutingFinderClient {
         restTemplate.getInterceptors().add(new RestTemplateLogInterceptor());
         ResponseEntity<List<RoutingFinderResp>> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,paramMap);
         restTemplate.getInterceptors().clear();
-        return response.getBody();
+        if (null != response && (response.getStatusCodeValue() == 200 )){
+            return response.getBody();
+        }
+        return null;
     }
 
     //方案list和是否直达
     public Map listRoutings(List<RoutingFinderResp> list,String placeOfLoading,String placeOfDischarge,String departureDate,String arrivalDate,String searchRange){
-        Map ret = new HashMap();
-        if(CollectionUtils.isEmpty(list)){
+        try {
+            Map ret = new HashMap();
+            if (CollectionUtils.isEmpty(list)) {
+                return ret;
+            }
+            //遍历获取方案种类及是否直达
+            int cncCount = 0;
+            int anlCount = 0;
+            int aplCount = 0;
+            List<Map> solutionNos = new ArrayList<>();
+            for (RoutingFinderResp r : list) {
+                List<RoutingFinderResp.RoutingDetail> routingDetails = r.getRoutingDetails();
+                Set keys = getKeys(solutionNos);
+                if (!keys.contains(r.getSolutionNo())) {
+                    Map m = new HashMap();
+                    m.put(r.getSolutionNo(), routingDetails.get(0).getTransportation().getVoyage().getService().getCode());
+                    solutionNos.add(m);
+                }
+                if ("0011".equals(r.getShippingCompany())) {
+                    cncCount++;
+                }
+                if ("0002".equals(r.getShippingCompany())) {
+                    anlCount++;
+                }
+                if ("0015".equals(r.getShippingCompany())) {
+                    aplCount++;
+                }
+                r.setDirectFlag(1 == routingDetails.size() ? true : false);
+                //起运港
+                r.setPointfrom(routingDetails.get(0).getPointFrom().getLocation().getName());
+                //起运时间
+                r.setDeparturedate(routingDetails.get(0).getPointFrom().getDepartureDateLocal());
+                //目的港
+                r.setPointto(1 == routingDetails.size() ? routingDetails.get(0).getPointTo().getLocation().getName() : routingDetails.get(routingDetails.size() - 1).getPointTo().getLocation().getName());
+                //到达时间
+                r.setArrivaldate(1 == routingDetails.size() ? routingDetails.get(0).getPointTo().getArrivalDateLocal() : routingDetails.get(routingDetails.size() - 1).getPointTo().getArrivalDateLocal());
+                //转成次数
+                r.setTranshipment(routingDetails.size() - 1);
+                //第一艘船名
+                r.setShipname(routingDetails.get(0).getTransportation().getVehicule().getVehiculeName());
+                //多个服务用
+                r.setService(getServices(routingDetails));
+            }
+            //设置原顺序
+            setRoutingOrder(list);
+            //最早离港
+            getEarlyDepartureList(list);
+            //最早到港
+            getEarlyArrivalList(list);
+            //是否再调一次【//默认只有0001，不需要再调一次；若有0002或0011或0015 则需再调一次接口】
+            ret.put("againReq", getAgainReq(list));
+            ret.put("solutionNos", solutionNos);
+            ret.put("routings", list);
+            //给前端做缓存
+            ret.put("placeOfLoading", placeOfLoading);
+            ret.put("placeOfDischarge", placeOfDischarge);
+            ret.put("departureDate", departureDate);
+            ret.put("arrivalDate", arrivalDate);
+            ret.put("searchRange", searchRange);
+            ret.put("cnc", cncCount);//0011 - CNC
+            ret.put("anl", anlCount);//0002 - ANL
+            ret.put("apl", aplCount);//0015 - APL
             return ret;
+        }catch (Exception e){
+            log.error("listRoutings异常：",e);
+            throw new BusinessException("请求异常或超时!");
         }
-        //遍历获取方案种类及是否直达
-        int cncCount = 0;
-        int anlCount = 0;
-        int aplCount = 0;
-        List<Map> solutionNos = new ArrayList<>();
-        for (RoutingFinderResp r : list){
-            List<RoutingFinderResp.RoutingDetail> routingDetails = r.getRoutingDetails();
-            Set keys = getKeys(solutionNos);
-            if(!keys.contains(r.getSolutionNo())){
-                Map m = new HashMap();
-                m.put(r.getSolutionNo(),routingDetails.get(0).getTransportation().getVoyage().getService().getCode());
-                solutionNos.add(m);
-            }
-            if(r.getShippingCompany() == "0011" ){
-                cncCount ++;
-            }
-            if(r.getShippingCompany() == "0002" ){
-                anlCount ++;
-            }
-            if(r.getShippingCompany() == "0015" ){
-                aplCount ++;
-            }
-            r.setDirectFlag(1 == routingDetails.size()? true:false);
-            //起运港
-            r.setPointfrom(routingDetails.get(0).getPointFrom().getLocation().getName());
-            //起运时间
-            r.setDeparturedate(routingDetails.get(0).getPointFrom().getDepartureDateLocal());
-            //目的港
-            r.setPointto(1 == routingDetails.size()? routingDetails.get(0).getPointTo().getLocation().getName():routingDetails.get(routingDetails.size()-1).getPointTo().getLocation().getName());
-            //到达时间
-            r.setArrivaldate(1 == routingDetails.size()? routingDetails.get(0).getPointTo().getArrivalDateLocal():routingDetails.get(routingDetails.size()-1).getPointTo().getArrivalDateLocal());
-            //转成次数
-            r.setTranshipment(routingDetails.size()-1);
-            //第一艘船名
-            r.setShipname(routingDetails.get(0).getTransportation().getVehicule().getVehiculeName());
-            //多个服务用
-            r.setService(getServices(routingDetails));
-        }
-        //设置原顺序
-        setRoutingOrder(list);
-        //最早离港
-        getEarlyDepartureList(list);
-        //最早到港
-        getEarlyArrivalList(list);
-        //是否再调一次【//默认只有0001，不需要再调一次；若有0002或0011或0015 则需再调一次接口】
-        ret.put("againReq",getAgainReq(list));
-        ret.put("solutionNos",solutionNos);
-        ret.put("routings",list);
-        //给前端做缓存
-        ret.put("placeOfLoading",placeOfLoading);
-        ret.put("placeOfDischarge",placeOfDischarge);
-        ret.put("departureDate",departureDate);
-        ret.put("arrivalDate",arrivalDate);
-        ret.put("searchRange",searchRange);
-        ret.put("cnc",cncCount);//0011 - CNC
-        ret.put("anl",anlCount);//0002 - ANL
-        ret.put("apl",aplCount);//0015 - APL
 
-        return ret;
     }
 
 
-    //根据：方案->直达->排序->最早到达 的顺序
+    //根据：方案->直达->最早到达(服务名)->排序 的顺序
     public List<RoutingFinderResp> routingSort(RoutingFinderPostReq routingFinderPostReq){
         //先根据方案筛选出list
         List<RoutingFinderResp> needSolutionList = CollectionUtils.isEmpty(routingFinderPostReq.getSortSolutionNos())? routingFinderPostReq.getRoutings():getNeedSolutionList(routingFinderPostReq);
@@ -287,7 +298,7 @@ public class RoutingFinderClient {
 
     public boolean getAgainReq(List<RoutingFinderResp> list){
         for (RoutingFinderResp r : list){
-            if(r.getShippingCompany() == "0002" || r.getShippingCompany() == "0011" || r.getShippingCompany() == "0015"){
+            if("0002".equals(r.getShippingCompany()) || "0011".equals(r.getShippingCompany())  || "0015".equals(r.getShippingCompany())){
                 return true;
             }
         }

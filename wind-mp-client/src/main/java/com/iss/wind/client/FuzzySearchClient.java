@@ -48,13 +48,15 @@ public class FuzzySearchClient {
             return new ArrayList<>();
         }
         //搜寻字符长度为2，则先优先搜索国家code，无则空
-        String url = digitalApiUrl + "/referential/location/v3/points/light?countryCode="+searchStr;
-        response = getSearch(paramMap,url);
-        if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206)){
-            return response.getBody();
+        if(StrUtils.isBlank(searchStr) ||  2 == searchStr.length()) {
+            String url = digitalApiUrl + "/referential/location/v3/points/light?countryCode=" + searchStr;
+            response = getSearch(paramMap, url);
+            if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206)) {
+                return response.getBody();
+            }
         }
         //搜寻字符长度>=3 ，优先 codeStarts 查询
-        url = digitalApiUrl + "/referential/location/v3/points/light?codeStarts="+searchStr;
+        String url = digitalApiUrl + "/referential/location/v3/points/light?codeStarts="+searchStr;
         response = getSearch(paramMap,url);
         if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206) && !CollectionUtils.isEmpty(response.getBody())){
             return response.getBody();
