@@ -34,7 +34,7 @@ public class DownloadPdfController {
     @Autowired
     private TrackingExportService exportService;
 
-    private static final String PDFPATH = "C:\\deploy\\PDF_Repository";
+    private static final String PDFPATH = "D:\\deploy\\PDF_Repository";
 
     /**
      * 下载PDF
@@ -54,8 +54,8 @@ public class DownloadPdfController {
             InputStream fis = this.getClass().getResourceAsStream("/pdfTemplate/tracking.jasper");
             String filePath = PDFPATH+File.separator+UUID.randomUUID().toString().replace("-","")+"-Tracking.pdf";
             //调用方法以获取正确的数据格式;
-            HashMap<String, Object> map = exportService.getColumnHeader(trackingResp);
             ArrayList<Map<String, Object>> list = exportService.getDetails(trackingResp);
+            HashMap<String, Object> map = exportService.getColumnHeader(trackingResp);
             //对模板文件进行填充形成新文件,写入到输出流;
             JasperPrint jasperPrint = JasperFillManager.fillReport(fis, map, new JRBeanCollectionDataSource(list));
             JasperExportManager.exportReportToPdfFile(jasperPrint,filePath);

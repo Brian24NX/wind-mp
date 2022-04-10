@@ -26,6 +26,13 @@ spring:
     settings:
       classic_compatible: true
 
+  web:
+    resources:
+      static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static,classpath:/public/,file:${pdf.download-path}
+
+pdf:
+  download-path: D:/deploy/PDF_Repository/
+
 server:
   servlet:
     context-path: /api/miniapp

@@ -84,7 +84,9 @@
 				<text><![CDATA[Exported On]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="56" y="50" width="72" height="16" uuid="301cd123-4944-4f0e-a19b-01fdb320483a"/>
+				<reportElement x="56" y="50" width="68" height="16" uuid="301cd123-4944-4f0e-a19b-01fdb320483a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
@@ -98,7 +100,9 @@
 				<text><![CDATA[ Current status]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="56" y="66" width="72" height="16" uuid="a5f2c6be-1cb4-4f2b-81e5-a00c57deaa18"/>
+				<reportElement x="56" y="66" width="68" height="16" uuid="a5f2c6be-1cb4-4f2b-81e5-a00c57deaa18">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
@@ -111,7 +115,7 @@
 				<text><![CDATA[ ETA last port  ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="256" y="66" width="79" height="16" uuid="2d8a982f-6edd-483e-a8c8-f035d0fa699f"/>
+				<reportElement x="278" y="66" width="79" height="16" uuid="2d8a982f-6edd-483e-a8c8-f035d0fa699f"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
@@ -124,7 +128,7 @@
 				<text><![CDATA[ Port of Loading]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="400" y="66" width="92" height="16" uuid="e8fbef33-41fb-43e1-bf43-674cf2eb0423"/>
+				<reportElement x="448" y="66" width="92" height="16" uuid="e8fbef33-41fb-43e1-bf43-674cf2eb0423"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
@@ -137,7 +141,7 @@
 				<text><![CDATA[ Destination]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="606" y="66" width="76" height="16" uuid="261da384-4186-441e-9eb7-cc6ee6e7eafb"/>
+				<reportElement x="641" y="66" width="76" height="16" uuid="261da384-4186-441e-9eb7-cc6ee6e7eafb"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
@@ -150,7 +154,7 @@
 				<text><![CDATA[ Container Type]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="492" y="66" width="114" height="16" uuid="33beca53-fdeb-4e8f-8ea9-cce39852ba64"/>
+				<reportElement x="540" y="66" width="101" height="16" uuid="33beca53-fdeb-4e8f-8ea9-cce39852ba64"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -162,7 +166,7 @@
 				</textElement>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="335" y="66" width="65" height="16" uuid="b7e55c21-b5ba-4724-95da-e23fb77a9377"/>
+				<reportElement x="357" y="66" width="91" height="16" uuid="b7e55c21-b5ba-4724-95da-e23fb77a9377"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -175,7 +179,9 @@
 				<textFieldExpression><![CDATA[$P{portOfLoadingName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="682" y="66" width="65" height="16" uuid="d691374b-2637-465e-bc28-0ac91f64a709"/>
+				<reportElement x="717" y="66" width="30" height="16" uuid="d691374b-2637-465e-bc28-0ac91f64a709">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -188,14 +194,14 @@
 				<textFieldExpression><![CDATA[$P{containerType}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="128" y="66" width="128" height="16" uuid="e0d292ab-8b90-4dca-ae2b-c8175a524dac"/>
+				<reportElement x="124" y="66" width="154" height="16" uuid="e0d292ab-8b90-4dca-ae2b-c8175a524dac"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="8.4" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{etaLastPortDate}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="256" y="50" width="79" height="16" uuid="3ff6a48b-946a-47c8-80b5-a2fa1c7a05b6"/>
+				<reportElement x="278" y="50" width="79" height="16" uuid="3ff6a48b-946a-47c8-80b5-a2fa1c7a05b6"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
@@ -209,7 +215,7 @@
 				<text><![CDATA[ Receipt]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="335" y="50" width="65" height="16" uuid="5040476d-6a5b-4f0e-be27-ae2cbc96d896"/>
+				<reportElement x="357" y="50" width="91" height="16" uuid="5040476d-6a5b-4f0e-be27-ae2cbc96d896"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
@@ -222,7 +228,7 @@
 				</textElement>
 			</textField>
 			<staticText>
-				<reportElement x="400" y="50" width="92" height="16" uuid="bcaea92a-4d1d-418c-a288-d22b73cc3347"/>
+				<reportElement x="448" y="50" width="92" height="16" uuid="bcaea92a-4d1d-418c-a288-d22b73cc3347"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
@@ -236,7 +242,7 @@
 				<text><![CDATA[ Last discharge port]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="492" y="50" width="114" height="16" uuid="b13ccfba-3b3e-4d8b-a6b1-06a17d56ccea"/>
+				<reportElement x="540" y="50" width="101" height="16" uuid="b13ccfba-3b3e-4d8b-a6b1-06a17d56ccea"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
@@ -250,7 +256,7 @@
 				<textFieldExpression><![CDATA[$P{portOfDischargeName}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="606" y="50" width="76" height="16" uuid="3839ab9b-8f44-42bf-954d-59b95a839968"/>
+				<reportElement x="641" y="50" width="76" height="16" uuid="3839ab9b-8f44-42bf-954d-59b95a839968"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
@@ -264,7 +270,7 @@
 				<text><![CDATA[ Container size]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="128" y="50" width="128" height="16" uuid="dcd595bd-9d39-42dd-be55-97bd0c933846"/>
+				<reportElement x="124" y="50" width="154" height="16" uuid="dcd595bd-9d39-42dd-be55-97bd0c933846"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
@@ -278,7 +284,7 @@
 				<textFieldExpression><![CDATA[$P{movementNewStatusName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="682" y="50" width="65" height="16" uuid="ef52fb7f-812f-4aa1-9428-8eef23c6b1df"/>
+				<reportElement x="717" y="50" width="30" height="16" uuid="ef52fb7f-812f-4aa1-9428-8eef23c6b1df"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
@@ -292,7 +298,7 @@
 				<textFieldExpression><![CDATA[$P{containerSize}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="56" y="82" width="200" height="16" uuid="099f5059-a0e0-4dd5-bf56-dd409444c721"/>
+				<reportElement x="56" y="82" width="222" height="16" uuid="099f5059-a0e0-4dd5-bf56-dd409444c721"/>
 				<box>
 					<leftPen lineWidth="1.0" lineColor="#CCCCCC"/>
 				</box>
@@ -302,7 +308,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="256" y="82" width="79" height="16" uuid="107b600a-5fd4-42f7-aaa1-390df079adcc"/>
+				<reportElement x="278" y="82" width="79" height="16" uuid="107b600a-5fd4-42f7-aaa1-390df079adcc"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
@@ -315,7 +321,7 @@
 				<text><![CDATA[ Custom number]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="335" y="82" width="65" height="16" uuid="39ff60a3-20b6-4a92-a39d-7cceb8fe37d0"/>
+				<reportElement x="357" y="82" width="91" height="16" uuid="39ff60a3-20b6-4a92-a39d-7cceb8fe37d0"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -328,7 +334,7 @@
 				<textFieldExpression><![CDATA[$P{customNum}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="400" y="82" width="206" height="16" uuid="591102bc-fc27-48cf-8620-3693b7e9acbf"/>
+				<reportElement x="448" y="82" width="193" height="16" uuid="591102bc-fc27-48cf-8620-3693b7e9acbf"/>
 				<box>
 					<leftPen lineWidth="1.0" lineColor="#CCCCCC"/>
 				</box>
@@ -338,7 +344,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="606" y="82" width="141" height="16" uuid="82a14f2d-6c2f-452c-982c-ccc8d1420c0e"/>
+				<reportElement x="641" y="82" width="106" height="16" uuid="82a14f2d-6c2f-452c-982c-ccc8d1420c0e"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
