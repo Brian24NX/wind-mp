@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import com.iss.wind.client.util.ServiceNameMap;
 import com.iss.wind.client.util.SortUtil;
+import com.iss.wind.client.util.StrUtils;
 import com.iss.wind.client.util.rest.BusinessException;
 import com.iss.wind.client.util.rest.RestTemplateLogInterceptor;
 import lombok.extern.slf4j.Slf4j;
@@ -287,7 +288,10 @@ public class RoutingFinderClient {
         for (RoutingFinderResp.RoutingDetail rd : routingDetails) {
             RoutingFinderResp.Voyage voyage = rd.getTransportation().getVoyage();
             if(null != voyage) {
-                serv += ServiceNameMap.map.get(voyage.getService().getCode()) + "/";
+                String serName = String.valueOf(ServiceNameMap.map.get(voyage.getService().getCode()));
+                if(!StrUtils.isBlank(serName)) {
+                    serv += serName + "/";
+                }
             }
         }
         return serv.substring(0,serv.length()-1);
