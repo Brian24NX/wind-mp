@@ -111,7 +111,7 @@ public class RoutingFinderClient {
         restTemplate.getInterceptors().add(new RestTemplateLogInterceptor());
         ResponseEntity<List<RoutingFinderResp>> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,paramMap);
         restTemplate.getInterceptors().clear();
-        if (null != response && (response.getStatusCodeValue() == 200 )){
+        if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206 )){
             return response.getBody();
         }
         return null;
@@ -158,7 +158,8 @@ public class RoutingFinderClient {
                 //转成次数
                 r.setTranshipment(routingDetails.size() - 1);
                 //第一艘船名
-                r.setShipname(routingDetails.get(0).getTransportation().getVehicule().getVehiculeName());
+                RoutingFinderResp.Vehicule veh = routingDetails.get(0).getTransportation().getVehicule();
+                r.setShipname(null == veh?"":veh.getVehiculeName());
                 //多个服务用
                 r.setService(getServices(routingDetails));
             }
