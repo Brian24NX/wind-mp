@@ -291,7 +291,8 @@ public class RoutingFinderClient {
         for (RoutingFinderResp.RoutingDetail rd : routingDetails) {
             RoutingFinderResp.Voyage voyage = rd.getTransportation().getVoyage();
             if(null != voyage) {
-                String serName = String.valueOf(ServiceNameMap.map.get(voyage.getService().getCode()));
+                Object serNameObj = ServiceNameMap.map.get(voyage.getService().getCode());
+                String serName = null == serNameObj ? "":serNameObj.toString();
                 if(!StrUtils.isBlank(serName)) {
                     serv += serName + "/";
                 }
