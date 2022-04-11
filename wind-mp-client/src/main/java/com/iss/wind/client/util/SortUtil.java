@@ -496,8 +496,8 @@ public class SortUtil {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                     try {
                         // format.format(o1.getTime()) 表示 date转string类型 如果是string类型就不要转换了
-                        Date dt1 = o1.getRoutingDetails().get(0).getPointFrom().getDepartureDateLocal();
-                        Date dt2 = o2.getRoutingDetails().get(0).getPointFrom().getDepartureDateLocal();
+                        Date dt1 = o1.getDeparturedate();
+                        Date dt2 = o2.getDeparturedate();
                         log.info(dt1+":"+dt2);
                         // 这是由小向大排序   如果要由小向大转换比较符号就可以
                         if (dt1.getTime() > dt2.getTime()) {
@@ -526,8 +526,8 @@ public class SortUtil {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                     try {
                         // format.format(o1.getTime()) 表示 date转string类型 如果是string类型就不要转换了
-                        Date dt1 = o1.getRoutingDetails().get(0).getPointTo().getArrivalDateLocal();
-                        Date dt2 = o2.getRoutingDetails().get(0).getPointTo().getArrivalDateLocal();
+                        Date dt1 = o1.getArrivaldate();
+                        Date dt2 = o2.getArrivaldate();
                         log.info(dt1+":"+dt2);
                         // 这是由小向大排序   如果要由小向大转换比较符号就可以
                         if (dt1.getTime() > dt2.getTime()) {

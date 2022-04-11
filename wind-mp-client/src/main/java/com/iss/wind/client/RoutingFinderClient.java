@@ -93,7 +93,7 @@ public class RoutingFinderClient {
      * @return
      */
     public List<RoutingFinderResp> routings(String placeOfLoading,String placeOfDischarge,String[] specificRoutings,String shippingCompany,String departureDate,String arrivalDate,String searchRange){
-        String url = digitalApiUrl + "/vesseloperation/route/v2/routings?placeOfLoading={placeOfLoading}&placeOfDischarge={placeOfDischarge}";
+        String url = digitalApiUrl + "/vesseloperation/route/v2/routings?placeOfLoading={placeOfLoading}&placeOfDischarge={placeOfDischarge}&shippingCompany={shippingCompany}";
         WindAccessTokenResp accessToken = windAuthClient.getAccessToken("rf:be");
         Map<String,Object> paramMap=new HashMap<>();
         paramMap.put("placeOfLoading",placeOfLoading);
@@ -128,23 +128,37 @@ public class RoutingFinderClient {
             int cncCount = 0;
             int anlCount = 0;
             int aplCount = 0;
-            List<Map> solutionNos = new ArrayList<>();
+            int cmaCount = 0;
+            List<String> cncList = new ArrayList<>();
+            List<String> anlList = new ArrayList<>();
+            List<String> aplList = new ArrayList<>();
+            List<String> cmaList = new ArrayList<>();
+            Map solutionServices = new HashMap();
             for (RoutingFinderResp r : list) {
                 List<RoutingFinderResp.RoutingDetail> routingDetails = r.getRoutingDetails();
-                Set keys = getKeys(solutionNos);
-                if (!keys.contains(r.getSolutionNo())) {
-                    Map m = new HashMap();
-                    m.put(r.getSolutionNo(), routingDetails.get(0).getTransportation().getVoyage().getService().getCode());
-                    solutionNos.add(m);
-                }
                 if ("0011".equals(r.getShippingCompany())) {
+                    if(!StrUtils.isBlank(r.getService()) && !cncList.contains(r.getService())){
+                        cncList.add(r.getService());
+                    }
                     cncCount++;
                 }
                 if ("0002".equals(r.getShippingCompany())) {
+                    if(!StrUtils.isBlank(r.getService()) && !anlList.contains(r.getService())){
+                        anlList.add(r.getService());
+                    }
                     anlCount++;
                 }
                 if ("0015".equals(r.getShippingCompany())) {
+                    if(!StrUtils.isBlank(r.getService()) && !aplList.contains(r.getService())){
+                        aplList.add(r.getService());
+                    }
                     aplCount++;
+                }
+                if ("0001".equals(r.getShippingCompany())) {
+                    if(!StrUtils.isBlank(r.getService()) && !cmaList.contains(r.getService())){
+                        cmaList.add(r.getService());
+                    }
+                    cmaCount++;
                 }
                 r.setDirectFlag(1 == routingDetails.size() ? true : false);
                 //起运港
@@ -171,7 +185,11 @@ public class RoutingFinderClient {
             getEarlyArrivalList(list);
             //是否再调一次【//默认只有0001，不需要再调一次；若有0002或0011或0015 则需再调一次接口】
             ret.put("againReq", getAgainReq(list));
-            ret.put("solutionNos", solutionNos);
+            solutionServices.put("cnc",cncList);
+            solutionServices.put("anl",anlList);
+            solutionServices.put("apl",aplList);
+            solutionServices.put("cma",cmaList);
+            ret.put("solutionServices", solutionServices);
             ret.put("routings", list);
             //给前端做缓存
             ret.put("placeOfLoading", placeOfLoading);
@@ -182,6 +200,7 @@ public class RoutingFinderClient {
             ret.put("cnc", cncCount);//0011 - CNC
             ret.put("anl", anlCount);//0002 - ANL
             ret.put("apl", aplCount);//0015 - APL
+            ret.put("cma", cmaCount);//0001 - CMA
             return ret;
         }catch (Exception e){
             log.error("listRoutings异常：",e);
@@ -194,7 +213,8 @@ public class RoutingFinderClient {
     //根据：方案->直达->最早到达(服务名过滤后最早list)->排序 的顺序
     public List<RoutingFinderResp> routingSort(RoutingFinderPostReq routingFinderPostReq){
         //先根据方案筛选出list
-        if(CollectionUtils.isEmpty(routingFinderPostReq.getSortSolutionNos())){
+        List<String> services = routingFinderPostReq.getSortSolutionServices();//前端传入的排序服务
+        if(CollectionUtils.isEmpty(services)){
             //没有选择方案不排序
             return new ArrayList<>();
         }
@@ -202,7 +222,7 @@ public class RoutingFinderClient {
         //再获取直达过滤后的list
         List<RoutingFinderResp> needDirectList = routingFinderPostReq.isNeedDirectFlag()? getNeedDirectList(needSolutionList): needSolutionList;
         //再根据服务 找出最早标识
-        List<RoutingFinderResp> earlyList = routingFinderPostReq.isNeedEarlyFlag()? getNeedEarlyList(needDirectList): needDirectList;
+        List<RoutingFinderResp> earlyList = routingFinderPostReq.isNeedEarlyFlag()? getNeedEarlyList(services,needDirectList): needDirectList;
         //再进行排序（升序）
         if(1 ==  routingFinderPostReq.getSortDateType()){
             //排序离港日期
@@ -220,10 +240,10 @@ public class RoutingFinderClient {
     //获取需要排序的方案list
     public List<RoutingFinderResp> getNeedSolutionList(RoutingFinderPostReq routingFinderPostReq){
         List<RoutingFinderResp> needSolutionList = new ArrayList<>();
-        List<Integer> sortSolutionNos = routingFinderPostReq.getSortSolutionNos();
+        List<String> services = routingFinderPostReq.getSortSolutionServices();
         List<RoutingFinderResp> routings = routingFinderPostReq.getRoutings();
         for (RoutingFinderResp r :routings) {
-            if(sortSolutionNos.contains(r.getSolutionNo())){
+            if(services.contains(r.getService())){
                 needSolutionList.add(r);
             }
         }
@@ -250,14 +270,16 @@ public class RoutingFinderClient {
     }
 
     //根据服务code 为list找出最早到港标识
-    public List<RoutingFinderResp> getNeedEarlyList(List<RoutingFinderResp> needDirectList){
+    public List<RoutingFinderResp> getNeedEarlyList(List<String> services,List<RoutingFinderResp> needDirectList){
         //先获取所有的services
-        List <String> servList = new ArrayList<>();
-        for (RoutingFinderResp r : needDirectList) {
-            if(!servList.contains(r.getService())){
-                servList.add(r.getService());
-            }
-        }
+//        List <String> servList = new ArrayList<>();
+//        for (RoutingFinderResp r : needDirectList) {
+//            if(!servList.contains(r.getService())){
+//                servList.add(r.getService());
+//            }
+//        }
+
+        List<String> servList = services;
         //获取哪些服务
         servList.stream().forEach(serv -> log.info("get-all-services::"+serv));
         //再获取serList进行排序
@@ -325,4 +347,14 @@ public class RoutingFinderClient {
         }
         return false;
     }
+
+
+//    public void getServiceList(){
+//        Set keys = getKeys(solutionNos);
+//        if (!keys.contains(r.getSolutionNo())) {
+//            Map m = new HashMap();
+//            m.put(r.getSolutionNo(), routingDetails.get(0).getTransportation().getVoyage().getService().getCode());
+//            solutionNos.add(m);
+//        }
+//    }
 }
