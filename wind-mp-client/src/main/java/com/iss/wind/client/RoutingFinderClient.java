@@ -197,10 +197,10 @@ public class RoutingFinderClient {
             ret.put("departureDate", departureDate);
             ret.put("arrivalDate", arrivalDate);
             ret.put("searchRange", searchRange);
-            ret.put("cnc", cncCount);//0011 - CNC
-            ret.put("anl", anlCount);//0002 - ANL
-            ret.put("apl", aplCount);//0015 - APL
-            ret.put("cma", cmaCount);//0001 - CMA
+            ret.put("cnc", cncList.size());//0011 - CNC
+            ret.put("anl", anlList.size());//0002 - ANL
+            ret.put("apl", aplList.size());//0015 - APL
+            ret.put("cma", cmaList.size());//0001 - CMA
             return ret;
         }catch (Exception e){
             log.error("listRoutings异常：",e);
