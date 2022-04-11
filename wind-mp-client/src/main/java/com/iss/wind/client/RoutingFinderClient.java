@@ -298,7 +298,7 @@ public class RoutingFinderClient {
                 }
             }
         }
-        return serv.substring(0,serv.length()-1);
+        return StrUtils.isBlank(serv)?"":serv.substring(0,serv.length()-1);
     }
 
     //最早离港
