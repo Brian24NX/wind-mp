@@ -136,6 +136,8 @@ public class RoutingFinderClient {
             Map solutionServices = new HashMap();
             for (RoutingFinderResp r : list) {
                 List<RoutingFinderResp.RoutingDetail> routingDetails = r.getRoutingDetails();
+                //多个服务用
+                r.setService(getServices(routingDetails));
                 if ("0011".equals(r.getShippingCompany())) {
                     if(!StrUtils.isBlank(r.getService()) && !cncList.contains(r.getService())){
                         cncList.add(r.getService());
@@ -174,8 +176,6 @@ public class RoutingFinderClient {
                 //第一艘船名
                 RoutingFinderResp.Vehicule veh = routingDetails.get(0).getTransportation().getVehicule();
                 r.setShipname(null == veh?"":veh.getVehiculeName());
-                //多个服务用
-                r.setService(getServices(routingDetails));
             }
             //设置原顺序
             setRoutingOrder(list);
@@ -313,8 +313,9 @@ public class RoutingFinderClient {
         for (RoutingFinderResp.RoutingDetail rd : routingDetails) {
             RoutingFinderResp.Voyage voyage = rd.getTransportation().getVoyage();
             if(null != voyage) {
-                Object serNameObj = ServiceNameMap.map.get(voyage.getService().getCode());
-                String serName = null == serNameObj ? "":serNameObj.toString();
+                String serviceCode = voyage.getService().getCode();
+                Object serNameObj = ServiceNameMap.map.get(serviceCode);
+                String serName = null == serNameObj ? serviceCode : serNameObj.toString();
                 if(!StrUtils.isBlank(serName)) {
                     serv += serName + "/";
                 }
