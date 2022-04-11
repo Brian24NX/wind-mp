@@ -4,6 +4,7 @@ import com.hanson.rest.SimpleResult;
 import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingResp;
 import com.iss.wind.common.util.log.WebLog;
 import com.iss.wind.serevice.export.TrackingExportService;
+import com.iss.wind.wx.miniapp.util.MailUtils;
 import com.iss.wind.wx.miniapp.util.SendMail;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +13,10 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.InputStream;
 import java.util.*;
@@ -28,6 +31,8 @@ public class DownloadPdfController {
 
     @Autowired
     private TrackingExportService exportService;
+    @Resource
+    private MailUtils mailUtils;
 
     private static final String PDFPATH = "C:\\deploy\\PDF_Repository";
 
@@ -72,6 +77,19 @@ public class DownloadPdfController {
     public SimpleResult<String> emailPdf(@ApiParam(name = "receiveMailAccount" ,value = "收件人" ,required = true) @RequestParam String receiveMailAccount,
                                          @ApiParam(name = "path" ,value = "文件访问地址" ,required = true) @RequestParam String path) {
         SendMail.senEmail(receiveMailAccount, path);
+        return SimpleResult.success("success");
+    }
+
+    @GetMapping("/emailPdf1")
+    @ApiOperation(value = "邮箱PDF", notes = "邮箱PDF")
+    @ApiResponses(value = {@ApiResponse(code = 500, message = "failedOrTimeOut")})
+    @WebLog(description = "emailPdf")
+    public SimpleResult<String> emailPdf1(@ApiParam(name = "receiveMailAccount" ,value = "收件人" ,required = true) @RequestParam String receiveMailAccount,
+                                         @ApiParam(name = "path" ,value = "文件访问地址" ,required = true) @RequestParam String path) {
+
+        String subject = "Container Detail_货柜号";
+        String content = "尊敬用户：<br/>感谢您使用本服务，查看航线PDF文件，请点击附件。";
+        mailUtils.sendMail(subject,content,receiveMailAccount,path);
         return SimpleResult.success("success");
     }
 

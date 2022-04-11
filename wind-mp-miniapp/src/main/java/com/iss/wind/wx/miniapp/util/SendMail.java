@@ -30,10 +30,6 @@ public class SendMail {
     // 收件人邮箱（替换为自己知道的有效邮箱）
     public static String receiveMailAccount = "yves163sevy@163.com";
 
-    public static void main(String[] args) throws Exception {
-        senEmail(receiveMailAccount,"");
-    }
-
     public static void senEmail(String receiveMailAccount, String path){
         try {
             // 1. 创建参数配置, 用于连接邮件服务器的参数配置
