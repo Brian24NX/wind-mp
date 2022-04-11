@@ -258,6 +258,8 @@ public class RoutingFinderClient {
                 servList.add(r.getService());
             }
         }
+        //获取哪些服务
+        servList.stream().forEach(serv -> log.info("get-all-services::"+serv));
         //再获取serList进行排序
         List<RoutingFinderResp> earlyList = new ArrayList();
         for (int i = 0; i < servList.size(); i++) {
