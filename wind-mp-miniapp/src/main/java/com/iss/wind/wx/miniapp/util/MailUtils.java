@@ -42,7 +42,7 @@ public class MailUtils {
             helper.setTo(toMailArray);
             helper.setSubject(subject);
             helper.addAttachment("ship-tracing.pdf",getFile(path));
-            helper.setText(content,false);
+            helper.setText(content,true);
             mailSender.send(mimeMessage);
             log.info("邮件发送成功，接受者："+ toMailArray +"等，标题为："+ subject +"。内容为：" + content + "。");
         } catch (Exception e) {

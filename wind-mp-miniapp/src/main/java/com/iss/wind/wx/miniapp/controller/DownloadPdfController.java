@@ -88,7 +88,8 @@ public class DownloadPdfController {
                                          @ApiParam(name = "path" ,value = "文件访问地址" ,required = true) @RequestParam String path) {
 
         String subject = "Container Detail_货柜号";
-        String content = "尊敬用户：<br/>感谢您使用本服务，查看航线PDF文件，请点击附件。";
+        String content = "<p>尊敬用户：<br>\n" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;感谢您使用本服务，查看航线PDF文件，请点击附件。</p>";
         mailUtils.sendMail(subject,content,receiveMailAccount,path);
         return SimpleResult.success("success");
     }
