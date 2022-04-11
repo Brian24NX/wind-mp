@@ -93,7 +93,7 @@ public class RoutingFinderClient {
      * @return
      */
     public List<RoutingFinderResp> routings(String placeOfLoading,String placeOfDischarge,String[] specificRoutings,String shippingCompany,String departureDate,String arrivalDate,String searchRange){
-        String url = digitalApiUrl + "/vesseloperation/route/v2/routings?placeOfLoading={placeOfLoading}&placeOfDischarge={placeOfDischarge}&shippingCompany={shippingCompany}";
+        String url = digitalApiUrl + "/vesseloperation/route/v2/routings?placeOfLoading={placeOfLoading}&placeOfDischarge={placeOfDischarge}&shippingCompany={shippingCompany}&departureDate={departureDate}&arrivalDate={arrivalDate}&searchRange={searchRange}";
         WindAccessTokenResp accessToken = windAuthClient.getAccessToken("rf:be");
         Map<String,Object> paramMap=new HashMap<>();
         paramMap.put("placeOfLoading",placeOfLoading);
