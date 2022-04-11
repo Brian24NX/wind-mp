@@ -177,12 +177,12 @@ public class RoutingFinderClient {
                 RoutingFinderResp.Vehicule veh = routingDetails.get(0).getTransportation().getVehicule();
                 r.setShipname(null == veh?"":veh.getVehiculeName());
             }
-            //设置原顺序
-            setRoutingOrder(list);
-            //最早离港
-            getEarlyDepartureList(list);
-            //最早到港
-            getEarlyArrivalList(list);
+//            //设置原顺序
+//            setRoutingOrder(list);
+//            //最早离港
+//            getEarlyDepartureList(list);
+//            //最早到港
+//            getEarlyArrivalList(list);
             //是否再调一次【//默认只有0001，不需要再调一次；若有0002或0011或0015 则需再调一次接口】
             ret.put("againReq", getAgainReq(list));
             solutionServices.put("cnc",cncList);
@@ -227,12 +227,28 @@ public class RoutingFinderClient {
         if(1 ==  routingFinderPostReq.getSortDateType()){
             //排序离港日期
             SortUtil.listSortDeparture(earlyList);
+            earlyList.get(0).setDepartureDateFlag(true);
+            //设置原顺序
+            setRoutingOrder(earlyList);
+            //再最早到港标签
+            getEarlyArrivalList(earlyList);
         }else if(2 ==  routingFinderPostReq.getSortDateType()){
             //排序到港日期
             SortUtil.listSortArrival(earlyList);
+            earlyList.get(0).setArrivalDateFlag(true);
+            //设置原顺序
+            setRoutingOrder(earlyList);
+            //再最早离港标签
+            getEarlyDepartureList(earlyList);
         }else {
             //排序运输时间
             SortUtil.listSortTrans(earlyList);
+            //设置原顺序
+            setRoutingOrder(earlyList);
+            //再最早到港标签
+            getEarlyArrivalList(earlyList);
+            //再最早离港标签
+            getEarlyDepartureList(earlyList);
         }
         return earlyList;
     }
