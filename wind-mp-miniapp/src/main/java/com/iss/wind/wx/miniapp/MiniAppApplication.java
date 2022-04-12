@@ -11,8 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @author Hanson
  * @date 2021/11/18  17:49
  */
-@EnableAutoConfiguration(exclude = { FreeMarkerAutoConfiguration.class })
-//@SpringBootApplication
+@SpringBootApplication
 @MapperScan(basePackages = "com.iss.wind.*")
 @ComponentScan(basePackages = "com.iss.wind.*")
 public class MiniAppApplication {
