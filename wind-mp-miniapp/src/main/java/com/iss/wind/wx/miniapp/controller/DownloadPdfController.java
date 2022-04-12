@@ -1,6 +1,7 @@
 package com.iss.wind.wx.miniapp.controller;
 
 import com.hanson.rest.SimpleResult;
+import com.iss.wind.client.dto.pdf.PdfReq;
 import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingResp;
 import com.iss.wind.common.util.log.WebLog;
 import com.iss.wind.serevice.export.TrackingExportService;
@@ -68,29 +69,25 @@ public class DownloadPdfController {
         }
     }
 
+//    @GetMapping("/emailPdf")
+//    @ApiOperation(value = "邮箱PDF", notes = "邮箱PDF")
+//    @ApiResponses(value = {@ApiResponse(code = 500, message = "failedOrTimeOut")})
+//    @WebLog(description = "emailPdf")
+//    public SimpleResult<String> emailPdf(@ApiParam(name = "receiveMailAccount" ,value = "收件人" ,required = true) @RequestParam String receiveMailAccount,
+//                                         @ApiParam(name = "path" ,value = "文件访问地址" ,required = true) @RequestParam String path) {
+//        SendMail.senEmail(receiveMailAccount, path);
+//        return SimpleResult.success("success");
+//    }
 
-
-    @GetMapping("/emailPdf")
+    @PostMapping("/emailPdf")
     @ApiOperation(value = "邮箱PDF", notes = "邮箱PDF")
     @ApiResponses(value = {@ApiResponse(code = 500, message = "failedOrTimeOut")})
     @WebLog(description = "emailPdf")
-    public SimpleResult<String> emailPdf(@ApiParam(name = "receiveMailAccount" ,value = "收件人" ,required = true) @RequestParam String receiveMailAccount,
-                                         @ApiParam(name = "path" ,value = "文件访问地址" ,required = true) @RequestParam String path) {
-        SendMail.senEmail(receiveMailAccount, path);
-        return SimpleResult.success("success");
-    }
-
-    @GetMapping("/emailPdf1")
-    @ApiOperation(value = "邮箱PDF", notes = "邮箱PDF")
-    @ApiResponses(value = {@ApiResponse(code = 500, message = "failedOrTimeOut")})
-    @WebLog(description = "emailPdf")
-    public SimpleResult<String> emailPdf1(@ApiParam(name = "receiveMailAccount" ,value = "收件人" ,required = true) @RequestParam String receiveMailAccount,
-                                         @ApiParam(name = "path" ,value = "文件访问地址" ,required = true) @RequestParam String path) {
-
-        String subject = "Container Detail_货柜号";
+    public SimpleResult<String> emailPdf1(@RequestBody PdfReq pdfReq) {
+        String subject = "Container Detail_"+pdfReq.getShipmentRef();
         String content = "<p>尊敬用户：<br>\n" +
                 "&nbsp;&nbsp;&nbsp;&nbsp;感谢您使用本服务，查看航线PDF文件，请点击附件。</p>";
-        mailUtils.sendMail(subject,content,receiveMailAccount,path);
+        mailUtils.sendMail(subject,content,pdfReq.getReceiveMailAccount(),pdfReq.getPath());
         return SimpleResult.success("success");
     }
 
