@@ -34,17 +34,21 @@ public class RoutingFinderResp {
     @ApiModelProperty(value = "起运港")
     private String pointfrom;
     @ApiModelProperty(value = "起运时间")
-    private Date departuredate;
+    private String departuredate;
     @ApiModelProperty(value = "目的港")
     private String pointto;
     @ApiModelProperty(value = "到达时间")
-    private Date arrivaldate;
+    private String arrivaldate;
     @ApiModelProperty(value = "转成次数")
     private int transhipment;
     @ApiModelProperty(value = "第一艘船名")
     private String shipname;
     @ApiModelProperty(value = "多个服务用/隔开")
     private String service;
+    @ApiModelProperty(value = "开始运输工具")
+    private String startMeanOfTransport;
+    @ApiModelProperty(value = "结束运输工具")
+    private String endMeanOfTransport;
     //原数据就进行排序打标签
     @ApiModelProperty(value = "最早离港")
     private boolean departureDateFlag = false;
@@ -110,8 +114,8 @@ public class RoutingFinderResp {
     public static class PointFrom{
         private Location location;
         private String callId;
-        private Date departureDateLocal;
-        private Date departureDateGmt;
+        private String departureDateLocal;
+        private String departureDateGmt;
         private String portCutoffDate;
         private String portCutoffDateGmt;
         private String vgmCutoffDate;
@@ -171,8 +175,8 @@ public class RoutingFinderResp {
     public static class PointTo{
         private Location location;
         private String callId;
-        private Date arrivalDateLocal;
-        private Date arrivalDateGmt;
+        private String arrivalDateLocal;
+        private String arrivalDateGmt;
 
 
     }

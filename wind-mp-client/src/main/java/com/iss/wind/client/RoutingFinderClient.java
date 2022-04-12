@@ -176,6 +176,10 @@ public class RoutingFinderClient {
                 //第一艘船名
                 RoutingFinderResp.Vehicule veh = routingDetails.get(0).getTransportation().getVehicule();
                 r.setShipname(null == veh?"":veh.getVehiculeName());
+                //开始运输工具
+                r.setStartMeanOfTransport(routingDetails.get(0).getTransportation().getMeanOfTransport());
+                //结束运输工具
+                r.setEndMeanOfTransport(routingDetails.get(routingDetails.size() - 1).getTransportation().getMeanOfTransport());
             }
 //            //设置原顺序
 //            setRoutingOrder(list);

@@ -5,10 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.TextStyle;
+import java.util.*;
 
 @Slf4j
 public class SortUtil {
@@ -496,8 +497,8 @@ public class SortUtil {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                     try {
                         // format.format(o1.getTime()) 表示 date转string类型 如果是string类型就不要转换了
-                        Date dt1 = o1.getDeparturedate();
-                        Date dt2 = o2.getDeparturedate();
+                        Date dt1 = transDate(o1.getDeparturedate());
+                        Date dt2 = transDate(o2.getDeparturedate());
                         log.info(dt1+":"+dt2);
                         // 这是由小向大排序   如果要由小向大转换比较符号就可以
                         if (dt1.getTime() > dt2.getTime()) {
@@ -526,8 +527,8 @@ public class SortUtil {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                     try {
                         // format.format(o1.getTime()) 表示 date转string类型 如果是string类型就不要转换了
-                        Date dt1 = o1.getArrivaldate();
-                        Date dt2 = o2.getArrivaldate();
+                        Date dt1 = transDate(o1.getArrivaldate());
+                        Date dt2 = transDate(o2.getArrivaldate());
                         log.info(dt1+":"+dt2);
                         // 这是由小向大排序   如果要由小向大转换比较符号就可以
                         if (dt1.getTime() > dt2.getTime()) {
@@ -558,6 +559,20 @@ public class SortUtil {
         });
     }
 
-
+    public static Date transDate(String str) throws ParseException {
+//        String str = "2022-02-13T11:00:00+01:00";
+        String[] strArr = str.split("\\+");
+        String strDate = strArr[0];
+        int strZone = Integer.parseInt(strArr[1].substring(0,2));
+        //1. Create a Date from String
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date date = sdf.parse(strDate);
+        //2. Test - Convert Date to Calendar
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.HOUR_OF_DAY, +strZone);
+        Date newDate = calendar.getTime();
+        return newDate;
+    }
 
 }
