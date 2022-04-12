@@ -44,7 +44,7 @@ public class DownloadPdfController {
     @PostMapping("/downloadPdf")
     @ApiOperation(value = "pdf模板导出", notes = "pdf模板导出")
     @ApiResponses(value = {@ApiResponse(code = 500, message = "failedOrTimeOut")})
-    //@WebLog(description = "downloadPdf")
+    @WebLog(description = "downloadPdf")
     public SimpleResult<String> download(@RequestBody ShipmentTrackingResp trackingResp) {
         try {
             //String Path1 = "D:\\Wind\\wind-mp\\wind-mp-miniapp\\src\\main\\resources\\pdfTemplate\\tracking.jrxml";
