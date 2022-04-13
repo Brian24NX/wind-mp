@@ -85,9 +85,16 @@ public class DownloadPdfController {
     @WebLog(description = "emailPdf")
     public SimpleResult<String> emailPdf1(@RequestBody PdfReq pdfReq) {
         String subject = "Container Detail_"+pdfReq.getShipmentRef();
-        String content = "";
-//        String content = "<p>尊敬用户：<br>\n" +
-//                "&nbsp;&nbsp;&nbsp;&nbsp;感谢您使用本服务，查看航线PDF文件，请点击附件。</p>";
+//        String content = "";
+        String content = "<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<body>\n" +
+                "<p>Dear Customer,</p>\n" +
+                "<p>Please find attachment as your container detail information. This is a system notification, please do not reply. Any question, please contact our customer service team. </p>\n" +
+                "<p>Best regards,</p>\n" +
+                "<p>CMA CGM</p>\n" +
+                "</body>\n" +
+                "</html>";
         mailUtils.sendMail(subject,content,pdfReq.getReceiveMailAccount(),pdfReq.getPath());
         return SimpleResult.success("success");
     }

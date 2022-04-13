@@ -48,10 +48,10 @@ spring:
 
   #email
   mail:
-    host: smtp.cma-cgm.com
+    host: smtp.163.com
     port:
-    username: wind-test@cma-cgm.com
-    password:
+    username: cmacgmshipment@163.com
+    password: HORZFPAXGDZITITL
 
 wx:
   miniapp:
