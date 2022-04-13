@@ -87,7 +87,7 @@ public class WebLogAspect {
         try {
             result = proceedingJoinPoint.proceed();
         } catch (Exception e) {
-            log.error("exception      :{}", e.getMessage());
+            log.error("exception      :{}", e);
             throw new BusinessException("请求异常或超时!");
         } finally {
             // 打印出参
