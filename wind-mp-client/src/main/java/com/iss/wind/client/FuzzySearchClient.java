@@ -43,38 +43,55 @@ public class FuzzySearchClient {
     public List<FuzzySearchResp> fuzzySearch(String searchStr){
         ResponseEntity<List<FuzzySearchResp>> response;
         Map<String,String> paramMap=new HashMap<>();
+        String pointType = "&pointType=Sea";
         //搜寻字符为空 或长度为1，则返回空
         if(StrUtils.isBlank(searchStr) ||  1 == searchStr.length()){
             return new ArrayList<>();
         }
         //搜寻字符长度为2，则先优先搜索国家code，无则空
         if(StrUtils.isBlank(searchStr) ||  2 == searchStr.length()) {
-            String url = digitalApiUrl + "/referential/location/v3/points/light?countryCode=" + searchStr;
+            String url = digitalApiUrl + "/referential/location/v3/points?countryCode=" + searchStr;
             response = getSearch(paramMap, url);
             if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206)) {
                 return response.getBody();
             }
         }
-        //搜寻字符长度>=3 ，优先 codeStarts 查询
-        String url = digitalApiUrl + "/referential/location/v3/points/light?codeStarts="+searchStr;
+        //搜寻字符长度>=3 ，优先 codeStarts 查询 pointType=Sea
+        String url = digitalApiUrl + "/referential/location/v3/points?codeStarts="+searchStr;
+        response = getSearch(paramMap,url+pointType);
+        if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206) && !CollectionUtils.isEmpty(response.getBody())){
+            return response.getBody();
+        }
         response = getSearch(paramMap,url);
         if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206) && !CollectionUtils.isEmpty(response.getBody())){
             return response.getBody();
         }
         //再先 nameStarts 查询
-        url = digitalApiUrl + "/referential/location/v3/points/light?nameStarts="+searchStr;
+        url = digitalApiUrl + "/referential/location/v3/points?nameStarts="+searchStr;
+        response = getSearch(paramMap,url+pointType);
+        if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206) && !CollectionUtils.isEmpty(response.getBody())){
+            return response.getBody();
+        }
         response = getSearch(paramMap,url);
         if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206) && !CollectionUtils.isEmpty(response.getBody())){
             return response.getBody();
         }
         //再 nameContains 查询
-        url = digitalApiUrl + "/referential/location/v3/points/light?nameContains="+searchStr;
+        url = digitalApiUrl + "/referential/location/v3/points?nameContains="+searchStr;
+        response = getSearch(paramMap,url+pointType);
+        if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206) && !CollectionUtils.isEmpty(response.getBody())){
+            return response.getBody();
+        }
         response = getSearch(paramMap,url);
         if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206) && !CollectionUtils.isEmpty(response.getBody())){
             return response.getBody();
         }
         //再 codeOrNameContains 查询
-        url = digitalApiUrl + "/referential/location/v3/points/light?codeOrNameContains="+searchStr;
+        url = digitalApiUrl + "/referential/location/v3/points?codeOrNameContains="+searchStr;
+        response = getSearch(paramMap,url+pointType);
+        if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206) && !CollectionUtils.isEmpty(response.getBody())){
+            return response.getBody();
+        }
         response = getSearch(paramMap,url);
         if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206) && !CollectionUtils.isEmpty(response.getBody())){
             return response.getBody();
