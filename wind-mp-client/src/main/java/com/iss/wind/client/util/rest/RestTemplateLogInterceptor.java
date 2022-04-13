@@ -21,27 +21,23 @@ public class RestTemplateLogInterceptor implements ClientHttpRequestInterceptor 
     public ClientHttpResponse intercept(HttpRequest httpRequest, byte[] bytes, ClientHttpRequestExecution clientHttpRequestExecution) throws IOException {
 
         // 打印访问前日志
-        traceRequest(httpRequest, bytes);
+        log.info("request-start,url={},method={},RequestBody={}",httpRequest.getURI(), httpRequest.getMethod(), new String(bytes, StandardCharsets.UTF_8));
+        //访问执行请求
         ClientHttpResponse execute = clientHttpRequestExecution.execute(httpRequest, bytes);
-
+        // 打印访问后日志
         log.error("request-end： url={}, statusCode={}, statusText={}", httpRequest.getURI(), execute.getStatusCode(), execute.getStatusText());
         // 请求的统一异常处理
 //        if (!execute.getStatusCode().is2xxSuccessful()) {
 //             throw new BusinessException("请求异常或超时");
 //        }
 
-        // 打印访问后日志
-//        traceResponse(execute);
+        //记录日志
+        traceLog(execute);
         return execute;
     }
 
-    // 打印一条访问前日志
-    private void traceRequest(HttpRequest httpRequest, byte[] bytes) {
-        log.info("request-start,url={},method={},RequestBody={}",httpRequest.getURI(), httpRequest.getMethod(), new String(bytes, StandardCharsets.UTF_8));
-    }
-
     // 打印一条访问后日志
-    private void traceResponse(ClientHttpResponse response) throws IOException {
-        log.info("request-end,statusCode={},statusText={}",response.getStatusCode(), response.getStatusText());
+    private void traceLog(ClientHttpResponse response) throws IOException {
+        log.info("log-print",response.getStatusCode(), response.getStatusText());
     }
 }
