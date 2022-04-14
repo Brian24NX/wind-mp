@@ -79,7 +79,7 @@ public class DownloadPdfController {
                 "<body>\n" +
                 "<p>Dear Customer,</p>\n" +
                 "<p>Please find attachment as your container detail information. This is a system notification, please do not reply. Any question, please contact our customer service team. </p>\n" +
-                "<p>Best regards,<br>" +
+                "<p style=\"margin-top:36px\">Best regards,<br>" +
                 "CMA CGM</p>\n" +
                 "</body>\n" +
                 "</html>";
