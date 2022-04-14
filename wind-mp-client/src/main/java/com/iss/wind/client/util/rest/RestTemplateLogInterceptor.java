@@ -1,6 +1,10 @@
 package com.iss.wind.client.util.rest;
 
+import com.google.common.io.ByteStreams;
+import com.iss.wind.dao.domain.ThirdInvokeRecordPo;
+import com.iss.wind.dao.mappers.ThirdInvokeRecordMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -16,44 +20,51 @@ import java.util.concurrent.Executors;
 @Component
 @Slf4j
 public class RestTemplateLogInterceptor implements ClientHttpRequestInterceptor {
+    private ExecutorService executor = Executors.newCachedThreadPool();
+
+    @Autowired
+    private ThirdInvokeRecordMapper thirdInvokeRecordMapper;
 
     @Override
     public ClientHttpResponse intercept(HttpRequest httpRequest, byte[] bytes, ClientHttpRequestExecution clientHttpRequestExecution) throws IOException {
-
+        long startTime = System.currentTimeMillis();
         // 打印访问前日志
         log.info("request-start,url={},method={},RequestBody={}",httpRequest.getURI(), httpRequest.getMethod(), new String(bytes, StandardCharsets.UTF_8));
         //访问执行请求
-        ClientHttpResponse execute = clientHttpRequestExecution.execute(httpRequest, bytes);
+        ClientHttpResponse response = clientHttpRequestExecution.execute(httpRequest, bytes);
         // 打印访问后日志
-        log.error("request-end： url={}, statusCode={}, statusText={}", httpRequest.getURI(), execute.getStatusCode(), execute.getStatusText());
+        log.error("request-end： url={}, statusCode={}, statusText={}", httpRequest.getURI(), response.getStatusCode(), response.getStatusText());
         //记录日志
-        traceLog(execute);
-        return execute;
+        ThirdInvokeRecordPo tir =  new ThirdInvokeRecordPo();
+        tir.setUrl(httpRequest.getURI().toString());
+        tir.setReq(new String(bytes,StandardCharsets.UTF_8));
+        tir.setResp(response.getStatusText());
+        tir.setConsumeTime(System.currentTimeMillis() - startTime+"ms");
+        tir.setHttpStatus(response.getStatusCode()+"");
+        traceLog(tir);
+        return response;
     }
 
     // 打印一条访问后日志
-    private void traceLog(ClientHttpResponse response) throws IOException {
-        log.info("log-print",response.getStatusCode(), response.getStatusText());
+    private void traceLog(ThirdInvokeRecordPo tir) throws IOException {
         try {
-            fun();
+            traceThirdInvokeRecordLog(tir);
         }catch (Exception e){
             log.error("traceLog-errror");
         }
 
     }
 
-    private ExecutorService executor = Executors.newCachedThreadPool();
-
-    public void fun() throws Exception {
+    public void traceThirdInvokeRecordLog(ThirdInvokeRecordPo tir) throws Exception {
         executor.submit(new Runnable() {
             @Override
             public void run() {
                 try {
-                    //要执行的业务代码，我们这里没有写方法，可以让线程休息几秒进行测试
-                    Thread.sleep(10000);
-                    log.info("execute success aysnc!");
+                    //执行记录日志
+                    thirdInvokeRecordMapper.add(tir);
+                    log.info("traceThirdInvokeRecordLog execute record success!");
                 } catch (Exception e) {
-                    throw new RuntimeException("ERRROOR！！");
+                    log.error("traceThirdInvokeRecordLog-error:",e);
                 }
             }
         });
