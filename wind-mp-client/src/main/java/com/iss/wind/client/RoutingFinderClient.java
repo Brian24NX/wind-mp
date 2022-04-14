@@ -181,12 +181,6 @@ public class RoutingFinderClient {
                 //结束运输工具
                 r.setEndMeanOfTransport(routingDetails.get(routingDetails.size() - 1).getTransportation().getMeanOfTransport());
             }
-//            //设置原顺序
-//            setRoutingOrder(list);
-//            //最早离港
-//            getEarlyDepartureList(list);
-//            //最早到港
-//            getEarlyArrivalList(list);
             //是否再调一次【//默认只有0001，不需要再调一次；若有0002或0011或0015 则需再调一次接口】
             ret.put("againReq", getAgainReq(list));
             solutionServices.put("cnc",cncList);
@@ -231,50 +225,6 @@ public class RoutingFinderClient {
         //再获取直达过滤后的list
         List<RoutingFinderResp> retList = routingFinderPostReq.isNeedDirectFlag()? getNeedDirectList(earlyList): earlyList;
         return retList;
-    }
-
-
-    //根据：方案->直达->最早到达(服务名过滤后最早list)->排序 的顺序
-    public List<RoutingFinderResp> routingSortOld(RoutingFinderPostReq routingFinderPostReq){
-        //先根据方案筛选出list
-        List<String> services = routingFinderPostReq.getSortSolutionServices();//前端传入的排序服务
-        if(CollectionUtils.isEmpty(services)){
-            //没有选择方案不排序
-            return new ArrayList<>();
-        }
-        List<RoutingFinderResp> needSolutionList = getNeedSolutionList(routingFinderPostReq);
-        //再获取直达过滤后的list
-        List<RoutingFinderResp> needDirectList = routingFinderPostReq.isNeedDirectFlag()? getNeedDirectList(needSolutionList): needSolutionList;
-        //再根据服务 找出最早标识
-        List<RoutingFinderResp> earlyList = routingFinderPostReq.isNeedEarlyFlag()? getNeedEarlyList(services,needDirectList): needDirectList;
-        //再进行排序（升序）
-        if(1 ==  routingFinderPostReq.getSortDateType()){
-            //排序离港日期
-            SortUtil.listSortDeparture(earlyList);
-            earlyList.get(0).setDepartureDateFlag(true);
-            //设置原顺序
-            setRoutingOrder(earlyList);
-            //再最早到港标签
-            getEarlyArrivalList(earlyList);
-        }else if(2 ==  routingFinderPostReq.getSortDateType()){
-            //排序到港日期
-            SortUtil.listSortArrival(earlyList);
-            earlyList.get(0).setArrivalDateFlag(true);
-            //设置原顺序
-            setRoutingOrder(earlyList);
-            //再最早离港标签
-            getEarlyDepartureList(earlyList);
-        }else {
-            //排序运输时间
-            SortUtil.listSortTrans(earlyList);
-            //设置原顺序
-            setRoutingOrder(earlyList);
-            //再最早到港标签
-            getEarlyArrivalList(earlyList);
-            //再最早离港标签
-            getEarlyDepartureList(earlyList);
-        }
-        return earlyList;
     }
 
     //获取需要排序的方案list
@@ -358,22 +308,6 @@ public class RoutingFinderClient {
         return StrUtils.isBlank(serv)?"":serv.substring(0,serv.length()-1);
     }
 
-    //最早离港
-    public void getEarlyDepartureList(List<RoutingFinderResp> needList){
-        List<RoutingFinderResp> sortArriList = needList;
-        SortUtil.listSortDeparture(sortArriList);
-        //设置最早标识
-        needList.get(sortArriList.get(0).getOrder()).setDepartureDateFlag(true);
-    }
-
-    //最早到港
-    public void getEarlyArrivalList(List<RoutingFinderResp> needList){
-        List<RoutingFinderResp> sortArriList = needList;
-        SortUtil.listSortArrival(sortArriList);
-        //设置最早标识
-        needList.get(sortArriList.get(0).getOrder()).setArrivalDateFlag(true);
-    }
-
     public boolean getAgainReq(List<RoutingFinderResp> list){
         for (RoutingFinderResp r : list){
             if("0002".equals(r.getShippingCompany()) || "0011".equals(r.getShippingCompany())  || "0015".equals(r.getShippingCompany())){
@@ -421,12 +355,4 @@ public class RoutingFinderClient {
         }
     }
 
-//    public void getServiceList(){
-//        Set keys = getKeys(solutionNos);
-//        if (!keys.contains(r.getSolutionNo())) {
-//            Map m = new HashMap();
-//            m.put(r.getSolutionNo(), routingDetails.get(0).getTransportation().getVoyage().getService().getCode());
-//            solutionNos.add(m);
-//        }
-//    }
 }

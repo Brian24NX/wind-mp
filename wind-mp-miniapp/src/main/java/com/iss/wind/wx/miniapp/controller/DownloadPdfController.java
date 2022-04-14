@@ -6,7 +6,6 @@ import com.iss.wind.client.dto.shipmenttracking.ShipmentTrackingResp;
 import com.iss.wind.common.util.log.WebLog;
 import com.iss.wind.serevice.export.TrackingExportService;
 import com.iss.wind.wx.miniapp.util.MailUtils;
-import com.iss.wind.wx.miniapp.util.SendMail;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -14,7 +13,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -68,16 +66,6 @@ public class DownloadPdfController {
             throw new RuntimeException("下载PDF方法异常");
         }
     }
-
-//    @GetMapping("/emailPdf")
-//    @ApiOperation(value = "邮箱PDF", notes = "邮箱PDF")
-//    @ApiResponses(value = {@ApiResponse(code = 500, message = "failedOrTimeOut")})
-//    @WebLog(description = "emailPdf")
-//    public SimpleResult<String> emailPdf(@ApiParam(name = "receiveMailAccount" ,value = "收件人" ,required = true) @RequestParam String receiveMailAccount,
-//                                         @ApiParam(name = "path" ,value = "文件访问地址" ,required = true) @RequestParam String path) {
-//        SendMail.senEmail(receiveMailAccount, path);
-//        return SimpleResult.success("success");
-//    }
 
     @PostMapping("/emailPdf")
     @ApiOperation(value = "邮箱PDF", notes = "邮箱PDF")

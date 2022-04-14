@@ -26,11 +26,6 @@ public class RestTemplateLogInterceptor implements ClientHttpRequestInterceptor 
         ClientHttpResponse execute = clientHttpRequestExecution.execute(httpRequest, bytes);
         // 打印访问后日志
         log.error("request-end： url={}, statusCode={}, statusText={}", httpRequest.getURI(), execute.getStatusCode(), execute.getStatusText());
-        // 请求的统一异常处理
-//        if (!execute.getStatusCode().is2xxSuccessful()) {
-//             throw new BusinessException("请求异常或超时");
-//        }
-
         //记录日志
         traceLog(execute);
         return execute;
