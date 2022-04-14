@@ -1,6 +1,5 @@
 package com.iss.wind.client.util.rest;
 
-import com.google.common.io.ByteStreams;
 import com.iss.wind.dao.domain.ThirdInvokeRecordPo;
 import com.iss.wind.dao.mappers.ThirdInvokeRecordMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +19,14 @@ import java.util.concurrent.Executors;
 @Component
 @Slf4j
 public class RestTemplateLogInterceptor implements ClientHttpRequestInterceptor {
+
     private ExecutorService executor = Executors.newCachedThreadPool();
 
+    private static ThirdInvokeRecordMapper thirdInvokeRecordMapper;
     @Autowired
-    private ThirdInvokeRecordMapper thirdInvokeRecordMapper;
+    public void setThirdInvokeRecordMapper(ThirdInvokeRecordMapper thirdInvokeRecordMapper){
+        RestTemplateLogInterceptor.thirdInvokeRecordMapper = thirdInvokeRecordMapper;
+    }
 
     @Override
     public ClientHttpResponse intercept(HttpRequest httpRequest, byte[] bytes, ClientHttpRequestExecution clientHttpRequestExecution) throws IOException {
