@@ -39,7 +39,7 @@ public class RoutingFinderResp {
     private String pointto;
     @ApiModelProperty(value = "到达时间")
     private String arrivaldate;
-    @ApiModelProperty(value = "转成次数")
+    @ApiModelProperty(value = "转（船）运次数")
     private int transhipment;
     @ApiModelProperty(value = "第一艘船名")
     private String shipname;

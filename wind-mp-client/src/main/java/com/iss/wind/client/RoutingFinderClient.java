@@ -172,7 +172,7 @@ public class RoutingFinderClient {
                 //到达时间
                 r.setArrivaldate(1 == routingDetails.size() ? routingDetails.get(0).getPointTo().getArrivalDateLocal() : routingDetails.get(routingDetails.size() - 1).getPointTo().getArrivalDateLocal());
                 //转成次数
-                r.setTranshipment(routingDetails.size() - 1);
+                r.setTranshipment(getTranshipment(routingDetails));
                 //第一艘船名
                 RoutingFinderResp.Vehicule veh = routingDetails.get(0).getTransportation().getVehicule();
                 r.setShipname(null == veh?"":veh.getVehiculeName());
@@ -353,6 +353,13 @@ public class RoutingFinderClient {
             //排序运输时间
             SortUtil.listSortTrans(earlyList);
         }
+    }
+
+    //获取转运次数（转船）【transportation-meanOfTransport :Vessel 总船次 -1】
+    public int getTranshipment(List<RoutingFinderResp.RoutingDetail> routingDetails){
+        List<RoutingFinderResp.RoutingDetail> tships = routingDetails.stream().filter(r -> "Vessel".equals(r.getTransportation().getMeanOfTransport())) .collect(Collectors.toList());
+        int ct = CollectionUtils.isEmpty(tships)?0:tships.size();
+        return ct <= 1? 0 : ct-1;
     }
 
 }
