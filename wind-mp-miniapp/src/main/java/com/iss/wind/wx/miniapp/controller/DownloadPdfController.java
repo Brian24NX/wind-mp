@@ -13,6 +13,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -33,7 +34,11 @@ public class DownloadPdfController {
     @Resource
     private MailUtils mailUtils;
 
-    private static final String PDFPATH = "C:\\deploy\\PDF_Repository";
+
+    @Value("${pdf.download-path}")
+    private String PDFPATH;
+
+//    private static final String PDFPATH = "C:\\deploy\\PDF_Repository";
 
     /**
      * 下载PDF
