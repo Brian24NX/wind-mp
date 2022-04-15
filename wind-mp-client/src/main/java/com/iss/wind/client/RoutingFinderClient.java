@@ -244,7 +244,7 @@ public class RoutingFinderClient {
     public List<RoutingFinderResp> getNeedDirectList(List<RoutingFinderResp> earlyList){
         List<RoutingFinderResp> retList = new ArrayList<>();
         for (RoutingFinderResp r :earlyList) {
-            if(r.isDirectFlag()){
+            if(0 == r.getTranshipment()){
                 retList.add(r);
             }
         }

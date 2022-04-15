@@ -559,7 +559,7 @@ public class SortUtil {
 //        String str = "2022-02-13T11:00:00+01:00";
         String[] strArr = str.split("\\+");
         String strDate = strArr[0];
-        int strZone = Integer.parseInt(strArr[1].substring(0,2));
+        int strZone = strArr.length < 2 ? 0: Integer.parseInt(strArr[1].substring(0,2));
         //1. Create a Date from String
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date date = sdf.parse(strDate);
