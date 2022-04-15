@@ -12,6 +12,7 @@ import java.time.format.TextStyle;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 @Slf4j
 public class DateForPDFUtil {
@@ -48,15 +49,22 @@ public class DateForPDFUtil {
     }
 
     public static String currentDate(Date date) {
-        String Date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(date);
+        TimeZone timeZone = TimeZone.getTimeZone("GMT+8:00");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        simpleDateFormat.setTimeZone(timeZone);
+        String Date = simpleDateFormat.format(date);
         String transDate = transDate(Date);
-        String formatTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
+        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("HH:mm:ss");
+        simpleDateFormat1.setTimeZone(timeZone);
+        String formatTime = simpleDateFormat1.format(date);
         String time = formatTime.substring(0, 5);
         return transDate + " at " + time;
     }
 
     public static String footerDate(Date date){
+        TimeZone timeZone = TimeZone.getTimeZone("GMT+8:00");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HHmmss");
+        sdf.setTimeZone(timeZone);
         return sdf.format(date);
     }
 
