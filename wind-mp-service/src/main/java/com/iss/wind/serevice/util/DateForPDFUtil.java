@@ -17,6 +17,8 @@ import java.util.TimeZone;
 @Slf4j
 public class DateForPDFUtil {
 
+    private static final TimeZone timeZone = TimeZone.getTimeZone("GMT+8:00");
+
     public static String transDate(String strDate) {
 
         //1. Create a Date from String
@@ -49,7 +51,7 @@ public class DateForPDFUtil {
     }
 
     public static String currentDate(Date date) {
-        TimeZone timeZone = TimeZone.getTimeZone("GMT+8:00");
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         simpleDateFormat.setTimeZone(timeZone);
         String Date = simpleDateFormat.format(date);
@@ -62,18 +64,20 @@ public class DateForPDFUtil {
     }
 
     public static String footerDate(Date date){
-        TimeZone timeZone = TimeZone.getTimeZone("GMT+8:00");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HHmmss");
         sdf.setTimeZone(timeZone);
         return sdf.format(date);
     }
 
+
     public static Boolean isPastDate(String str){
         boolean flag = false;
-        Date nowDate = new Date();
         Date pastDate = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setTimeZone(timeZone);
+        String now = sdf.format(new Date());
         try {
+            Date nowDate = sdf.parse(now);
             pastDate = sdf.parse(str);
             if(pastDate.before(nowDate) || pastDate.equals(nowDate)){
                 flag = true;
