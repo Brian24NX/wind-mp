@@ -38,7 +38,19 @@ public class FuzzySearchClient {
     public List<FuzzySearchResp> fuzzySearch(String searchStr){
         ResponseEntity<List<FuzzySearchResp>> response;
         Map<String,String> paramMap=new HashMap<>();
-        //codeOrNameContains 查询
+        //搜寻字符为空 或长度为1，则返回空
+        if(StrUtils.isBlank(searchStr) ||  1 == searchStr.length()){
+            return new ArrayList<>();
+        }
+        //搜寻字符长度为2，则先优先搜索国家code，无则空
+        if(StrUtils.isBlank(searchStr) ||  2 == searchStr.length()) {
+            String url = digitalApiUrl + "/referential/location/v3/points?countryCode=" + searchStr;
+            response = getSearch(paramMap, url);
+            if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206)) {
+                return response.getBody();
+            }
+        }
+        //搜寻字符长度>=3 , codeOrNameContains 查询
         String url = digitalApiUrl + "/referential/location/v3/points?codeOrNameContains="+searchStr+"&assignedToRoute=true";
         response = getSearch(paramMap,url);
         if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206) && !CollectionUtils.isEmpty(response.getBody())){
