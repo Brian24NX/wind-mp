@@ -93,6 +93,7 @@ public class RoutingFinderClient {
      * @return
      */
     public List<RoutingFinderResp> routings(String placeOfLoading,String placeOfDischarge,String[] specificRoutings,String shippingCompany,String departureDate,String arrivalDate,String searchRange){
+        List<RoutingFinderResp> routFinders = new ArrayList<>();
         String url = digitalApiUrl + "/vesseloperation/route/v2/routings?placeOfLoading={placeOfLoading}&placeOfDischarge={placeOfDischarge}&shippingCompany={shippingCompany}&departureDate={departureDate}&arrivalDate={arrivalDate}&searchRange={searchRange}";
         WindAccessTokenResp accessToken = windAuthClient.getAccessToken("rf:be");
         Map<String,Object> paramMap=new HashMap<>();
@@ -106,15 +107,43 @@ public class RoutingFinderClient {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken.getTokenType() + " " + accessToken.getAccessToken());
         headers.add("scope", "rf:be");
+        //第一次
+        headers.add("range", "0-49");
+        ResponseEntity<List<RoutingFinderResp>> response = routingRequest(headers,url,paramMap);
+        if (null != response){
+            if(response.getStatusCodeValue() == 200){
+                routFinders.addAll(response.getBody());
+                return routFinders;
+            }else if (response.getStatusCodeValue() == 206) {
+                routFinders.addAll(response.getBody());
+                //第二次
+                headers.add("range", "50-99");
+                response = routingRequest(headers,url,paramMap);
+                if (response.getStatusCodeValue() == 206) {
+                    routFinders.addAll(response.getBody());
+                    //第三次
+                    headers.add("range", "100-149");
+                    response = routingRequest(headers,url,paramMap);
+                    if (response.getStatusCodeValue() == 206) {
+                        routFinders.addAll(response.getBody());
+                    }
+                    return routFinders;
+                }
+            }else {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    //请求routing-finer接口
+    public ResponseEntity<List<RoutingFinderResp>> routingRequest(HttpHeaders headers,String url,Map<String,Object> paramMap){
         HttpEntity request = new HttpEntity(headers);
         ParameterizedTypeReference<List<RoutingFinderResp>> responseType = new ParameterizedTypeReference<List<RoutingFinderResp>>() {};
         restTemplate.getInterceptors().add(new RestTemplateLogInterceptor());
         ResponseEntity<List<RoutingFinderResp>> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,paramMap);
         restTemplate.getInterceptors().clear();
-        if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206 )){
-            return response.getBody();
-        }
-        return null;
+        return response;
     }
 
     //方案list和是否直达
