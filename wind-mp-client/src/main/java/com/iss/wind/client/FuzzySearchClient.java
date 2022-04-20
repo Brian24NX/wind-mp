@@ -34,13 +34,26 @@ public class FuzzySearchClient {
 //    @Value("${com.iss.wind.digital-api-url-test}")
 //    private String digitalApiUrl;
 
+    //模糊查询
+    public List<FuzzySearchResp> fuzzySearch(String searchStr){
+        ResponseEntity<List<FuzzySearchResp>> response;
+        Map<String,String> paramMap=new HashMap<>();
+        //codeOrNameContains 查询
+        String url = digitalApiUrl + "/referential/location/v3/points?codeOrNameContains="+searchStr+"&assignedToRoute=true";
+        response = getSearch(paramMap,url);
+        if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206) && !CollectionUtils.isEmpty(response.getBody())){
+            return response.getBody();
+        }
+        return new ArrayList<>();
+    }
+
     /**
      * API 模糊查询
      * https://gitlab.cma-cgm.com/SOA/Cartography/-/blob/master/Swagger/Implementation/referential.location.v3.srv.yaml
      * FuzzySearch
      * @return
      */
-    public List<FuzzySearchResp> fuzzySearch(String searchStr){
+    public List<FuzzySearchResp> fuzzySearchOld(String searchStr){
         ResponseEntity<List<FuzzySearchResp>> response;
         Map<String,String> paramMap=new HashMap<>();
         String pointType = "&pointType=Sea";

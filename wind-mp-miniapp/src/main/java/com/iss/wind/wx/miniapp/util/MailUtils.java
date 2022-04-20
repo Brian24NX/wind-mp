@@ -34,7 +34,7 @@ public class MailUtils {
             System.out.println(content);
             mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-            helper.setFrom(this.mailFormUserName,"WIND");
+            helper.setFrom(this.mailFormUserName,"WeChat Notification");
             helper.setTo(toMailArray);
             helper.setSubject(subject);
             helper.addAttachment(subject+".pdf",getFile(path));
