@@ -44,7 +44,7 @@ public class FuzzySearchClient {
         }
         //搜寻字符长度为2，则先优先搜索国家code，无则空
         if(StrUtils.isBlank(searchStr) ||  2 == searchStr.length()) {
-            String url = digitalApiUrl + "/referential/location/v3/points?countryCode=" + searchStr;
+            String url = digitalApiUrl + "/referential/location/v3/points?countryCode=" + searchStr+"&assignedToRoute=true";
             response = getSearch(paramMap, url);
             if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206)) {
                 return response.getBody();
