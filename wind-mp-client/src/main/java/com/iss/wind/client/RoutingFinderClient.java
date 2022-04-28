@@ -121,19 +121,23 @@ public class RoutingFinderClient {
                 headers.add("range", "50-99");
                 response = routingRequest(headers,url,paramMap);
                 log.info("second-routing-req");
+                if(null == response){
+                    log.error("second-routing-resp is null");
+                    return routFinders;
+                }
                 if (response.getStatusCodeValue() == 206) {
                     routFinders.addAll(response.getBody());
                     //第三次
                     headers.add("range", "100-149");
                     log.info("third-routing-req-start");
                     response = routingRequest(headers,url,paramMap);
-                    log.info("third-routing-req-end");
+                    if(null == response){
+                        log.error("third-routing-resp is null");
+                        return routFinders;
+                    }
                     if (response.getStatusCodeValue() == 206) {
                         routFinders.addAll(response.getBody());
                     }
-                    return routFinders;
-                }else if (response.getStatusCodeValue() == 416) {
-                    log.info("routing-req-416");
                     return routFinders;
                 }
             }else {
@@ -145,11 +149,18 @@ public class RoutingFinderClient {
 
     //请求routing-finer接口
     public ResponseEntity<List<RoutingFinderResp>> routingRequest(HttpHeaders headers,String url,Map<String,Object> paramMap){
-        HttpEntity request = new HttpEntity(headers);
-        ParameterizedTypeReference<List<RoutingFinderResp>> responseType = new ParameterizedTypeReference<List<RoutingFinderResp>>() {};
-        restTemplate.getInterceptors().add(new RestTemplateLogInterceptor());
-        ResponseEntity<List<RoutingFinderResp>> response = restTemplate.exchange(url, HttpMethod.GET, request, responseType,paramMap);
-        restTemplate.getInterceptors().clear();
+        ResponseEntity<List<RoutingFinderResp>> response;
+        try {
+            HttpEntity request = new HttpEntity(headers);
+            ParameterizedTypeReference<List<RoutingFinderResp>> responseType = new ParameterizedTypeReference<List<RoutingFinderResp>>() {
+            };
+            restTemplate.getInterceptors().add(new RestTemplateLogInterceptor());
+            response = restTemplate.exchange(url, HttpMethod.GET, request, responseType, paramMap);
+            restTemplate.getInterceptors().clear();
+        }catch (Exception e){
+            log.error("routingRequest:",e);
+            return null;
+        }
         return response;
     }
 
