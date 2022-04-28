@@ -110,6 +110,7 @@ public class RoutingFinderClient {
         //第一次
         headers.add("range", "0-49");
         ResponseEntity<List<RoutingFinderResp>> response = routingRequest(headers,url,paramMap);
+        log.info("first-routing-req");
         if (null != response){
             if(response.getStatusCodeValue() == 200){
                 routFinders.addAll(response.getBody());
@@ -119,14 +120,20 @@ public class RoutingFinderClient {
                 //第二次
                 headers.add("range", "50-99");
                 response = routingRequest(headers,url,paramMap);
+                log.info("second-routing-req");
                 if (response.getStatusCodeValue() == 206) {
                     routFinders.addAll(response.getBody());
                     //第三次
                     headers.add("range", "100-149");
+                    log.info("third-routing-req-start");
                     response = routingRequest(headers,url,paramMap);
+                    log.info("third-routing-req-end");
                     if (response.getStatusCodeValue() == 206) {
                         routFinders.addAll(response.getBody());
                     }
+                    return routFinders;
+                }else if (response.getStatusCodeValue() == 416) {
+                    log.info("routing-req-416");
                     return routFinders;
                 }
             }else {
