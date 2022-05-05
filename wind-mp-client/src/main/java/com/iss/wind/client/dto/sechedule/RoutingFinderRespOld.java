@@ -1,13 +1,13 @@
 package com.iss.wind.client.dto.sechedule;
 
-import java.util.Date;
-import java.util.List;
-
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Hanson
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoutingFinderResp {
+public class RoutingFinderRespOld {
     private String shippingCompany;
     private Integer solutionNo;
     private Integer transitTime;
@@ -63,10 +63,7 @@ public class RoutingFinderResp {
         private PointFrom pointFrom;
         private PointTo pointTo;
         private Transportation transportation;
-        private double carbonDioxide;
-        private boolean earliestArrival;
-        private boolean earliestDeparture;
-        private boolean governmentRoute;
+        private int legTransitTime;
     }
 
     @Data
@@ -117,9 +114,14 @@ public class RoutingFinderResp {
     public static class PointFrom{
         private Location location;
         private String callId;
-        private String departureDate;
+        private String departureDateLocal;
+        private String departureDateGmt;
         private String portCutoffDate;
+        private String portCutoffDateGmt;
         private String vgmCutoffDate;
+        private String vgmCutoffDateGmt;
+        private String customsCutoffDate;
+        private String customsCutoffDateGmt;
         private CutOff cutOff;
     }
 
@@ -173,7 +175,10 @@ public class RoutingFinderResp {
     public static class PointTo{
         private Location location;
         private String callId;
-        private String arrivalDate;
+        private String arrivalDateLocal;
+        private String arrivalDateGmt;
+
+
     }
 
 
@@ -184,7 +189,7 @@ public class RoutingFinderResp {
     public static class Transportation{
         private String transportationPhase;
         private String meanOfTransport;
-        private Vehicle vehicle;
+        private Vehicule vehicule;
         private Voyage voyage;
 
 
@@ -203,12 +208,12 @@ public class RoutingFinderResp {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class  Vehicle {
-        private String vehicleType;
-        private String vehicleName;
+    public static class  Vehicule {
+        private String vehiculeType;
+        private String vehiculeName;
         private String reference;
-//        private String referenceType;
-//        private String internalReference;
+        private String referenceType;
+        private String internalReference;
     }
 
     @Data
@@ -218,6 +223,5 @@ public class RoutingFinderResp {
     public static class  Service {
         private String code;
         private String internalCode;
-        private boolean lineInstruction;
     }
 }

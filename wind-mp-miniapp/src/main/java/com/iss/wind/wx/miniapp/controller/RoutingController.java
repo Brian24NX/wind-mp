@@ -39,7 +39,7 @@ public class RoutingController {
                                             @ApiParam(name = "searchRange" ,value = "搜寻天数" ) @RequestParam String searchRange
                                                           ) {
 
-        List<RoutingFinderResp> routing = routingFinderClient.routingsNew(placeOfLoading, placeOfDischarge,specificRoutings,shippingCompany,departureDate,arrivalDate,searchRange);
+        List<RoutingFinderResp> routing = routingFinderClient.routings(placeOfLoading, placeOfDischarge,specificRoutings,shippingCompany,departureDate,arrivalDate,searchRange);
         if(null == routing){
             return SimpleResult.fail("500","请求异常");
         }

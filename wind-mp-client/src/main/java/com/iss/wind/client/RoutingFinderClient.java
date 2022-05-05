@@ -57,7 +57,7 @@ public class RoutingFinderClient {
      * @param searchRange
      * @return
      */
-    public List<RoutingFinderResp> routingsNew(String placeOfLoading,String placeOfDischarge,String[] specificRoutings,String shippingCompany,String departureDate,String arrivalDate,String searchRange){
+    public List<RoutingFinderResp> routings(String placeOfLoading,String placeOfDischarge,String[] specificRoutings,String shippingCompany,String departureDate,String arrivalDate,String searchRange){
         Map ret = new HashMap();
         String scope = "commercialschedule:read:be";
         String url = digitalApiEcomUrl + "schedules-api/commercial/vesseloperation/route/v1/routings?placeOfLoading={placeOfLoading}&placeOfDischarge={placeOfDischarge}&shippingCompany={shippingCompany}&departureDate={departureDate}&arrivalDate={arrivalDate}&searchRange={searchRange}&ecoInformation=true";
@@ -133,7 +133,7 @@ public class RoutingFinderClient {
      * 默认情况下，此设置是激活的。
      * @return
      */
-    public List<RoutingFinderResp> routings(String placeOfLoading,String placeOfDischarge,String[] specificRoutings,String shippingCompany,String departureDate,String arrivalDate,String searchRange){
+    public List<RoutingFinderResp> routingsOld(String placeOfLoading,String placeOfDischarge,String[] specificRoutings,String shippingCompany,String departureDate,String arrivalDate,String searchRange){
         List<RoutingFinderResp> routFinders = new ArrayList<>();
         String url = digitalApiUrl + "/vesseloperation/route/v2/routings?placeOfLoading={placeOfLoading}&placeOfDischarge={placeOfDischarge}&shippingCompany={shippingCompany}&departureDate={departureDate}&arrivalDate={arrivalDate}&searchRange={searchRange}";
         WindAccessTokenResp accessToken = windAuthClient.getAccessToken("rf:be");
@@ -226,13 +226,13 @@ public class RoutingFinderClient {
                 List<RoutingFinderResp.RoutingDetail> routingDetails = r.getRoutingDetails();
                 //多个服务用
                 r.setService(getServices(routingDetails));
-                if ("0002".equals(r.getShippingCompany())) {
+                if ("0011".equals(r.getShippingCompany())) {
                     if(!StrUtils.isBlank(r.getService()) && !cncList.contains(r.getService())){
                         cncList.add(r.getService());
                     }
                     cncCount++;
                 }
-                if ("0011".equals(r.getShippingCompany())) {
+                if ("0002".equals(r.getShippingCompany())) {
                     if(!StrUtils.isBlank(r.getService()) && !anlList.contains(r.getService())){
                         anlList.add(r.getService());
                     }
@@ -254,16 +254,16 @@ public class RoutingFinderClient {
                 //起运港
                 r.setPointfrom(routingDetails.get(0).getPointFrom().getLocation().getName());
                 //起运时间
-                r.setDeparturedate(routingDetails.get(0).getPointFrom().getDepartureDateLocal());
+                r.setDeparturedate(routingDetails.get(0).getPointFrom().getDepartureDate());
                 //目的港
                 r.setPointto(1 == routingDetails.size() ? routingDetails.get(0).getPointTo().getLocation().getName() : routingDetails.get(routingDetails.size() - 1).getPointTo().getLocation().getName());
                 //到达时间
-                r.setArrivaldate(1 == routingDetails.size() ? routingDetails.get(0).getPointTo().getArrivalDateLocal() : routingDetails.get(routingDetails.size() - 1).getPointTo().getArrivalDateLocal());
+                r.setArrivaldate(1 == routingDetails.size() ? routingDetails.get(0).getPointTo().getArrivalDate() : routingDetails.get(routingDetails.size() - 1).getPointTo().getArrivalDate());
                 //转成次数
                 r.setTranshipment(getTranshipment(routingDetails));
                 //第一艘船名
-                RoutingFinderResp.Vehicule veh = routingDetails.get(0).getTransportation().getVehicule();
-                r.setShipname(null == veh?"":veh.getVehiculeName());
+                RoutingFinderResp.Vehicle veh = routingDetails.get(0).getTransportation().getVehicle();
+                r.setShipname(null == veh?"":veh.getVehicleName());
                 //开始运输工具
                 r.setStartMeanOfTransport(routingDetails.get(0).getTransportation().getMeanOfTransport());
                 //结束运输工具
