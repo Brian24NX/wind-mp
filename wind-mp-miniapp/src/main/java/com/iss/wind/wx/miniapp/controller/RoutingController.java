@@ -7,6 +7,7 @@ import com.iss.wind.client.dto.sechedule.RoutingFinderResp;
 import com.iss.wind.common.util.log.WebLog;
 import io.swagger.annotations.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,9 +38,10 @@ public class RoutingController {
                                             @ApiParam(name = "arrivalDate" ,value = "预计到达日期" ) @RequestParam String arrivalDate,
                                             @ApiParam(name = "searchRange" ,value = "搜寻天数" ) @RequestParam String searchRange
                                                           ) {
-        List<RoutingFinderResp> routing = routingFinderClient.routings(placeOfLoading, placeOfDischarge,specificRoutings,shippingCompany,departureDate,arrivalDate,searchRange);
+
+        List<RoutingFinderResp> routing = routingFinderClient.routingsNew(placeOfLoading, placeOfDischarge,specificRoutings,shippingCompany,departureDate,arrivalDate,searchRange);
         if(null == routing){
-            return SimpleResult.fail("500","请求异常或超时");
+            return SimpleResult.fail("500","请求异常");
         }
         return SimpleResult.success(routingFinderClient.listRoutings(routing,placeOfLoading,placeOfDischarge,departureDate,arrivalDate,searchRange));
     }
