@@ -196,6 +196,7 @@ public class RoutingFinderResp {
     @NoArgsConstructor
     public static class Voyage {
         private String voyageReference;
+        private String localVoyageReference;
         private Service service;
     }
 
