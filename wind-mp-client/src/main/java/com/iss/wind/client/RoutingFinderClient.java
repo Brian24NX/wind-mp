@@ -76,7 +76,7 @@ public class RoutingFinderClient {
         //调用
         ResponseEntity<List<RoutingFinderResp>> response = routingRequest(headers,url,paramMap);
         log.info("first-routing-req");
-        if (null != response && response.getStatusCodeValue() == 200) {
+        if (null != response && (response.getStatusCodeValue() == 200 || response.getStatusCodeValue() == 206)) {
             return response.getBody();
         }
         return null;
@@ -226,13 +226,13 @@ public class RoutingFinderClient {
                 List<RoutingFinderResp.RoutingDetail> routingDetails = r.getRoutingDetails();
                 //多个服务用
                 r.setService(getServices(routingDetails));
-                if ("0011".equals(r.getShippingCompany())) {
+                if ("0002".equals(r.getShippingCompany())) {
                     if(!StrUtils.isBlank(r.getService()) && !cncList.contains(r.getService())){
                         cncList.add(r.getService());
                     }
                     cncCount++;
                 }
-                if ("0002".equals(r.getShippingCompany())) {
+                if ("0011".equals(r.getShippingCompany())) {
                     if(!StrUtils.isBlank(r.getService()) && !anlList.contains(r.getService())){
                         anlList.add(r.getService());
                     }
