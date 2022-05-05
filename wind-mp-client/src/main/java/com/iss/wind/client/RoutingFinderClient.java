@@ -4,6 +4,7 @@ import com.iss.wind.client.dto.auth.WindAccessTokenResp;
 import com.iss.wind.client.dto.sechedule.RoutingFinderPostReq;
 import com.iss.wind.client.dto.sechedule.RoutingFinderResp;
 
+import java.net.SocketTimeoutException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -41,6 +43,45 @@ public class RoutingFinderClient {
 
     @Value("${com.iss.wind.digital-api-url}")
     private String digitalApiUrl;
+    @Value("${com.iss.wind.digital-api-url-ecom}")
+    private String digitalApiEcomUrl;
+
+    /**
+     *  调用ecom的routing-finder
+     * @param placeOfLoading
+     * @param placeOfDischarge
+     * @param specificRoutings
+     * @param shippingCompany
+     * @param departureDate
+     * @param arrivalDate
+     * @param searchRange
+     * @return
+     */
+    public List<RoutingFinderResp> routingsNew(String placeOfLoading,String placeOfDischarge,String[] specificRoutings,String shippingCompany,String departureDate,String arrivalDate,String searchRange){
+        Map ret = new HashMap();
+        String scope = "commercialschedule:read:be";
+        String url = digitalApiEcomUrl + "schedules-api/commercial/vesseloperation/route/v1/routings?placeOfLoading={placeOfLoading}&placeOfDischarge={placeOfDischarge}&shippingCompany={shippingCompany}&departureDate={departureDate}&arrivalDate={arrivalDate}&searchRange={searchRange}&ecoInformation=true";
+        WindAccessTokenResp accessToken = windAuthClient.getAccessToken(scope);
+        Map<String,Object> paramMap=new HashMap<>();
+        paramMap.put("placeOfLoading",placeOfLoading);
+        paramMap.put("placeOfDischarge", placeOfDischarge);
+        paramMap.put("specificRoutings", specificRoutings);
+        paramMap.put("shippingCompany", shippingCompany);
+        paramMap.put("departureDate", departureDate);
+        paramMap.put("arrivalDate", arrivalDate);
+        paramMap.put("searchRange", searchRange);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken.getTokenType() + " " + accessToken.getAccessToken());
+        headers.add("scope", scope);
+        //调用
+        ResponseEntity<List<RoutingFinderResp>> response = routingRequest(headers,url,paramMap);
+        log.info("first-routing-req");
+        if (null != response && response.getStatusCodeValue() == 200) {
+            return response.getBody();
+        }
+        return null;
+    }
+
     /**
      * API 获取航线信息
      * https://api-cockpit.cma-cgm.com/explore/catalog/vesseloperation/api/vesseloperation.route.v2/swagger

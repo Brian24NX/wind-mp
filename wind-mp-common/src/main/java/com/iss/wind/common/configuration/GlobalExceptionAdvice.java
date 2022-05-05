@@ -9,6 +9,10 @@ import static com.hanson.rest.enmus.ErrorCodeEnum.NOT_FOUND;
 import com.hanson.rest.BizException;
 import com.hanson.rest.SimpleResult;
 import javax.servlet.http.HttpServletRequest;
+
+import com.iss.wind.common.enums.error.ErrorEnum;
+import com.iss.wind.common.util.log.BusinessException;
+import io.netty.channel.ConnectTimeoutException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -19,6 +23,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.NoHandlerFoundException;
+
+import java.net.SocketTimeoutException;
 
 /**
  * @author Hanson
@@ -63,7 +69,16 @@ public class GlobalExceptionAdvice {
 	@ExceptionHandler(Exception.class)
 	public SimpleResult<Void> handleException(Exception e) {
 		log.error(e.getMessage(), e);
-		return new SimpleResult<>(FAIL.getCode(),e.getMessage());
+		if(e instanceof BusinessException){
+			BusinessException be = (BusinessException) e;
+			if(408 == be.getStatusCode()){
+				return new SimpleResult<>(ErrorEnum.REQUEST_TIMEOUT);
+			}else {
+				return new SimpleResult<>(FAIL.getCode(), e.getMessage());
+			}
+		}else {
+			return new SimpleResult<>(FAIL.getCode(), e.getMessage());
+		}
 	}
 
 	/**

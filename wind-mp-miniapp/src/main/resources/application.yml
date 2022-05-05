@@ -61,7 +61,7 @@ rest:
   template:
     conn:
       connect-timeout: 10000
-      read-timeout: 15000
+      read-timeout: 30000
 
 wind:
   fileQueryPath: file:/data/export/

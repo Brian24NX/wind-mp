@@ -73,3 +73,4 @@ com:
         url: https://auth-pre.cma-cgm.com/as/token.oauth2
         secret: 3cW2qfWgqx50GIepNAHWuyYTa5FSZbs1OLZzLK3wUxjUW0qQIpNKfpV7mBrRSt2l
       digital-api-url: https://digital-apis-uat.cma-cgm.com/
+      digital-api-url-ecom: https://apis-uat.cma-cgm.com/uat-ecom/

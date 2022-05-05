@@ -1,6 +1,7 @@
 package com.iss.wind.common.util.log;
 
 import com.google.gson.Gson;
+import io.netty.channel.ConnectTimeoutException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -8,10 +9,12 @@ import org.aspectj.lang.annotation.*;
 import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.net.SocketTimeoutException;
 
 @Component
 @Aspect
@@ -88,7 +91,12 @@ public class WebLogAspect {
             result = proceedingJoinPoint.proceed();
         } catch (Exception e) {
             log.error("exception      :{}", e);
-            throw new BusinessException("请求异常或超时!");
+            int statusCode = (e instanceof ResourceAccessException || e instanceof SocketTimeoutException || e instanceof ConnectTimeoutException)?408:500;
+            if(408 == statusCode){
+                throw new BusinessException(statusCode,"请求超时!");
+            }else {
+                throw new BusinessException(statusCode,"请求异常!");
+            }
         } finally {
             // 打印出参
             log.info("Response Args  : {}", new Gson().toJson(result));
