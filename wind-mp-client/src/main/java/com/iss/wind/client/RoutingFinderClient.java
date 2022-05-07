@@ -4,9 +4,8 @@ import com.iss.wind.client.dto.auth.WindAccessTokenResp;
 import com.iss.wind.client.dto.sechedule.RoutingFinderPostReq;
 import com.iss.wind.client.dto.sechedule.RoutingFinderResp;
 
-import java.net.SocketTimeoutException;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.iss.wind.client.util.ServiceNameMap;
 import com.iss.wind.client.util.SortUtil;
@@ -14,7 +13,6 @@ import com.iss.wind.client.util.StrUtils;
 import com.iss.wind.client.util.rest.BusinessException;
 import com.iss.wind.client.util.rest.RestTemplateLogInterceptor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.Aware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -24,7 +22,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -445,8 +442,38 @@ public class RoutingFinderClient {
 
     //获取转运次数（转船）【transportation-meanOfTransport :Vessel 总船次 -1】
     public int getTranshipment(List<RoutingFinderResp.RoutingDetail> routingDetails){
-        List<RoutingFinderResp.RoutingDetail> tships = routingDetails.stream().filter(r -> "Vessel".equals(r.getTransportation().getMeanOfTransport())) .collect(Collectors.toList());
-        int ct = CollectionUtils.isEmpty(tships)?0:tships.size();
+//        var array = {'truck', 'road', 'mixed', 'rail', 'barge', 'feeder', 'third party feeder', 'intermodal', 'unknown'};
+        //非海运list
+        List<String> trasList = new ArrayList<>();
+        trasList.add("truck");
+        trasList.add("road");
+        trasList.add("mixed");
+        trasList.add("rail");
+        trasList.add("barge");
+        trasList.add("feeder");
+        trasList.add("third party feeder");
+        trasList.add("intermodal");
+        trasList.add("unknown");
+        //船名list
+        List<String> vehicleNames = new ArrayList<>() ;
+        routingDetails.stream().forEach(r -> {
+            vehicleNames.add(r.getTransportation().getVehicle().getVehicleName());
+        });
+        //过滤船名不含trasList
+        List<String> newTransList = new ArrayList<>();
+        vehicleNames.stream().forEach(v->{
+            AtomicBoolean haveFlag = new AtomicBoolean(false);
+            trasList.stream().forEach(t->{
+                if(v.toLowerCase().contains(t)){
+                    haveFlag.set(true);
+                }
+            });
+            //遍历后还是不包含 则是海运
+            if(!haveFlag.get()){
+                newTransList.add(v);
+            }
+        });
+        int ct = CollectionUtils.isEmpty(newTransList)?0:newTransList.size();
         return ct <= 1? 0 : ct-1;
     }
 
