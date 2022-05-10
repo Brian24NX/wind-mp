@@ -57,3 +57,4 @@ com:
         url: https://auth-int.cma-cgm.com:9031/as/token.oauth2
         secret: BfrPuRj81lKyVL2hCIewCAHMUkGbEqnyTAsVoszX8zVm5U8ejDEZ33Gt3VDFkWf2
       digital-api-url: https://digital-apis-int.cma-cgm.com/
+      digital-api-url-ecom: https://apis-uat.cma-cgm.com/uat-ecom/
