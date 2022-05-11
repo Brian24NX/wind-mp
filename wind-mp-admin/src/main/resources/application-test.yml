@@ -7,13 +7,13 @@
 # 连接等请务必通过Apollo配置中心进行配置，切勿在此文件中定义
 #-------------------------------------------------------
 server:
-  port: 18090
+  port: 9001
 
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:sqlserver://10.7.11.96:1433;database=wind
+      url: jdbc:sqlserver://10.105.33.141:1433;database=wind
       username: sa
       password: UJhHxnAwxdhTkQ4t
       driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
@@ -43,6 +43,13 @@ spring:
       max-active: 8             ## 连接池最大连接数（使用负值表示没有限制）
       max-wait: -1              ## 连接池最大阻塞等待时间（使用负值表示没有限制）
 
+  #email
+  mail:
+    host: smtp.cma-cgm.com
+    port:
+    username: wind-test@cma-cgm.com
+    password:
+
 logging:
   level:
     root: INFO
@@ -58,3 +65,5 @@ com:
         secret: BfrPuRj81lKyVL2hCIewCAHMUkGbEqnyTAsVoszX8zVm5U8ejDEZ33Gt3VDFkWf2
       digital-api-url: https://digital-apis-int.cma-cgm.com/
       digital-api-url-ecom: https://apis-uat.cma-cgm.com/uat-ecom/
+file:
+  download-path: C:/deploy/file_repository/

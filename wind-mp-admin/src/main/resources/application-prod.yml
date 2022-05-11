@@ -43,6 +43,13 @@ spring:
       max-active: 8             ## 连接池最大连接数（使用负值表示没有限制）
       max-wait: -1              ## 连接池最大阻塞等待时间（使用负值表示没有限制）
 
+  #email
+  mail:
+    host: smtp.cma-cgm.com
+    port:
+    username: shg.wind@cma-cgm.com
+    password:
+
 logging:
   level:
     root: INFO
@@ -65,3 +72,6 @@ com:
         secret: gpeKRDr4ar1HoPw41bAneLbTlAMYcTtXrfjb4sBSbiasUgIo3RJUInqEuLRZqLHT
       digital-api-url: https://digital-apis.cma-cgm.com/
       digital-api-url-ecom: https://apis.cma-cgm.com/prd-ecom/
+
+file:
+  download-path: D:/deploy/file_repository/
